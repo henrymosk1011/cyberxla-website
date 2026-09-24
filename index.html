@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>cyberXLA | Cybersecurity and Managed IT</title>
+<meta name="description" content="Cybersecurity, penetration testing, EDR, MDR, and managed IT for small businesses.">
+<link rel="canonical" href="https://cyberxla.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="cyberXLA">
+<meta property="og:title" content="cyberXLA | Cybersecurity and Managed IT">
+<meta property="og:description" content="Cybersecurity, penetration testing, EDR, MDR, and managed IT for small businesses in Los Angeles.">
+<meta property="og:url" content="https://cyberxla.com/">
+<meta property="og:image" content="https://cyberxla.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="cyberXLA | Cybersecurity and Managed IT">
+<meta name="twitter:description" content="Cybersecurity, penetration testing, EDR, MDR, and managed IT for small businesses in Los Angeles.">
+<meta name="twitter:image" content="https://cyberxla.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "cyberXLA",
+  "description": "Cybersecurity and managed IT for small businesses, including penetration testing, vulnerability assessments, EDR, MDR, patching, and backup.",
+  "url": "https://cyberxla.com/",
+  "image": "https://cyberxla.com/og-image.png",
+  "areaServed": [
+    { "@type": "City", "name": "Los Angeles" },
+    { "@type": "City", "name": "Glendale" },
+    { "@type": "AdministrativeArea", "name": "Southern California" }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Los Angeles",
+    "addressRegion": "CA",
+    "addressCountry": "US"
+  }
+}
+</script>
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --ink: #111315;
+  --bone: #E3E7E6;
+  --lime: #D6FF3F;
+  --ink-mute: #A3A9AF;
+  --paper: #E3E7E6;
+  --paper-fg: #111315;
+  --paper-mute: #565B60;
+  --card: #FBFAF6;
+  --line: rgba(17, 19, 21, 0.2);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1A1D20;
+    --paper-fg: #E3E7E6;
+    --paper-mute: #A3A9AF;
+    --card: #23272B;
+    --line: rgba(240, 237, 228, 0.2);
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1A1D20;
+  --paper-fg: #E3E7E6;
+  --paper-mute: #A3A9AF;
+  --card: #23272B;
+  --line: rgba(240, 237, 228, 0.2);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; background: var(--ink); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.45;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+ul { list-style: none; }
+.wrap { width: min(1240px, 100% - 48px); margin-inline: auto; }
+section { position: relative; padding: clamp(72px, 12vw, 160px) 0; }
+.sec-ink { background: var(--ink); color: var(--bone); }
+.sec-paper { background: var(--paper); color: var(--paper-fg); }
+.sec-lime { background: var(--lime); color: var(--ink); overflow-x: clip; }
+.mono { font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.1em; font-size: 13px; text-transform: uppercase; }
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
+h2 { font-size: clamp(40px, 7vw, 104px); }
+.chip { display: inline-block; background: var(--lime); color: var(--ink); padding: 0 0.18em 0.06em; border-radius: 0.18em; line-height: 1; }
+.chip.ink { background: var(--ink); color: var(--lime); }
+.mute-paper { color: var(--paper-mute); }
+.sec-head { display: flex; flex-direction: column; gap: 24px; margin-bottom: clamp(40px, 6vw, 80px); max-width: 980px; }
+.sec-head p { font-size: clamp(18px, 2vw, 24px); }
+
+/* progress bar and nav */
+.bar { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; height: 4px; width: 100%; background: var(--lime); transform-origin: 0 50%; transform: scaleX(0); z-index: 60; }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; margin-bottom: -72px; transition: transform 0.4s ease, background 0.3s ease; }
+.nav.solid { background: rgba(17, 19, 21, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav.hide { transform: translateY(-110%); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; color: var(--bone); }
+.brandmark { display: inline-flex; align-items: baseline; gap: 0; font-weight: 800; font-size: 21px; letter-spacing: -0.02em; color: var(--bone); text-decoration: none; }
+.brandmark .x { color: var(--lime); }
+.nav ul { display: flex; gap: 32px; }
+.nav ul a { text-decoration: none; font-weight: 600; opacity: 0.8; transition: opacity 0.2s; }
+.nav ul a:hover { opacity: 1; }
+@media (max-width: 800px) { .nav ul { display: none; } }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 999px; font-weight: 700; font-size: 18px; text-decoration: none; border: 2px solid transparent; transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease; cursor: pointer; }
+.btn:hover { transform: translateY(-3px); }
+.btn-lime { background: var(--lime); color: var(--ink); }
+.btn-line { border-color: currentColor; color: inherit; }
+.btn-line:hover { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+.btn-ink { background: var(--ink); color: var(--lime); }
+.btn.sm { padding: 10px 20px; font-size: 16px; }
+
+/* hero */
+.hero { min-height: 100svh; padding-top: 140px; padding-bottom: 72px; overflow: hidden; display: flex; align-items: center; }
+.hero .wrap { position: relative; z-index: 2; display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px 48px; align-items: end; }
+.hero-top { grid-column: 1 / -1; }
+.hero h1 { font-size: clamp(36px, 9vw, 124px); margin: 24px 0 8px; }
+.hero h1 .l { display: block; }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-right: 0.22em; }
+.w > span { display: inline-block; }
+.js .w > span { transform: translateY(115%); animation: up 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: calc(var(--i) * 80ms + 200ms); }
+@keyframes up { to { transform: none; } }
+.hero .sub { font-size: clamp(18px, 2vw, 24px); max-width: 560px; color: var(--ink-mute); margin-bottom: 32px; }
+.hero .cta { display: flex; flex-wrap: wrap; gap: 16px; }
+.js .hero .fade { opacity: 0; animation: fadein 0.9s ease forwards; animation-delay: calc(var(--d, 0) * 1ms + 900ms); }
+@keyframes fadein { to { opacity: 1; } }
+.par { position: absolute; right: -12%; top: 6%; width: min(64vw, 720px); aspect-ratio: 1; z-index: 1; will-change: transform; }
+.ring { width: 100%; height: 100%; border-radius: 50%; border: 2px dashed rgba(214, 255, 63, 0.45); animation: spin 50s linear infinite; position: relative; }
+.ring::after { content: ""; position: absolute; inset: 18%; border-radius: 50%; background: radial-gradient(circle, rgba(214, 255, 63, 0.22), rgba(214, 255, 63, 0) 70%); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.term { background: #0B0D0E; border: 1px solid rgba(240, 237, 228, 0.16); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--bone); }
+.term-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.term-top i { width: 12px; height: 12px; border-radius: 50%; background: rgba(240, 237, 228, 0.25); }
+.term-top .mono { margin-left: 8px; font-size: 12px; color: var(--ink-mute); font-family: 'JetBrains Mono', monospace; }
+.ln { display: flex; justify-content: space-between; gap: 12px; }
+.js .ln { opacity: 0; transform: translateY(10px); animation: lnin 0.5s ease forwards; animation-delay: calc(1.6s + var(--i) * 0.55s); }
+@keyframes lnin { to { opacity: 1; transform: none; } }
+.tag { background: var(--lime); color: var(--ink); padding: 2px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+.cursor { display: inline-block; width: 10px; height: 18px; background: var(--lime); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.scrollcue { position: absolute; left: 50%; bottom: 28px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--ink-mute); transform: translateX(-50%); }
+.scrollcue i { width: 2px; height: 40px; background: var(--lime); transform-origin: top; animation: cue 1.8s ease-in-out infinite; }
+@keyframes cue { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+@media (max-width: 600px) { .hero h1 { font-size: 11.2vw; } }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; } .hero { align-items: flex-start; } .scrollcue { display: none; } }
+
+/* marquee */
+.marq { background: var(--lime); color: var(--ink); overflow: hidden; white-space: nowrap; padding: 22px 0; }
+.marq .track { display: inline-flex; animation: mq 30s linear infinite; }
+.marq.rev .track { animation-direction: reverse; }
+.marq span { font-size: clamp(28px, 4vw, 56px); font-weight: 700; letter-spacing: -0.02em; padding-right: 48px; }
+@keyframes mq { to { transform: translateX(-50%); } }
+
+/* reveal */
+.js .reveal { opacity: 0; transform: translateY(44px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: var(--d, 0ms); }
+.js .reveal.in { opacity: 1; transform: none; }
+.js .from-l { opacity: 0; transform: translateX(-80px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.js .from-r { opacity: 0; transform: translateX(80px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.js .from-l.in, .js .from-r.in { opacity: 1; transform: none; }
+
+/* services */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 36px; min-height: 260px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease; }
+.card:hover { transform: translateY(-8px); border-color: var(--paper-fg); }
+.card .num { color: var(--paper-mute); transition: color 0.3s; }
+.card h3 { font-size: clamp(32px, 3.4vw, 44px); margin-bottom: 12px; }
+.card p { color: var(--paper-mute); font-size: 18px; }
+.card:hover .num { color: var(--paper-fg); }
+@media (max-width: 960px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .grid { grid-template-columns: 1fr; } .card { min-height: 200px; } }
+
+/* moving strip */
+.strip { padding: clamp(48px, 8vw, 100px) 0; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+.row { white-space: nowrap; font-size: clamp(72px, 16vw, 240px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; color: transparent; -webkit-text-stroke: 2px var(--bone); will-change: transform; margin-left: -8vw; }
+.row.fill { color: var(--lime); -webkit-text-stroke: 0; }
+
+/* packages */
+.pk { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+.pk .card { min-height: 0; gap: 32px; justify-content: flex-start; }
+.pk .card.feat { position: relative; background: var(--ink); color: var(--bone); border: 2px solid var(--lime); }
+.pk .card.feat p, .pk .card.feat .mute-paper { color: var(--ink-mute); }
+.price { font-size: clamp(80px, 9vw, 128px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.9; display: flex; align-items: flex-start; gap: 4px; }
+.price sup { font-size: 0.4em; margin-top: 0.1em; }
+.badge { position: absolute; top: -15px; right: 28px; background: var(--lime); color: var(--ink); padding: 7px 14px; border-radius: 999px; font-size: 12px; }
+.feat .price { color: var(--lime); }
+.pk li { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); font-weight: 600; font-size: 19px; }
+.feat li { border-color: rgba(240, 237, 228, 0.2); }
+.pk li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: currentColor; flex: none; }
+.feat li::before { background: var(--lime); }
+.pk .btn { margin-top: auto; justify-content: center; }
+.note { margin-top: 32px; font-size: 16px; }
+@media (max-width: 960px) { .pk { grid-template-columns: 1fr; } }
+
+/* calculator */
+.calc { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.calc-in { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: clamp(28px, 3.4vw, 40px); display: flex; flex-direction: column; gap: 28px; }
+.field { display: flex; flex-direction: column; gap: 12px; }
+.field label { font-weight: 700; font-size: 18px; color: var(--paper-fg); }
+.field .hint { font-size: 14px; color: var(--paper-mute); font-weight: 500; }
+.stepper { display: flex; align-items: center; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; width: fit-content; }
+.stepper button { width: 48px; height: 48px; border: none; background: transparent; color: var(--paper-fg); font-size: 22px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.stepper button:hover { background: var(--lime); }
+.stepper input { width: 84px; height: 48px; border: none; border-left: 1px solid var(--line); border-right: 1px solid var(--line); text-align: center; font-size: 20px; font-weight: 700; font-family: inherit; color: var(--paper-fg); background: transparent; -moz-appearance: textfield; }
+.stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.seg { display: flex; gap: 10px; flex-wrap: wrap; }
+.seg button { flex: 1; min-width: 120px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: transparent; color: var(--paper-fg); font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--lime); border-color: var(--ink); }
+.calc-out { background: var(--ink); color: var(--bone); border-radius: 28px; padding: clamp(28px, 3.4vw, 40px); display: flex; flex-direction: column; gap: 28px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); }
+.calc-out .mono { color: var(--lime); }
+.calc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0; border-top: 1px solid rgba(240, 237, 228, 0.16); }
+.calc-row:first-of-type { border-top: none; padding-top: 0; }
+.calc-row .k { font-size: 17px; color: var(--ink-mute); font-weight: 600; }
+.calc-row .v { font-size: clamp(26px, 3vw, 34px); font-weight: 800; letter-spacing: -0.02em; }
+.calc-row.sub { padding: 0; }
+.calc-row.sub .k { font-size: 15px; padding-left: 20px; }
+.calc-row.sub .v { font-size: 17px; font-weight: 700; white-space: nowrap; }
+.calc-total { display: flex; flex-direction: column; gap: 6px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.16); }
+.calc-total .k { font-size: 15px; }
+.calc-total .v { font-size: clamp(56px, 7vw, 88px); color: var(--lime); letter-spacing: -0.03em; line-height: 1; }
+.calc-note { font-size: 14px; color: var(--ink-mute); line-height: 1.5; }
+@media (max-width: 900px) { .calc { grid-template-columns: 1fr; } .calc-out { position: static; } }
+
+/* process */
+.proc { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.sticky { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 120px); }
+.sticky h2 { margin: 24px 0; }
+.steps { position: relative; padding-left: 48px; }
+.steps::before { content: ""; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: rgba(240, 237, 228, 0.18); }
+.pfill { position: absolute; left: 11px; top: 0; width: 2px; height: 0; background: var(--lime); }
+.step { position: relative; min-height: 42vh; opacity: 0.3; transition: opacity 0.5s ease; display: flex; flex-direction: column; gap: 16px; padding-bottom: 48px; }
+.step.on { opacity: 1; }
+.step::before { content: ""; position: absolute; left: -47px; top: 4px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(240, 237, 228, 0.4); background: var(--ink); transition: background 0.4s, border-color 0.4s, transform 0.4s; }
+.step.on::before { background: var(--lime); border-color: var(--lime); transform: scale(1.15); }
+.step .mono { color: var(--lime); }
+.step h3 { font-size: clamp(40px, 5vw, 72px); }
+.step p { color: var(--ink-mute); font-size: 20px; max-width: 460px; }
+@media (max-width: 900px) { .proc { grid-template-columns: 1fr; gap: 32px; } .sticky { position: static; } .step { min-height: 28vh; } }
+
+/* onboarding and offboarding */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.oc { background: var(--ink); color: var(--bone); border-radius: 32px; padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; gap: 28px; }
+.oc .mono { color: var(--lime); }
+.oc h3 { font-size: clamp(36px, 4.4vw, 60px); }
+.oc li { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-top: 1px solid rgba(240, 237, 228, 0.16); font-size: 21px; font-weight: 600; }
+.ck { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--lime); position: relative; }
+.ck::after { content: ""; position: absolute; left: 10px; top: 5px; width: 6px; height: 12px; border: solid var(--ink); border-width: 0 3px 3px 0; transform: rotate(45deg); }
+.js .ck { transform: scale(0); transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); transition-delay: calc(var(--i) * 140ms + 500ms); }
+.js .in .ck { transform: scale(1); }
+@media (max-width: 900px) { .duo { grid-template-columns: 1fr; } }
+
+/* sla */
+.sla { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.sla .n { font-size: clamp(110px, 15vw, 220px); font-weight: 700; letter-spacing: -0.06em; line-height: 0.85; }
+.sla h3 { font-size: 40px; margin: 20px 0 10px; }
+.sla p { color: var(--paper-mute); }
+.sla .u { margin-top: 16px; display: inline-block; background: var(--lime); color: var(--ink); padding: 6px 14px; border-radius: 8px; }
+@media (max-width: 800px) { .sla { grid-template-columns: 1fr; } }
+
+/* faq */
+.faq { max-width: 960px; }
+details { border-top: 1px solid rgba(240, 237, 228, 0.2); padding: 28px 0; }
+details:last-child { border-bottom: 1px solid rgba(240, 237, 228, 0.2); }
+summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-size: 44px; color: var(--lime); transition: transform 0.35s ease; line-height: 1; }
+details[open] summary::after { transform: rotate(45deg); }
+details p { margin-top: 16px; color: var(--ink-mute); font-size: 20px; max-width: 720px; }
+details[open] p { animation: fadein 0.5s ease both; }
+.faq-link { color: var(--lime); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.faq-link:hover { color: var(--bone); }
+
+/* contact and footer */
+.big { font-size: clamp(80px, 17vw, 260px); }
+.contact .sub { font-size: clamp(20px, 2.4vw, 30px); font-weight: 600; margin: 32px 0 40px; max-width: 700px; }
+.contact .cta { display: flex; flex-wrap: wrap; gap: 16px; }
+footer { background: var(--ink); color: var(--bone); padding: 56px 0; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; }
+footer .mute { color: var(--ink-mute); }
+footer .legal { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.14); }
+footer .legal a { color: var(--ink-mute); font-size: 13px; text-decoration: none; }
+footer .legal a:hover { color: var(--bone); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .w > span, .js .hero .fade, .js .ln { animation: none; opacity: 1; transform: none; }
+  .js .reveal, .js .from-l, .js .from-r { opacity: 1; transform: none; transition: none; }
+  .js .ck { transform: none; transition: none; }
+  .marq .track, .ring, .scrollcue i, .cursor { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="bar" id="bar"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#packages">Packages</a></li>
+      <li><a href="#calculator">Calculator</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#contact" class="btn btn-lime sm">Get a quote</a>
+  </div>
+</header>
+
+<section class="hero sec-ink" id="top">
+  <div class="par" data-speed="0.12"><div class="ring"></div></div>
+  <div class="wrap">
+    <div class="hero-top">
+      <p class="mono fade" style="--d:0; color: var(--lime);">Cybersecurity and managed IT for small businesses</p>
+      <h1>
+        <span class="l"><span class="w" style="--i:0"><span>We</span></span><span class="w" style="--i:1"><span>handle</span></span><span class="w" style="--i:2"><span><span class="chip">security.</span></span></span></span>
+        <span class="l"><span class="w" style="--i:3"><span>You</span></span><span class="w" style="--i:4"><span>handle</span></span></span>
+        <span class="l"><span class="w" style="--i:5"><span>everything</span></span><span class="w" style="--i:6"><span>else.</span></span></span>
+      </h1>
+    </div>
+    <div>
+      <p class="sub fade" style="--d:300">Penetration testing, patching, email security, and backup. We find the gaps, then keep them closed.</p>
+      <div class="cta fade" style="--d:500">
+        <a href="#contact" class="btn btn-lime">Get a quote</a>
+        <a href="#packages" class="btn btn-line">See packages</a>
+      </div>
+    </div>
+    <div class="term fade" style="--d:700" aria-label="Example overnight report">
+      <div class="term-top"><i></i><i></i><i></i><span class="mono">Example overnight report</span></div>
+      <div class="ln" style="--i:0"><span>Patching 24 devices</span><span class="tag">DONE</span></div>
+      <div class="ln" style="--i:1"><span>EDR agents</span><span class="tag">ONLINE</span></div>
+      <div class="ln" style="--i:2"><span>Suspicious login</span><span class="tag">BLOCKED</span></div>
+      <div class="ln" style="--i:3"><span>Report to your inbox</span><span class="tag">SENT</span></div>
+      <div class="ln" style="--i:4"><span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="marq" aria-hidden="true">
+  <div class="track">
+    <div><span>PATCH</span><span>PROTECT</span><span>WATCH</span><span>BACKUP</span><span>ONBOARD</span><span>OFFBOARD</span></div>
+    <div><span>PATCH</span><span>PROTECT</span><span>WATCH</span><span>BACKUP</span><span>ONBOARD</span><span>OFFBOARD</span></div>
+  </div>
+</div>
+
+<section class="sec-paper" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal mute-paper">01 Services</p>
+      <h2 class="reveal" style="--d:100ms">What we <span class="chip">secure.</span></h2>
+      <p class="reveal mute-paper" style="--d:200ms">One partner for the boring, critical stuff that keeps your business running and safe.</p>
+    </div>
+    <div class="grid">
+      <article class="card reveal" style="--d:0ms"><span class="mono num">01</span><div><h3>24/7 Monitoring</h3><p>Real time monitoring around the clock, so threats get caught the moment they happen.</p></div></article>
+      <article class="card reveal" style="--d:100ms"><span class="mono num">02</span><div><h3>Patching</h3><p>OS and app updates, tested and scheduled after hours.</p></div></article>
+      <article class="card reveal" style="--d:200ms"><span class="mono num">03</span><div><h3>Penetration Testing</h3><p>Real attempts to break in, so you find the gaps before someone else does.</p></div></article>
+      <article class="card reveal" style="--d:0ms"><span class="mono num">04</span><div><h3>Vulnerability Management</h3><p>Regular scans that catch weak spots before they turn into headlines.</p></div></article>
+      <article class="card reveal" style="--d:100ms"><span class="mono num">05</span><div><h3>Email Security</h3><p>Filtering and phishing training for the whole team.</p></div></article>
+      <article class="card reveal" style="--d:200ms"><span class="mono num">06</span><div><h3>MFA and passwords</h3><p>Sign ins that survive a stolen password.</p></div></article>
+      <article class="card reveal" style="--d:0ms"><span class="mono num">07</span><div><h3>EDR &amp; MDR</h3><p>Endpoint protection and active response on every device, watched and handled by us.</p></div></article>
+      <article class="card reveal" style="--d:100ms"><span class="mono num">08</span><div><h3>Backup</h3><p>Microsoft 365 and Google Workspace, backed up daily.</p></div></article>
+      <article class="card reveal" style="--d:200ms"><span class="mono num">09</span><div><h3>User Management</h3><p>Onboarding and offboarding: new hires set up and ready, access shut off the day someone leaves.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec-ink strip" aria-hidden="true">
+  <div><div class="row" data-dir="1">PATCH PROTECT WATCH PATCH PROTECT WATCH</div></div>
+  <div><div class="row fill" data-dir="-1">WATCH PATCH PROTECT WATCH PATCH PROTECT</div></div>
+</section>
+
+<section class="sec-paper" id="packages">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal mute-paper">02 Packages</p>
+      <h2 class="reveal" style="--d:100ms">Pick your level of <span class="chip">paranoia.</span></h2>
+      <p class="reveal mute-paper" style="--d:200ms">Three packages, priced per device. No surprise invoices.</p>
+    </div>
+    <div class="pk">
+      <article class="card reveal" style="--d:0ms">
+        <div><p class="mono mute-paper">Patching only</p><h3 style="margin-top:12px">Essential</h3></div>
+        <div class="price"><sup>$</sup><span data-count="10">10</span></div>
+        <p class="mono mute-paper">per device per month</p>
+        <ul><li>OS and app patching</li><li>Monthly patch report</li><li>Business hours support</li></ul>
+        <a href="#contact" class="btn btn-line">Get a quote</a>
+      </article>
+      <article class="card feat reveal" style="--d:120ms"><span class="badge mono">Most popular</span>
+        <div><p class="mono" style="color:var(--lime)">Patching and EDR</p><h3 style="margin-top:12px">Secure</h3></div>
+        <div class="price"><sup>$</sup><span data-count="18">18</span></div>
+        <p class="mono mute-paper">per device per month</p>
+        <ul><li>Everything in Essential</li><li>EDR protection</li><li>Alerts triaged in business hours</li><li>Quarterly review</li></ul>
+        <a href="#contact" class="btn btn-lime">Get a quote</a>
+      </article>
+      <article class="card reveal" style="--d:240ms">
+        <div><p class="mono mute-paper">Patching and MDR</p><h3 style="margin-top:12px">Shield</h3></div>
+        <div class="price"><sup>$</sup><span data-count="32">32</span></div>
+        <p class="mono mute-paper">per device per month</p>
+        <ul><li>Everything in Secure</li><li>24/7 SOC monitoring</li><li>Active threat containment</li></ul>
+        <a href="#contact" class="btn btn-line">Get a quote</a>
+      </article>
+    </div>
+    <p class="note mono mute-paper reveal">Starting prices. Volume pricing from 25 devices. Servers at 2.5x. $300 monthly minimum.</p>
+  </div>
+</section>
+
+<section class="sec-paper" id="calculator">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal mute-paper">Pricing calculator</p>
+      <h2 class="reveal" style="--d:100ms">Do the <span class="chip">math.</span></h2>
+      <p class="reveal mute-paper" style="--d:200ms">Enter your device count and package to see the monthly and onboarding cost.</p>
+    </div>
+    <div class="calc">
+      <div class="calc-in reveal" style="--d:0ms">
+        <div class="field">
+          <label for="calc-endpoints">Workstations</label>
+          <div class="stepper">
+            <button type="button" data-step="endpoints" data-dir="-1" aria-label="Decrease workstations">&minus;</button>
+            <input type="number" id="calc-endpoints" min="0" max="5000" value="25" inputmode="numeric">
+            <button type="button" data-step="endpoints" data-dir="1" aria-label="Increase workstations">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="calc-servers">Servers</label>
+          <div class="stepper">
+            <button type="button" data-step="servers" data-dir="-1" aria-label="Decrease servers">&minus;</button>
+            <input type="number" id="calc-servers" min="0" max="500" value="1" inputmode="numeric">
+            <button type="button" data-step="servers" data-dir="1" aria-label="Increase servers">+</button>
+          </div>
+          <p class="hint">Billed at 2.5 times the workstation rate.</p>
+        </div>
+        <div class="field">
+          <span id="calc-pkg-label" style="font-weight:700; font-size:18px;">Package</span>
+          <div class="seg" role="group" aria-labelledby="calc-pkg-label">
+            <button type="button" data-pkg="essential" aria-pressed="false">Essential</button>
+            <button type="button" data-pkg="secure" aria-pressed="true">Secure</button>
+            <button type="button" data-pkg="shield" aria-pressed="false">Shield</button>
+          </div>
+        </div>
+      </div>
+      <div class="calc-out reveal" style="--d:150ms" aria-live="polite">
+        <p class="mono">Estimate</p>
+        <div class="calc-row"><span class="k">Devices</span><span class="v" id="calc-devices">26</span></div>
+        <div class="calc-row"><span class="k">Rate tier</span><span class="v" id="calc-tier">1 to 24</span></div>
+        <div class="calc-row sub"><span class="k">Per device, monthly</span><span class="v" id="calc-rate-ep">$18.00</span></div>
+        <div class="calc-row sub"><span class="k">Per server, monthly</span><span class="v" id="calc-rate-sv">$45.00</span></div>
+        <div class="calc-row"><span class="k">One time onboarding</span><span class="v" id="calc-setup">$1,300</span></div>
+        <div class="calc-total">
+          <span class="k mono">Monthly total</span>
+          <span class="v" id="calc-monthly">$468</span>
+        </div>
+        <p class="calc-note">Estimate only. Final pricing is confirmed in your quote. $300 monthly minimum applies. Onboarding fee is waived at 100 or more devices.</p>
+        <a href="#contact" class="btn btn-lime" style="justify-content:center">Get an exact quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-ink" id="process">
+  <div class="wrap proc">
+    <div class="sticky">
+      <p class="mono" style="color:var(--lime)">03 Process</p>
+      <h2>From chaos to <span class="chip">covered</span> in 4 weeks.</h2>
+      <p style="color:var(--ink-mute); font-size:22px; max-width:420px;">A simple start, then it runs itself.</p>
+    </div>
+    <div class="steps">
+      <div class="pfill"></div>
+      <div class="step"><span class="mono">Week 1</span><h3>Discover</h3><p>We inventory every device and confirm access.</p></div>
+      <div class="step"><span class="mono">Week 2</span><h3>Deploy</h3><p>Management and EDR agents go onto every endpoint.</p></div>
+      <div class="step"><span class="mono">Week 3</span><h3>Baseline</h3><p>Everything gets brought up to date and alerts get tuned.</p></div>
+      <div class="step"><span class="mono">Week 4</span><h3>Go live</h3><p>Monthly service and reporting begin. Then you forget we exist.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-lime" id="users">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal">04 User management</p>
+      <h2 class="reveal" style="--d:100ms">Hired. Moved on. <span class="chip ink">Handled.</span></h2>
+      <p class="reveal" style="--d:200ms; font-weight:600;">Onboarding and offboarding, done the same careful way every time.</p>
+    </div>
+    <div class="duo">
+      <article class="oc from-l">
+        <span class="mono">Day one</span>
+        <h3>Ready before hello.</h3>
+        <ul>
+          <li><span class="ck" style="--i:0"></span>Accounts created and licensed</li>
+          <li><span class="ck" style="--i:1"></span>MFA turned on</li>
+          <li><span class="ck" style="--i:2"></span>Device configured and shipped</li>
+          <li><span class="ck" style="--i:3"></span>Access set to only what they need</li>
+        </ul>
+      </article>
+      <article class="oc from-r">
+        <span class="mono">Last day</span>
+        <h3>Their last login.</h3>
+        <ul>
+          <li><span class="ck" style="--i:0"></span>Accounts disabled the same day</li>
+          <li><span class="ck" style="--i:1"></span>App access revoked</li>
+          <li><span class="ck" style="--i:2"></span>Devices wiped or collected</li>
+          <li><span class="ck" style="--i:3"></span>Mail and files saved</li>
+          <li><span class="ck" style="--i:4"></span>Licenses reclaimed</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec-paper" id="response">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal mute-paper">05 Response</p>
+      <h2 class="reveal" style="--d:100ms">Real humans. Real <span class="chip">fast.</span></h2>
+    </div>
+    <div class="sla">
+      <div class="reveal" style="--d:0ms"><div class="n" data-count="1">1</div><span class="mono u">Hour</span><h3>Critical</h3><p>Active threat or many devices down.</p></div>
+      <div class="reveal" style="--d:150ms"><div class="n" data-count="4">4</div><span class="mono u">Hours</span><h3>High</h3><p>One user or device cannot work.</p></div>
+      <div class="reveal" style="--d:300ms"><div class="n" data-count="1">1</div><span class="mono u">Business day</span><h3>Normal</h3><p>Questions and routine requests.</p></div>
+    </div>
+    <p class="note mono mute-paper reveal">Business hours are Monday to Friday, 8am to 6pm Pacific. Shield alerts are monitored 24/7.</p>
+  </div>
+</section>
+
+<section class="sec-ink" id="downtime">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal" style="color: var(--lime);">What downtime costs</p>
+      <h2 class="reveal" style="--d:100ms">What would it <span class="chip">cost you?</span></h2>
+      <p class="reveal" style="--d:200ms; color: var(--ink-mute);">A single bad day can cost more than a year of protection. See roughly what downtime could cost your business.</p>
+    </div>
+    <div class="calc">
+      <div class="calc-in reveal" style="--d:0ms">
+        <div class="field">
+          <label for="dt-employees">Employees affected</label>
+          <div class="stepper">
+            <button type="button" data-dtstep="employees" data-dir="-1" aria-label="Decrease employees">&minus;</button>
+            <input type="number" id="dt-employees" min="0" max="500" value="10" inputmode="numeric">
+            <button type="button" data-dtstep="employees" data-dir="1" aria-label="Increase employees">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="dt-wage">Average hourly pay</label>
+          <div class="stepper">
+            <button type="button" data-dtstep="wage" data-dir="-1" aria-label="Decrease hourly pay">&minus;</button>
+            <input type="number" id="dt-wage" min="10" max="200" value="35" inputmode="numeric">
+            <button type="button" data-dtstep="wage" data-dir="1" aria-label="Increase hourly pay">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="dt-hours">Hours down</label>
+          <div class="stepper">
+            <button type="button" data-dtstep="hours" data-dir="-1" aria-label="Decrease hours down">&minus;</button>
+            <input type="number" id="dt-hours" min="1" max="240" value="8" inputmode="numeric">
+            <button type="button" data-dtstep="hours" data-dir="1" aria-label="Increase hours down">+</button>
+          </div>
+          <p class="hint">A full workday is about 8 hours.</p>
+        </div>
+      </div>
+      <div class="calc-out reveal" style="--d:150ms" aria-live="polite">
+        <p class="mono">Estimate</p>
+        <div class="calc-row"><span class="k">Idle labor cost</span><span class="v" id="dt-labor">$2,800</span></div>
+        <div class="calc-total">
+          <span class="k mono">Estimated total impact</span>
+          <span class="v" id="dt-total">$5,600 to $11,200</span>
+        </div>
+        <p class="calc-note">Estimate only. Idle labor is calculated directly from what you entered. Total impact adds lost revenue, recovery costs, and rework, which industry research puts at roughly 2 to 4 times idle labor. Real impact varies by business.</p>
+        <a href="#contact" class="btn btn-lime" style="justify-content:center">Get protected</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-ink" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono reveal" style="color:var(--lime)">06 FAQ</p>
+      <h2 class="reveal" style="--d:100ms">Quick <span class="chip">answers.</span></h2>
+    </div>
+    <div class="faq reveal">
+      <details><summary>Do we need to replace our current IT person?</summary><p>No. We can cover patching and security while your team keeps handling everything else.</p></details>
+      <details><summary>What devices do you cover?</summary><p>Windows and Mac computers and servers, priced per device.</p></details>
+      <details><summary>How long is the contract?</summary><p>12 months, then it renews yearly. You can cancel a renewal with 60 days written notice.</p></details>
+      <details><summary>How fast can we start?</summary><p>Onboarding takes about four weeks from kickoff, and we handle the setup.</p></details>
+      <details><summary>Is there a minimum?</summary><p>There is a $300 monthly minimum, and volume pricing starts at 25 devices. <a href="#calculator" class="faq-link">Estimate your cost</a>.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec-lime contact" id="contact">
+  <div class="wrap">
+    <p class="mono reveal">07 Contact</p>
+    <h2 class="big reveal" style="--d:100ms">Let&rsquo;s talk.</h2>
+    <p class="sub reveal" style="--d:200ms">Tell us how many devices you have and we&rsquo;ll send you a quote.</p>
+    <div class="cta reveal" style="--d:300ms">
+      <a href="mailto:contact@cyberx.la" class="btn btn-ink">Email us</a>
+      <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#top" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
+    <span class="mute">Serving Los Angeles and SoCal businesses.</span>
+    <span class="mute mono">&copy; 2026 CyberXLA</span>
+  </div>
+  <div class="wrap legal">
+    <a href="terms.html">Terms and Conditions</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var revealIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  $$('.reveal, .from-l, .from-r').forEach(function (el) {
+    if (reduce) { el.classList.add('in'); } else { revealIO.observe(el); }
+  });
+
+  function runCount(el) {
+    var target = +el.getAttribute('data-count');
+    if (reduce) { el.textContent = target; return; }
+    var dur = 1400, start = performance.now();
+    function frame(now) {
+      var p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  var countIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { runCount(e.target); countIO.unobserve(e.target); }
+    });
+  }, { threshold: 0.6 });
+  $$('[data-count]').forEach(function (el) {
+    if (!reduce) { el.textContent = '0'; }
+    countIO.observe(el);
+  });
+
+  var bar = $('#bar'), nav = $('#nav'), fill = $('.pfill'), steps = $$('.step'), stepsBox = $('.steps');
+  var pars = $$('[data-speed]'), rows = $$('.row');
+  var lastY = 0, ticking = false;
+
+  function update() {
+    ticking = false;
+    var y = window.pageYOffset, vh = window.innerHeight, w = window.innerWidth;
+    var max = document.documentElement.scrollHeight - vh;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+    nav.classList.toggle('solid', y > 40);
+    nav.classList.toggle('hide', y > lastY && y > 320);
+    lastY = y;
+
+    if (!reduce) {
+      pars.forEach(function (el) {
+        el.style.transform = 'translate3d(0,' + (y * parseFloat(el.getAttribute('data-speed'))) + 'px,0)';
+      });
+      rows.forEach(function (el) {
+        var r = el.parentElement.getBoundingClientRect();
+        var p = (r.top + r.height / 2 - vh / 2) / vh;
+        var dir = +el.getAttribute('data-dir');
+        el.style.transform = 'translate3d(' + (p * dir * w * 0.35) + 'px,0,0)';
+      });
+    }
+
+    if (stepsBox) {
+      var sr = stepsBox.getBoundingClientRect();
+      var prog = Math.min(Math.max((vh * 0.6 - sr.top) / sr.height, 0), 1);
+      fill.style.height = (prog * 100) + '%';
+      steps.forEach(function (s) {
+        s.classList.toggle('on', s.getBoundingClientRect().top < vh * 0.6);
+      });
+    }
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+
+  var RATES = {
+    essential: [10, 9.5, 9, 8.5],
+    secure: [18, 17, 16, 15],
+    shield: [32, 30, 28.5, 27]
+  };
+  var MIN_MONTHLY = 300, SETUP_PER_DEVICE = 50, SETUP_WAIVED_AT = 100, SERVER_MULT = 2.5;
+  var money = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+  var moneyRate = function (n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+  var calcEP = $('#calc-endpoints'), calcSV = $('#calc-servers');
+  var pkgBtns = $$('.seg button[data-pkg]');
+  var currentPkg = 'secure';
+
+  function tierFor(total) {
+    if (total >= 100) return { i: 3, label: '100 plus' };
+    if (total >= 50) return { i: 2, label: '50 to 99' };
+    if (total >= 25) return { i: 1, label: '25 to 49' };
+    return { i: 0, label: '1 to 24' };
+  }
+
+  function calc() {
+    var ep = Math.max(0, parseInt(calcEP.value, 10) || 0);
+    var sv = Math.max(0, parseInt(calcSV.value, 10) || 0);
+    var total = ep + sv;
+    var tier = tierFor(total);
+    var rate = RATES[currentPkg][tier.i];
+    var monthlyRaw = ep * rate + sv * rate * SERVER_MULT;
+    var monthly = Math.max(monthlyRaw, total > 0 ? MIN_MONTHLY : 0);
+    var setup = total >= SETUP_WAIVED_AT ? 0 : total * SETUP_PER_DEVICE;
+
+    $('#calc-devices').textContent = total.toLocaleString('en-US');
+    $('#calc-tier').textContent = tier.label;
+    $('#calc-rate-ep').textContent = moneyRate(rate) + ' /device';
+    $('#calc-rate-sv').textContent = moneyRate(rate * SERVER_MULT) + ' /server';
+    $('#calc-setup').textContent = total >= SETUP_WAIVED_AT ? 'Waived' : money(setup);
+    $('#calc-monthly').textContent = money(monthly);
+  }
+
+  $$('.stepper button[data-step]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = btn.getAttribute('data-step') === 'endpoints' ? calcEP : calcSV;
+      var dir = +btn.getAttribute('data-dir');
+      var step = 1;
+      var min = +input.min, max = +input.max;
+      var next = (parseInt(input.value, 10) || 0) + dir * step;
+      input.value = Math.min(max, Math.max(min, next));
+      calc();
+    });
+  });
+  [calcEP, calcSV].forEach(function (input) {
+    input.addEventListener('input', function () {
+      if (input.value !== '' && +input.value < 0) input.value = 0;
+      calc();
+    });
+  });
+  pkgBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      pkgBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      currentPkg = btn.getAttribute('data-pkg');
+      calc();
+    });
+  });
+  calc();
+
+  var dtEmployees = $('#dt-employees'), dtWage = $('#dt-wage'), dtHours = $('#dt-hours');
+
+  function dtCalc() {
+    var emp = Math.max(0, parseInt(dtEmployees.value, 10) || 0);
+    var wage = Math.max(0, parseInt(dtWage.value, 10) || 0);
+    var hours = Math.max(0, parseInt(dtHours.value, 10) || 0);
+    var labor = emp * wage * hours;
+    var low = labor * 2, high = labor * 4;
+    $('#dt-labor').textContent = money(labor);
+    $('#dt-total').textContent = money(low) + ' to ' + money(high);
+  }
+
+  $$('.stepper button[data-dtstep]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var field = btn.getAttribute('data-dtstep');
+      var input = field === 'employees' ? dtEmployees : field === 'wage' ? dtWage : dtHours;
+      var dir = +btn.getAttribute('data-dir');
+      var step = field === 'wage' ? 5 : 1;
+      var min = +input.min, max = +input.max;
+      var next = (parseInt(input.value, 10) || 0) + dir * step;
+      input.value = Math.min(max, Math.max(min, next));
+      dtCalc();
+    });
+  });
+  [dtEmployees, dtWage, dtHours].forEach(function (input) {
+    input.addEventListener('input', function () {
+      if (input.value !== '' && +input.value < 0) input.value = 0;
+      dtCalc();
+    });
+  });
+  dtCalc();
+})();
+</script>
+</body>
+</html>
