@@ -111,9 +111,10 @@ footer .copy { color: #A3A9AF; font-size: 13px; }
       <a href="terms.html">Terms and Conditions</a>
       <a href="mailto:hello@cyberxla.com">Contact</a>
     </div>
-    <span class="copy">&copy; 2026 CyberXLA</span>
+    <span class="copy">&copy; <span data-year>2026</span> CyberXLA</span>
   </div>
 </footer>
 
+<script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
 </body>
 </html>

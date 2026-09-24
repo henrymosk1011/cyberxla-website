@@ -617,7 +617,7 @@ footer .legal a:hover { color: var(--bone); }
   <div class="wrap">
     <a href="#top" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
     <span class="mute">Serving Los Angeles and SoCal businesses.</span>
-    <span class="mute mono">&copy; 2026 CyberXLA</span>
+    <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA</span>
   </div>
   <div class="wrap legal">
     <a href="terms.html">Terms and Conditions</a>
@@ -798,5 +798,6 @@ footer .legal a:hover { color: var(--bone); }
   dtCalc();
 })();
 </script>
+<script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
 </body>
 </html>
