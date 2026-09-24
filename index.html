@@ -101,6 +101,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
 h2 { font-size: clamp(40px, 7vw, 104px); }
 .chip { display: inline-block; background: var(--lime); color: var(--ink); padding: 0 0.18em 0.06em; border-radius: 0.18em; line-height: 1; }
 .chip.ink { background: var(--ink); color: var(--lime); }
+.nowrap { white-space: nowrap; }
 .mute-paper { color: var(--paper-mute); }
 .sec-head { display: flex; flex-direction: column; gap: 24px; margin-bottom: clamp(40px, 6vw, 80px); max-width: 980px; }
 .sec-head p { font-size: clamp(18px, 2vw, 24px); }
@@ -525,7 +526,7 @@ footer .legal a:hover { color: var(--bone); }
   <div class="wrap">
     <div class="sec-head">
       <p class="mono reveal mute-paper">05 Response</p>
-      <h2 class="reveal" style="--d:100ms">Real humans. Real <span class="chip">fast.</span></h2>
+      <h2 class="reveal" style="--d:100ms">Real humans. <span class="nowrap">Real <span class="chip">fast.</span></span></h2>
     </div>
     <div class="sla">
       <div class="reveal" style="--d:0ms"><div class="n" data-count="1">1</div><span class="mono u">Hour</span><h3>Critical</h3><p>Active threat or many devices down.</p></div>
