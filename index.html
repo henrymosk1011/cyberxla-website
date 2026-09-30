@@ -187,6 +187,14 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } .card { min-height: 200px; } }
 
 /* moving strip */
+.clients { padding: clamp(40px, 6vw, 64px) 0; border-bottom: 1px solid var(--line); }
+.clients .wrap { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+.clients ul { display: grid; grid-template-columns: repeat(4, 1fr); justify-items: center; align-items: center; gap: 32px 48px; width: 100%; max-width: 960px; }
+.clients img { display: block; height: 36px; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); opacity: 0.6; transition: opacity 0.2s; }
+.clients li:hover img { opacity: 1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .clients img { filter: grayscale(1) invert(1); } }
+:root[data-theme="dark"] .clients img { filter: grayscale(1) invert(1); }
+@media (max-width: 620px) { .clients ul { grid-template-columns: repeat(2, 1fr); gap: 24px 32px; } .clients img { height: 28px; max-width: 120px; } }
 .strip { padding: clamp(48px, 8vw, 100px) 0; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
 .row { white-space: nowrap; font-size: clamp(72px, 16vw, 240px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; color: transparent; -webkit-text-stroke: 2px var(--bone); will-change: transform; margin-left: -8vw; }
 .row.fill { color: var(--lime); -webkit-text-stroke: 0; }
@@ -358,6 +366,22 @@ footer .legal a:hover { color: var(--bone); }
     <div><span>PATCH</span><span>PROTECT</span><span>WATCH</span><span>BACKUP</span><span>DEFEND</span><span>RESPOND</span></div>
   </div>
 </div>
+
+<section class="sec-paper clients" aria-label="Companies we've worked with">
+  <div class="wrap">
+    <p class="mono mute-paper reveal">Companies we&rsquo;ve worked with</p>
+    <ul>
+      <li class="reveal" style="--d:0ms"><img src="logos/placeholder-1.svg" alt="Client 01" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:60ms"><img src="logos/placeholder-2.svg" alt="Client 02" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:120ms"><img src="logos/placeholder-3.svg" alt="Client 03" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:180ms"><img src="logos/placeholder-4.svg" alt="Client 04" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:240ms"><img src="logos/placeholder-5.svg" alt="Client 05" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:300ms"><img src="logos/placeholder-6.svg" alt="Client 06" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:360ms"><img src="logos/placeholder-7.svg" alt="Client 07" width="160" height="48" loading="lazy"></li>
+      <li class="reveal" style="--d:420ms"><img src="logos/placeholder-8.svg" alt="Client 08" width="160" height="48" loading="lazy"></li>
+    </ul>
+  </div>
+</section>
 
 <section class="sec-paper" id="services">
   <div class="wrap">
