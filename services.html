@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All Services | cyberXLA</title>
+<meta name="description" content="The full list of cyberXLA cybersecurity services for small businesses in Los Angeles: monitoring, ransomware protection, domain monitoring, penetration testing, email security, backup, and cyber insurance readiness.">
+<link rel="canonical" href="https://cyberx.la/services.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="cyberXLA">
+<meta property="og:title" content="All Services | cyberXLA">
+<meta property="og:description" content="The full list of cyberXLA cybersecurity services for small businesses in Los Angeles.">
+<meta property="og:url" content="https://cyberx.la/services.html">
+<meta property="og:image" content="https://cyberx.la/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --ink: #111315;
+  --bone: #E3E7E6;
+  --lime: #D6FF3F;
+  --ink-mute: #A3A9AF;
+  --paper: #E3E7E6;
+  --paper-fg: #111315;
+  --paper-mute: #565B60;
+  --card: #FBFAF6;
+  --line: rgba(17, 19, 21, 0.16);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1A1D20;
+    --paper-fg: #E3E7E6;
+    --paper-mute: #A3A9AF;
+    --card: #23272B;
+    --line: rgba(240, 237, 228, 0.18);
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1A1D20;
+  --paper-fg: #E3E7E6;
+  --paper-mute: #A3A9AF;
+  --card: #23272B;
+  --line: rgba(240, 237, 228, 0.18);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--ink); }
+body { background: var(--paper); color: var(--paper-fg); font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+a { color: inherit; }
+ul { list-style: none; }
+.wrap { width: min(1240px, 100% - 48px); margin-inline: auto; }
+.mono { font-weight: 600; letter-spacing: 0.1em; font-size: 13px; text-transform: uppercase; }
+.chip { display: inline-block; background: var(--lime); color: var(--ink); padding: 0 0.18em 0.06em; border-radius: 0.18em; line-height: 1; }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 16px 28px; border-radius: 999px; font-weight: 700; font-size: 18px; text-decoration: none; border: 2px solid transparent; transition: transform 0.25s ease; }
+.btn:hover { transform: translateY(-3px); }
+.btn.sm { padding: 10px 20px; font-size: 16px; }
+.btn-lime { background: var(--lime); color: var(--ink); }
+.btn-ink { background: var(--ink); color: var(--lime); }
+.btn-line { border-color: currentColor; }
+
+header { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--ink); z-index: 10; }
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 72px; }
+.brandmark { display: inline-flex; align-items: baseline; font-weight: 800; font-size: 21px; letter-spacing: -0.02em; color: var(--bone); text-decoration: none; }
+.brandmark .x { color: var(--lime); }
+header nav { display: flex; align-items: center; gap: 24px; }
+header a.back { color: var(--bone); text-decoration: none; font-weight: 600; font-size: 15px; opacity: 0.85; }
+header a.back:hover { opacity: 1; }
+
+.intro { background: var(--ink); color: var(--bone); padding: clamp(56px, 9vw, 120px) 0 clamp(48px, 7vw, 96px); }
+.intro .mono { color: var(--lime); }
+.intro h1 { font-size: clamp(44px, 8vw, 112px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; margin: 20px 0 24px; }
+.intro p.lede { font-size: clamp(18px, 2vw, 24px); color: var(--ink-mute); max-width: 680px; }
+.jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+.jump a { font-size: 15px; font-weight: 600; text-decoration: none; padding: 8px 16px; border: 1px solid rgba(240, 237, 228, 0.25); border-radius: 999px; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.jump a:hover { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+
+main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
+.cat { display: grid; grid-template-columns: 1fr 2fr; gap: 24px 64px; padding: clamp(40px, 5vw, 64px) 0; border-top: 1px solid var(--line); scroll-margin-top: 88px; }
+.cat:first-child { border-top: none; }
+.cat-head .mono { color: var(--paper-mute); }
+.cat-head h2 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin: 12px 0 14px; }
+.cat-head p { color: var(--paper-mute); font-size: 17px; max-width: 340px; }
+.items { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.item { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 24px 26px; }
+.item h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.item p { color: var(--paper-mute); font-size: 16px; }
+.inc { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--lime); color: var(--ink); padding: 3px 8px; border-radius: 6px; }
+.legend { color: var(--paper-mute); font-size: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+@media (max-width: 900px) { .cat { grid-template-columns: 1fr; } .cat-head p { max-width: none; } }
+@media (max-width: 620px) { .items { grid-template-columns: 1fr; } header a.back { display: none; } }
+
+.cta { background: var(--lime); color: var(--ink); padding: clamp(64px, 9vw, 120px) 0; }
+.cta h2 { font-size: clamp(48px, 9vw, 128px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
+.cta p { font-size: clamp(18px, 2.2vw, 26px); font-weight: 600; margin: 24px 0 32px; max-width: 680px; }
+.cta .row { display: flex; flex-wrap: wrap; gap: 16px; }
+
+footer { background: var(--ink); color: var(--bone); padding: 56px 0; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; }
+footer .mute { color: var(--ink-mute); }
+footer .legal { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.14); justify-content: flex-start; }
+footer .legal a { color: var(--ink-mute); font-size: 13px; text-decoration: none; }
+footer .legal a:hover { color: var(--bone); }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="index.html" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
+    <nav>
+      <a href="index.html" class="back">Back to home</a>
+      <a href="index.html#contact" class="btn btn-lime sm">Get a quote</a>
+    </nav>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <p class="mono">All services</p>
+    <h1>Everything we <span class="chip">secure.</span></h1>
+    <p class="lede">The full list. Most businesses only need what&rsquo;s in our <a href="index.html#packages">packages</a>. Everything else can be added on when you need it.</p>
+    <div class="jump" aria-label="Jump to a category">
+      <a href="#protect">Protect</a>
+      <a href="#monitor">Monitor</a>
+      <a href="#email">Email and identity</a>
+      <a href="#test">Test</a>
+      <a href="#recover">Backup and recovery</a>
+      <a href="#compliance">Insurance and compliance</a>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="wrap">
+    <p class="legend"><span class="inc">In packages</span> Included in Essential, Secure, or Shield. Everything else is quoted separately.</p>
+
+    <section class="cat" id="protect">
+      <div class="cat-head">
+        <p class="mono">01</p>
+        <h2>Protect devices</h2>
+        <p>Keep every laptop, desktop, and server hardened and up to date.</p>
+      </div>
+      <div class="items">
+        <div class="item"><h3>Patching <span class="inc">In packages</span></h3><p>OS and third party app updates, tested and scheduled after hours.</p></div>
+        <div class="item"><h3>EDR <span class="inc">In packages</span></h3><p>Endpoint detection and response on every device, catching what antivirus misses.</p></div>
+        <div class="item"><h3>Ransomware Protection</h3><p>Behavior based blocking, automatic device isolation, and rollback, backed by clean, tested backups.</p></div>
+        <div class="item"><h3>Disk Encryption</h3><p>BitLocker and FileVault enforced and tracked, so a lost laptop isn&rsquo;t a data breach.</p></div>
+        <div class="item"><h3>Device Hardening</h3><p>Secure baseline settings, local admin rights removed, and risky features turned off.</p></div>
+        <div class="item"><h3>Firewall and Wi-Fi Security</h3><p>Firewall rules, guest network separation, and firmware kept current.</p></div>
+      </div>
+    </section>
+
+    <section class="cat" id="monitor">
+      <div class="cat-head">
+        <p class="mono">02</p>
+        <h2>Monitor and respond</h2>
+        <p>Eyes on your business around the clock, and a plan for when something happens.</p>
+      </div>
+      <div class="items">
+        <div class="item"><h3>24/7 MDR <span class="inc">In packages</span></h3><p>A security operations center watching alerts day and night and containing threats as they happen.</p></div>
+        <div class="item"><h3>Domain Monitoring</h3><p>Alerts on lookalike domains used for phishing, unexpected DNS changes, and expiring renewals.</p></div>
+        <div class="item"><h3>Dark Web Monitoring</h3><p>Alerts when company email addresses and passwords show up in breach dumps.</p></div>
+        <div class="item"><h3>Microsoft 365 and Google Monitoring</h3><p>Suspicious sign ins, risky mailbox forwarding rules, and account takeovers flagged fast.</p></div>
+        <div class="item"><h3>Incident Response</h3><p>Hands on help to contain an attack, clean up, and document what happened.</p></div>
+        <div class="item"><h3>Incident Response Plan</h3><p>A written, practiced plan so your team knows who to call and what to do first.</p></div>
+      </div>
+    </section>
+
+    <section class="cat" id="email">
+      <div class="cat-head">
+        <p class="mono">03</p>
+        <h2>Email and identity</h2>
+        <p>Most attacks start with an inbox or a stolen password.</p>
+      </div>
+      <div class="items">
+        <div class="item"><h3>Email Filtering</h3><p>Phishing, malware, and impersonation emails stopped before they reach the inbox.</p></div>
+        <div class="item"><h3>Phishing Training</h3><p>Short training and realistic simulated phishing tests for the whole team.</p></div>
+        <div class="item"><h3>SPF, DKIM, and DMARC</h3><p>Stop criminals from sending email as your domain, and improve deliverability.</p></div>
+        <div class="item"><h3>MFA Rollout</h3><p>Multi factor sign in on email, remote access, and every critical app.</p></div>
+        <div class="item"><h3>Password Manager</h3><p>A business password manager deployed and adopted, so no more sticky notes.</p></div>
+        <div class="item"><h3>Access Reviews</h3><p>Regular checks that former employees and vendors no longer have access.</p></div>
+      </div>
+    </section>
+
+    <section class="cat" id="test">
+      <div class="cat-head">
+        <p class="mono">04</p>
+        <h2>Test and assess</h2>
+        <p>Find the gaps before someone else does.</p>
+      </div>
+      <div class="items">
+        <div class="item"><h3>Penetration Testing</h3><p>Real, authorized attempts to break in, with a plain English report and fix list.</p></div>
+        <div class="item"><h3>Vulnerability Management</h3><p>Recurring internal and external scans, prioritized so you fix what matters first.</p></div>
+        <div class="item"><h3>Security Risk Assessment</h3><p>A full review of your people, processes, and technology, with a prioritized roadmap.</p></div>
+        <div class="item"><h3>External Attack Surface Review</h3><p>A look at everything you expose to the internet, from forgotten servers to open ports.</p></div>
+      </div>
+    </section>
+
+    <section class="cat" id="recover">
+      <div class="cat-head">
+        <p class="mono">05</p>
+        <h2>Backup and recovery</h2>
+        <p>When something goes wrong, get back to work fast.</p>
+      </div>
+      <div class="items">
+        <div class="item"><h3>Microsoft 365 and Google Backup</h3><p>Email, files, and calendars backed up daily, separate from Microsoft and Google.</p></div>
+        <div class="item"><h3>Device and Server Backup</h3><p>Image based backups for critical machines, with copies kept offsite.</p></div>
+        <div class="item"><h3>Restore Testing</h3><p>Backups that are actually tested, so you know they&rsquo;ll work when you need them.</p></div>
+        <div class="item"><h3>Disaster Recovery Planning</h3><p>A clear plan for how long you can be down and how you get back up.</p></div>
+      </div>
+    </section>
+
+    <section class="cat" id="compliance">
+      <div class="cat-head">
+        <p class="mono">06</p>
+        <h2>Insurance and compliance</h2>
+        <p>Prove you&rsquo;re secure to insurers, clients, and regulators.</p>
+      </div>
+      <div class="items">
+        <div class="item"><h3>Cyber Insurance Readiness</h3><p>We put the controls insurers require in place, complete the security questionnaire with you, and work with your broker or carrier on renewals and claims. We don&rsquo;t sell insurance.</p></div>
+        <div class="item"><h3>HIPAA Security Support</h3><p>Risk analysis and safeguards for health care practices, home health, and hospice.</p></div>
+        <div class="item"><h3>Security Policies</h3><p>Plain English policies for acceptable use, passwords, remote work, and incident response.</p></div>
+        <div class="item"><h3>Client Security Questionnaires</h3><p>Help answering the security questionnaires your larger clients and vendors send you.</p></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Not sure what you need?</h2>
+    <p>Tell us about your business and we&rsquo;ll recommend only what makes sense for your size and risk.</p>
+    <div class="row">
+      <a href="mailto:contact@cyberx.la" class="btn btn-ink">Email us</a>
+      <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
+    <span class="mute">Serving Los Angeles and SoCal businesses.</span>
+    <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA</span>
+  </div>
+  <div class="wrap legal">
+    <a href="index.html">Home</a>
+    <a href="terms.html">Terms and Conditions</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
+</body>
+</html>

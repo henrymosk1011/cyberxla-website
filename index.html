@@ -38,7 +38,7 @@
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   "name": "cyberXLA",
-  "description": "Cybersecurity for small businesses, including penetration testing, vulnerability assessments, EDR, MDR, patching, and backup.",
+  "description": "Cybersecurity for small businesses, including penetration testing, vulnerability assessments, EDR, MDR, ransomware protection, domain monitoring, patching, backup, and cyber insurance readiness.",
   "url": "https://cyberx.la/",
   "image": "https://cyberx.la/og-image.png",
   "areaServed": [
@@ -196,6 +196,15 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 .card:hover .num { color: var(--paper-fg); }
 @media (max-width: 960px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } .card { min-height: 200px; } }
+.more { margin-top: 40px; text-align: center; }
+.more a { display: inline-block; font-weight: 700; font-size: 18px; text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 6px; transition: color 0.2s; }
+.more a:hover { color: var(--paper-mute); }
+
+/* insurance */
+.ins { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 64px; align-items: center; }
+.ins .sec-head { margin-bottom: 0; }
+.ins .fine { font-size: 15px; }
+@media (max-width: 900px) { .ins { grid-template-columns: 1fr; } }
 
 /* moving strip */
 .clients { padding: 0 0 clamp(96px, 12vw, 160px); }
@@ -389,15 +398,17 @@ footer .legal a:hover { color: var(--bone); }
       <p class="reveal mute-paper" style="--d:200ms">One partner for the boring, critical stuff that keeps your business running and safe.</p>
     </div>
     <div class="grid">
-      <article class="card reveal" style="--d:0ms"><span class="mono num">01</span><div><h3>24/7 Monitoring</h3><p>Real time monitoring around the clock, so threats get caught the moment they happen.</p></div></article>
-      <article class="card reveal" style="--d:100ms"><span class="mono num">02</span><div><h3>Patching</h3><p>OS and app updates, tested and scheduled after hours.</p></div></article>
-      <article class="card reveal" style="--d:200ms"><span class="mono num">03</span><div><h3>Penetration Testing</h3><p>Real attempts to break in, so you find the gaps before someone else does.</p></div></article>
-      <article class="card reveal" style="--d:0ms"><span class="mono num">04</span><div><h3>Vulnerability Management</h3><p>Regular scans that catch weak spots before they turn into headlines.</p></div></article>
-      <article class="card reveal" style="--d:100ms"><span class="mono num">05</span><div><h3>Email Security</h3><p>Filtering and phishing training for the whole team.</p></div></article>
-      <article class="card reveal" style="--d:200ms"><span class="mono num">06</span><div><h3>MFA and passwords</h3><p>Sign ins that survive a stolen password.</p></div></article>
-      <article class="card reveal" style="--d:0ms"><span class="mono num">07</span><div><h3>EDR &amp; MDR</h3><p>Endpoint protection and active response on every device, watched and handled by us.</p></div></article>
-      <article class="card reveal" style="--d:100ms"><span class="mono num">08</span><div><h3>Backup</h3><p>Microsoft 365 and Google Workspace, backed up daily.</p></div></article>
+      <article class="card reveal" style="--d:0ms"><span class="mono num">01</span><div><h3>24/7 Monitoring</h3><p>EDR and MDR on every device, watched around the clock, so threats get caught and contained the moment they happen.</p></div></article>
+      <article class="card reveal" style="--d:100ms"><span class="mono num">02</span><div><h3>Ransomware Protection</h3><p>Layered defenses that stop encryption early, isolate infected devices, and get you back from clean backups.</p></div></article>
+      <article class="card reveal" style="--d:200ms"><span class="mono num">03</span><div><h3>Patching</h3><p>OS and app updates, tested and scheduled after hours.</p></div></article>
+      <article class="card reveal" style="--d:0ms"><span class="mono num">04</span><div><h3>Penetration Testing</h3><p>Real attempts to break in, so you find the gaps before someone else does.</p></div></article>
+      <article class="card reveal" style="--d:100ms"><span class="mono num">05</span><div><h3>Vulnerability Management</h3><p>Regular scans that catch weak spots before they turn into headlines.</p></div></article>
+      <article class="card reveal" style="--d:200ms"><span class="mono num">06</span><div><h3>Email Security</h3><p>Filtering and phishing training for the whole team.</p></div></article>
+      <article class="card reveal" style="--d:0ms"><span class="mono num">07</span><div><h3>MFA and passwords</h3><p>Sign ins that survive a stolen password.</p></div></article>
+      <article class="card reveal" style="--d:100ms"><span class="mono num">08</span><div><h3>Domain Monitoring</h3><p>Alerts on lookalike domains, DNS changes, expiring renewals, and leaked company passwords.</p></div></article>
+      <article class="card reveal" style="--d:200ms"><span class="mono num">09</span><div><h3>Backup</h3><p>Microsoft 365 and Google Workspace, backed up daily.</p></div></article>
     </div>
+    <p class="more reveal"><a href="services.html">See every service we offer <span aria-hidden="true">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -525,6 +536,28 @@ footer .legal a:hover { color: var(--bone); }
   </div>
 </section>
 
+<section class="sec-paper" id="insurance">
+  <div class="wrap ins">
+    <div class="sec-head">
+      <p class="mono reveal mute-paper">05 Cyber insurance</p>
+      <h2 class="reveal" style="--d:100ms">Get <span class="chip">insurable.</span></h2>
+      <p class="reveal mute-paper" style="--d:200ms">Cyber insurers now ask hard questions before they write or renew a policy. MFA? EDR? Tested backups? We put those controls in place, then work with your broker or carrier on your behalf.</p>
+      <p class="reveal mute-paper fine" style="--d:300ms">We&rsquo;re not an insurance agency and don&rsquo;t sell policies. We work alongside the broker you already have, or help you find one.</p>
+    </div>
+    <div class="oc reveal" style="--d:150ms">
+      <p class="mono">How we help</p>
+      <h3>Your security, on paper.</h3>
+      <ul>
+        <li><span class="ck" style="--i:0"></span>Fill out the security questionnaire with you</li>
+        <li><span class="ck" style="--i:1"></span>Proof of controls for underwriters</li>
+        <li><span class="ck" style="--i:2"></span>Fix the gaps that block coverage</li>
+        <li><span class="ck" style="--i:3"></span>Work directly with your broker or carrier</li>
+        <li><span class="ck" style="--i:4"></span>Incident records if you ever file a claim</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="sec-ink" id="downtime">
   <div class="wrap">
     <div class="sec-head">
@@ -595,7 +628,7 @@ footer .legal a:hover { color: var(--bone); }
 <section class="sec-ink" id="faq">
   <div class="wrap">
     <div class="sec-head">
-      <p class="mono reveal" style="color:var(--lime)">05 FAQ</p>
+      <p class="mono reveal" style="color:var(--lime)">06 FAQ</p>
       <h2 class="reveal" style="--d:100ms">Quick <span class="chip">answers.</span></h2>
     </div>
     <div class="faq reveal">
@@ -603,6 +636,7 @@ footer .legal a:hover { color: var(--bone); }
       <details><summary>What devices do you cover?</summary><p>Windows and Mac computers and servers, priced per device.</p></details>
       <details><summary>How long is the contract?</summary><p>12 months, then it renews yearly. You can cancel a renewal with 60 days written notice.</p></details>
       <details><summary>How fast can we start?</summary><p>Onboarding takes about four weeks from kickoff, and we handle the setup.</p></details>
+      <details><summary>Do you sell cyber insurance?</summary><p>No, we&rsquo;re not an insurance agency. We get your security to where insurers want it, fill out the questionnaire with you, and work with your broker or carrier on renewals and claims.</p></details>
       <details><summary>Is there a minimum?</summary><p>There is a $300 monthly minimum, and volume pricing starts at 25 devices. <a href="#calculator" class="faq-link">Estimate your cost</a>.</p></details>
     </div>
   </div>
@@ -610,7 +644,7 @@ footer .legal a:hover { color: var(--bone); }
 
 <section class="sec-lime contact" id="contact">
   <div class="wrap">
-    <p class="mono reveal">06 Contact</p>
+    <p class="mono reveal">07 Contact</p>
     <h2 class="big reveal" style="--d:100ms">Let&rsquo;s talk.</h2>
     <p class="sub reveal" style="--d:200ms">Tell us how many devices you have and we&rsquo;ll send you a quote.</p>
     <div class="cta reveal" style="--d:300ms">
@@ -627,6 +661,7 @@ footer .legal a:hover { color: var(--bone); }
     <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA</span>
   </div>
   <div class="wrap legal">
+    <a href="services.html">All Services</a>
     <a href="terms.html">Terms and Conditions</a>
     <a href="privacy.html">Privacy Policy</a>
   </div>
