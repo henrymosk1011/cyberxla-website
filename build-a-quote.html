@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Build Your Quote | cyberXLA</title>
-<meta name="description" content="Build your own cybersecurity quote. Pick the cyberXLA services your Los Angeles business needs and see the monthly and one time cost add up as you go.">
-<meta name="robots" content="noindex">
+<title>Services and Pricing: Build Your Quote | cyberXLA</title>
+<meta name="description" content="Every cyberXLA cybersecurity service with starting prices: monitoring, EDR and MDR, ransomware protection, penetration testing, email security, backup, and cyber insurance readiness for Los Angeles small businesses. Build your own quote.">
 <link rel="canonical" href="https://cyberx.la/build-a-quote.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="cyberXLA">
-<meta property="og:title" content="Build Your Quote | cyberXLA">
+<meta property="og:title" content="Services and Pricing: Build Your Quote | cyberXLA">
 <meta property="og:description" content="Pick the services you need and see your price add up as you go.">
 <meta property="og:url" content="https://cyberx.la/build-a-quote.html">
 <meta property="og:image" content="https://cyberx.la/og-image.png">
@@ -732,7 +731,6 @@ footer .legal a:hover { color: var(--bone); }
   </div>
   <div class="wrap legal">
     <a href="index.html">Home</a>
-    <a href="services.html">All Services</a>
     <a href="terms.html">Terms and Conditions</a>
     <a href="privacy.html">Privacy Policy</a>
   </div>
@@ -771,6 +769,15 @@ footer .legal a:hover { color: var(--bone); }
     }
   } catch (e) {}
   ws.value = state.ws; sv.value = state.sv;
+
+  // ?package=secure from the homepage package cards
+  try {
+    var pkg = new URLSearchParams(location.search).get('package');
+    if (pkg && PRESETS[pkg]) {
+      PRESETS[pkg].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); });
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+  } catch (e) {}
 
   function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
   function units() { return state.ws + state.sv * SERVER_MULT; }
