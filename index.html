@@ -265,6 +265,9 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 .calc-total { display: flex; flex-direction: column; gap: 6px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.16); }
 .calc-total .k { font-size: 15px; }
 .calc-total .v { font-size: clamp(56px, 7vw, 88px); color: var(--lime); letter-spacing: -0.03em; line-height: 1; }
+.calc-total-v { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.min-tag { font-size: 16px; font-weight: 600; color: var(--ink-mute); }
+.min-tag[hidden] { display: none; }
 .calc-note { font-size: 14px; color: var(--ink-mute); line-height: 1.5; }
 @media (max-width: 900px) { .calc { grid-template-columns: 1fr; } .calc-out { position: static; } }
 
@@ -495,7 +498,7 @@ footer .legal a:hover { color: var(--bone); }
         <div class="calc-row"><span class="k">One time onboarding</span><span class="v" id="calc-setup">$1,300</span></div>
         <div class="calc-total">
           <span class="k mono">Monthly total</span>
-          <span class="v" id="calc-monthly">$468</span>
+          <span class="calc-total-v"><span class="v" id="calc-monthly">$468</span><span class="min-tag" id="calc-min" hidden>minimum</span></span>
         </div>
         <p class="calc-note">Estimate only. Final pricing is confirmed in your quote. $300 monthly minimum applies. Onboarding fee is waived at 100 or more devices.</p>
         <a href="#contact" class="btn btn-lime" style="justify-content:center">Get an exact quote</a>
@@ -778,6 +781,7 @@ footer .legal a:hover { color: var(--bone); }
     $('#calc-rate-sv').textContent = moneyRate(rate * SERVER_MULT) + ' /server';
     $('#calc-setup').textContent = total >= SETUP_WAIVED_AT ? 'Waived' : money(setup);
     $('#calc-monthly').textContent = money(monthly);
+    $('#calc-min').hidden = !(total > 0 && monthlyRaw < MIN_MONTHLY);
   }
 
   $$('.stepper button[data-step]').forEach(function (btn) {
