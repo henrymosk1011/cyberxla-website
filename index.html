@@ -430,21 +430,21 @@ footer .legal a:hover { color: var(--bone); }
     <div class="pk">
       <article class="card reveal" style="--d:0ms">
         <div><p class="mono mute-paper">Patching only</p><h3 style="margin-top:12px">Essential</h3></div>
-        <div class="price"><sup>$</sup><span data-count="10">10</span></div>
+        <div class="price"><sup>$</sup><span data-count="10" data-pkg-price="essential">10</span></div>
         <p class="mono mute-paper">per device per month</p>
         <ul><li>OS and app patching</li><li>Monthly patch report</li><li>Business hours support</li></ul>
         <a href="/build-your-quote/?package=essential" class="btn btn-line">Get a quote</a>
       </article>
       <article class="card feat reveal" style="--d:120ms"><span class="badge mono">Most popular</span>
         <div><p class="mono" style="color:var(--lime)">Patching and EDR</p><h3 style="margin-top:12px">Secure</h3></div>
-        <div class="price"><sup>$</sup><span data-count="18">18</span></div>
+        <div class="price"><sup>$</sup><span data-count="18" data-pkg-price="secure">18</span></div>
         <p class="mono mute-paper">per device per month</p>
         <ul><li>Everything in Essential</li><li>EDR protection</li><li>Alerts triaged in business hours</li><li>Quarterly review</li></ul>
         <a href="/build-your-quote/?package=secure" class="btn btn-lime">Get a quote</a>
       </article>
       <article class="card reveal" style="--d:240ms">
         <div><p class="mono mute-paper">Patching and MDR</p><h3 style="margin-top:12px">Shield</h3></div>
-        <div class="price"><sup>$</sup><span data-count="32">32</span></div>
+        <div class="price"><sup>$</sup><span data-count="32" data-pkg-price="shield">32</span></div>
         <p class="mono mute-paper">per device per month</p>
         <ul><li>Everything in Secure</li><li>24/7 SOC monitoring</li><li>Active threat containment</li></ul>
         <a href="/build-your-quote/?package=shield" class="btn btn-line">Get a quote</a>
@@ -685,14 +685,17 @@ footer .legal a:hover { color: var(--bone); }
     if (reduce) { el.classList.add('in'); } else { revealIO.observe(el); }
   });
 
+  // Whole numbers stay whole; prices like 9.5 show as 9.50.
+  function countText(n) { return n % 1 ? n.toFixed(2) : String(n); }
   function runCount(el) {
-    var target = +el.getAttribute('data-count');
-    if (reduce) { el.textContent = target; return; }
+    if (reduce) { el.textContent = countText(+el.getAttribute('data-count')); el.setAttribute('data-counted', ''); return; }
     var dur = 1400, start = performance.now();
     function frame(now) {
+      // Re-read the target each frame so live prices that arrive mid-count still land.
+      var target = +el.getAttribute('data-count');
       var p = Math.min((now - start) / dur, 1);
-      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(frame);
+      el.textContent = p < 1 ? Math.round(target * (1 - Math.pow(1 - p, 3))) : countText(target);
+      if (p < 1) requestAnimationFrame(frame); else el.setAttribute('data-counted', '');
     }
     requestAnimationFrame(frame);
   }
@@ -810,6 +813,30 @@ footer .legal a:hover { color: var(--bone); }
     });
   });
   calc();
+
+  // Live package prices, managed in the cyberxLA dashboard. The rates above
+  // are the fallback if this is slow or unreachable.
+  fetch('https://onpdkqzcgnoepwiqcgtv.supabase.co/rest/v1/rpc/package_pricing', {
+    method: 'POST',
+    headers: { apikey: 'sb_publishable_lKWjP561VJoxmAebZAIidA_lPYiNck3', 'Content-Type': 'application/json' },
+    body: '{}'
+  })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (live) {
+      if (!live || typeof live !== 'object') return;
+      Object.keys(RATES).forEach(function (id) {
+        var r = live[id];
+        var ok = Array.isArray(r) && r.length === 4 && r.every(function (n) { return typeof n === 'number' && isFinite(n) && n >= 0 && n <= 10000; });
+        if (!ok) return;
+        RATES[id] = r.slice();
+        var el = $('[data-pkg-price="' + id + '"]');
+        if (!el) return;
+        el.setAttribute('data-count', String(r[0]));
+        if (el.hasAttribute('data-counted')) el.textContent = countText(r[0]);
+      });
+      calc();
+    })
+    .catch(function () {});
 
   var dtEmployees = $('#dt-employees'), dtWage = $('#dt-wage'), dtHours = $('#dt-hours');
 
