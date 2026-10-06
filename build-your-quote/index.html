@@ -125,9 +125,8 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .q-head .mono { color: var(--lime); }
 .q-count { font-size: 14px; color: var(--ink-mute); font-weight: 600; }
 .q-devices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.q-devices label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-mute); }
-.q-label { display: flex; flex-direction: column; align-items: flex-start; gap: 0; margin-bottom: 6px; }
-.q-zero { border: none; background: none; padding: 2px 0; color: var(--ink-mute); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: color 0.15s, opacity 0.15s; }
+.q-devices label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-mute); margin-bottom: 6px; }
+.q-zero { display: block; margin-top: 6px; border: none; background: none; padding: 2px 0; color: var(--ink-mute); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: color 0.15s, opacity 0.15s; }
 .q-zero:hover { color: var(--lime); }
 .q-zero:disabled { opacity: 0.35; cursor: default; color: var(--ink-mute); }
 .stepper { display: flex; align-items: center; border: 1px solid var(--ink-line); border-radius: 12px; overflow: hidden; touch-action: manipulation; }
@@ -667,20 +666,22 @@ footer .legal a:hover { color: var(--bone); }
         <div class="q-head"><p class="mono">Your quote</p><span class="q-count" id="q-count">0 services</span></div>
         <div class="q-devices">
           <div>
-            <div class="q-label"><label for="q-ws">Workstations</label><button type="button" class="q-zero" data-zero="q-ws" aria-label="Clear workstations">Clear</button></div>
+            <label for="q-ws">Workstations</label>
             <div class="stepper">
               <button type="button" data-step="q-ws" data-dir="-1" aria-label="Decrease workstations">&minus;</button>
               <input type="number" id="q-ws" min="0" max="5000" value="10" inputmode="numeric">
               <button type="button" data-step="q-ws" data-dir="1" aria-label="Increase workstations">+</button>
             </div>
+            <button type="button" class="q-zero" data-zero="q-ws" aria-label="Clear workstations">Clear</button>
           </div>
           <div>
-            <div class="q-label"><label for="q-sv">Servers</label><button type="button" class="q-zero" data-zero="q-sv" aria-label="Clear servers">Clear</button></div>
+            <label for="q-sv">Servers</label>
             <div class="stepper">
               <button type="button" data-step="q-sv" data-dir="-1" aria-label="Decrease servers">&minus;</button>
               <input type="number" id="q-sv" min="0" max="500" value="0" inputmode="numeric">
               <button type="button" data-step="q-sv" data-dir="1" aria-label="Increase servers">+</button>
             </div>
+            <button type="button" class="q-zero" data-zero="q-sv" aria-label="Clear servers">Clear</button>
           </div>
         </div>
         <p class="q-hint">Per device prices count servers at 2.5 times.</p>
@@ -917,7 +918,6 @@ footer .legal a:hover { color: var(--bone); }
       var input = document.getElementById(b.dataset.zero);
       input.value = 0;
       readDevices();
-      if (window.matchMedia('(pointer: fine)').matches) { input.focus(); input.select(); }
     });
   });
   [ws, sv].forEach(function (i) {
