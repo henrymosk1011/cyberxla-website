@@ -204,6 +204,37 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 body.is-dragging, body.is-dragging * { cursor: grabbing !important; -webkit-user-select: none; user-select: none; }
 
 /* mobile: quote becomes a bottom sheet */
+/* send quote dialog */
+.qd { border: 0; padding: 0; margin: auto; width: min(520px, calc(100% - 32px)); max-height: calc(100dvh - 32px); background: var(--ink); color: var(--bone); border-radius: 28px; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5); }
+.qd [hidden] { display: none !important; }
+.qd::backdrop { background: rgba(0, 0, 0, 0.55); }
+.qd-in { padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+.qd-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.qd h2 { font-size: 32px; letter-spacing: -0.03em; line-height: 1; }
+.qd-x { background: none; border: 0; color: var(--ink-mute); font-size: 28px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.qd-x:hover { color: var(--bone); }
+.qd-sum { display: flex; gap: 20px; flex-wrap: wrap; font-size: 15px; color: var(--ink-mute); }
+.qd-sum strong { color: var(--lime); font-size: 20px; display: block; }
+.qd form { display: flex; flex-direction: column; gap: 14px; }
+.qd-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.qd label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; }
+.qd label .opt { color: var(--ink-mute); font-weight: 500; margin-left: 4px; }
+.qd input, .qd textarea { font: inherit; font-size: 16px; color: var(--bone); background: #1A1D20; border: 1.5px solid rgba(240, 237, 228, 0.18); border-radius: 12px; padding: 12px 14px; outline: none; width: 100%; }
+.qd textarea { resize: vertical; min-height: 84px; }
+.qd input:focus, .qd textarea:focus { border-color: var(--lime); }
+.qd input[aria-invalid="true"] { border-color: #ff8a80; }
+.qd .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.qd-ts { min-height: 65px; }
+.qd-err { color: #ff8a80; font-size: 14px; }
+.qd-err a { color: var(--lime); }
+.qd form .btn { padding: 14px 18px; font-size: 16px; }
+.qd form .btn[disabled] { opacity: 0.5; cursor: wait; transform: none; }
+.qd-fine { font-size: 12px; color: var(--ink-mute); line-height: 1.5; }
+.qd-fine a { color: inherit; }
+.qd-done { text-align: center; align-items: center; padding: 12px 0 4px; }
+.qd-done .check { width: 56px; height: 56px; border-radius: 50%; background: var(--lime); color: var(--ink); display: grid; place-items: center; font-size: 28px; font-weight: 800; }
+.qd-done p { color: var(--ink-mute); font-size: 16px; max-width: 34ch; }
+@media (max-width: 560px) { .qd-row { grid-template-columns: 1fr; } .qd-in { padding: 22px; } .qd h2 { font-size: 28px; } }
 @media (max-width: 960px) {
   .builder { grid-template-columns: 1fr; }
   main { padding-bottom: 140px; }
@@ -748,6 +779,41 @@ footer .legal a:hover { color: var(--bone); }
   </div>
 </main>
 <div class="scrim" id="scrim"></div>
+<dialog class="qd" id="qd" aria-labelledby="qd-title">
+  <div class="qd-in" id="qd-form-view">
+    <div class="qd-top">
+      <h2 id="qd-title">Send your quote</h2>
+      <button type="button" class="qd-x" data-close aria-label="Close">&times;</button>
+    </div>
+    <div class="qd-sum" aria-live="polite">
+      <span><strong id="qd-mo">$0</strong>per month</span>
+      <span><strong id="qd-once">$0</strong>one time</span>
+      <span><strong id="qd-n">0</strong>services</span>
+    </div>
+    <form id="qd-form" novalidate>
+      <div class="qd-row">
+        <label><span>Your name</span><input name="name" autocomplete="name" maxlength="120" required></label>
+        <label><span>Business name <span class="opt">optional</span></span><input name="company" autocomplete="organization" maxlength="160"></label>
+      </div>
+      <div class="qd-row">
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        <label><span>Phone <span class="opt">optional</span></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+      </div>
+      <label><span>Anything we should know? <span class="opt">optional</span></span><textarea name="message" maxlength="2000" rows="3"></textarea></label>
+      <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+      <div class="qd-ts" id="qd-ts"></div>
+      <p class="qd-err" id="qd-err" role="alert" hidden></p>
+      <button class="btn btn-lime" id="qd-submit" type="submit">Send quote</button>
+      <p class="qd-fine">We use this only to reply to your quote. See our <a href="/privacy/">Privacy Policy</a>.</p>
+    </form>
+  </div>
+  <div class="qd-in qd-done" id="qd-done-view" hidden>
+    <span class="check" aria-hidden="true">&check;</span>
+    <h2>Quote sent</h2>
+    <p>Thanks. We&rsquo;ll review it and get back to you within one business day.</p>
+    <button type="button" class="btn btn-lime" data-close>Done</button>
+  </div>
+</dialog>
 
 <section class="cta">
   <div class="wrap">
@@ -932,6 +998,101 @@ footer .legal a:hover { color: var(--bone); }
     lines.push('Estimated one time: ' + money(t.once), '', 'Business name:', 'Best phone number:', '');
     return 'mailto:contact@cyberx.la?subject=' + encodeURIComponent('Quote request from the website') + '&body=' + encodeURIComponent(lines.join('\n'));
   }
+
+  // send quote: stored straight in cyberXLA's system, email stays as a fallback
+  var QUOTE_API = 'https://onpdkqzcgnoepwiqcgtv.supabase.co/functions/v1/submit-quote';
+  var TURNSTILE_KEY = '0x4AAAAAAFO5CkJ0fDH8vdiE';
+  var dlg = $('#qd'), form = $('#qd-form'), err = $('#qd-err'), submitBtn = $('#qd-submit');
+  var tsToken = '', tsWidget = null, tsLoading = false;
+
+  function loadTurnstile() {
+    if (tsWidget !== null || tsLoading) { if (tsWidget !== null && window.turnstile) window.turnstile.reset(tsWidget); return; }
+    tsLoading = true;
+    window.cxTurnstileReady = function () {
+      tsWidget = window.turnstile.render('#qd-ts', {
+        sitekey: TURNSTILE_KEY, action: 'quote', theme: 'dark',
+        callback: function (t) { tsToken = t; },
+        'expired-callback': function () { tsToken = ''; },
+        'error-callback': function () { tsToken = ''; }
+      });
+    };
+    var sc = document.createElement('script');
+    sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=cxTurnstileReady';
+    sc.async = true;
+    sc.onerror = function () { tsLoading = false; showErr('Our verification service didn’t load.', true); };
+    document.head.appendChild(sc);
+  }
+  function showErr(msg, offerEmail) {
+    err.textContent = msg;
+    if (offerEmail) {
+      err.appendChild(document.createTextNode(' '));
+      var a = document.createElement('a');
+      a.href = mailto(totals()); a.textContent = 'Email it to us instead';
+      err.appendChild(a);
+    }
+    err.hidden = false;
+  }
+  function openSend() {
+    var t = totals();
+    $('#qd-mo').textContent = money(t.monthly);
+    $('#qd-once').textContent = money(t.once);
+    $('#qd-n').textContent = state.items.length;
+    $('#qd-form-view').hidden = false; $('#qd-done-view').hidden = true;
+    err.hidden = true;
+    setOpen(false);
+    if (dlg.showModal) dlg.showModal(); else { location.href = mailto(t); return; }
+    loadTurnstile();
+    setTimeout(function () { form.elements.name.focus(); }, 30);
+  }
+  $('#q-send').addEventListener('click', function (e) {
+    if (!state.items.length) return;
+    e.preventDefault();
+    openSend();
+  });
+  $$('#qd [data-close]').forEach(function (b) { b.addEventListener('click', function () { dlg.close(); }); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  form.addEventListener('input', function (e) { if (e.target.getAttribute('aria-invalid') === 'true') e.target.setAttribute('aria-invalid', 'false'); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.hidden = true;
+    var f = form.elements, bad = null;
+    ['name', 'email'].forEach(function (k) { f[k].setAttribute('aria-invalid', 'false'); });
+    if (!f.name.value.trim()) bad = f.name;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) bad = f.email;
+    if (bad) { bad.setAttribute('aria-invalid', 'true'); bad.focus(); return showErr(bad === f.name ? 'Please add your name.' : 'Please check your email address.'); }
+    if (!tsToken) return showErr('One moment, we’re still checking you’re not a bot. Try again in a second.');
+
+    submitBtn.disabled = true; submitBtn.textContent = 'Sending…';
+    var body = {
+      turnstileToken: tsToken, website: f.website.value,
+      name: f.name.value.trim(), company: f.company.value.trim(), email: f.email.value.trim(),
+      phone: f.phone.value.trim(), message: f.message.value.trim(),
+      workstations: state.ws, servers: state.sv, items: state.items.slice()
+    };
+    fetch(QUOTE_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; }); })
+      .then(function (res) {
+        if (res.status === 201) {
+          $('#qd-form-view').hidden = true; $('#qd-done-view').hidden = false;
+          form.reset();
+          return;
+        }
+        if (res.status === 400 && (res.body.field === 'email' || res.body.field === 'name' || res.body.field === 'phone')) {
+          f[res.body.field].setAttribute('aria-invalid', 'true');
+          return showErr(res.body.field === 'phone' ? 'Please check your phone number.' : res.body.field === 'name' ? 'Please check your name.' : 'Please check your email address.');
+        }
+        if (res.status === 429) return showErr('We’ve received several quotes from your network recently.', true);
+        if (res.status === 403) return showErr('We couldn’t verify the request. Please try again.', true);
+        showErr('Something went wrong on our end.', true);
+      })
+      .catch(function () { showErr('We couldn’t reach our server.', true); })
+      .then(function () {
+        submitBtn.disabled = false; submitBtn.textContent = 'Send quote';
+        tsToken = '';
+        if (tsWidget !== null && window.turnstile) window.turnstile.reset(tsWidget);
+      });
+  });
 
   function add(id) {
     if (state.items.indexOf(id) > -1) return;
