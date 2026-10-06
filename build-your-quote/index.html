@@ -125,7 +125,11 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .q-head .mono { color: var(--lime); }
 .q-count { font-size: 14px; color: var(--ink-mute); font-weight: 600; }
 .q-devices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.q-devices label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-mute); margin-bottom: 6px; }
+.q-devices label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-mute); }
+.q-label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.q-zero { border: none; background: none; padding: 2px 0; color: var(--ink-mute); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: color 0.15s, opacity 0.15s; }
+.q-zero:hover { color: var(--lime); }
+.q-zero:disabled { opacity: 0.35; cursor: default; color: var(--ink-mute); }
 .stepper { display: flex; align-items: center; border: 1px solid var(--ink-line); border-radius: 12px; overflow: hidden; touch-action: manipulation; }
 .stepper button { width: 38px; height: 40px; border: none; background: transparent; color: var(--bone); font-size: 20px; font-weight: 700; cursor: pointer; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; transition: background 0.2s, color 0.2s; }
 @media (hover: hover) { .stepper button:hover { background: var(--lime); color: var(--ink); } }
@@ -663,15 +667,15 @@ footer .legal a:hover { color: var(--bone); }
         <div class="q-head"><p class="mono">Your quote</p><span class="q-count" id="q-count">0 services</span></div>
         <div class="q-devices">
           <div>
-            <label for="q-ws">Workstations</label>
+            <div class="q-label"><label for="q-ws">Workstations</label><button type="button" class="q-zero" data-zero="q-ws" aria-label="Clear workstations">Clear</button></div>
             <div class="stepper">
               <button type="button" data-step="q-ws" data-dir="-1" aria-label="Decrease workstations">&minus;</button>
-              <input type="number" id="q-ws" min="1" max="5000" value="10" inputmode="numeric">
+              <input type="number" id="q-ws" min="0" max="5000" value="10" inputmode="numeric">
               <button type="button" data-step="q-ws" data-dir="1" aria-label="Increase workstations">+</button>
             </div>
           </div>
           <div>
-            <label for="q-sv">Servers</label>
+            <div class="q-label"><label for="q-sv">Servers</label><button type="button" class="q-zero" data-zero="q-sv" aria-label="Clear servers">Clear</button></div>
             <div class="stepper">
               <button type="button" data-step="q-sv" data-dir="-1" aria-label="Decrease servers">&minus;</button>
               <input type="number" id="q-sv" min="0" max="500" value="0" inputmode="numeric">
@@ -764,7 +768,8 @@ footer .legal a:hover { color: var(--bone); }
     var saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && Array.isArray(saved.items)) {
       state.items = saved.items.filter(function (id) { return svcs[id]; });
-      state.ws = Math.max(1, parseInt(saved.ws, 10) || 10);
+      var savedWs = parseInt(saved.ws, 10);
+      state.ws = isNaN(savedWs) ? 10 : Math.max(0, savedWs);
       state.sv = Math.max(0, parseInt(saved.sv, 10) || 0);
     }
   } catch (e) {}
@@ -812,6 +817,7 @@ footer .legal a:hover { color: var(--bone); }
 
   function render(changed) {
     var t = totals();
+    $$('.q-zero').forEach(function (b) { b.disabled = (b.dataset.zero === 'q-ws' ? state.ws : state.sv) === 0; });
     // rows: keep existing nodes so only new ones animate
     var existing = {};
     $$('#q-list .q-item').forEach(function (li) { existing[li.dataset.id] = li; });
@@ -894,7 +900,7 @@ footer .legal a:hover { color: var(--bone); }
   $('#q-clear').addEventListener('click', function () { state.items = []; render(true); });
 
   function readDevices() {
-    state.ws = Math.max(1, parseInt(ws.value, 10) || 1);
+    state.ws = Math.max(0, parseInt(ws.value, 10) || 0);
     state.sv = Math.max(0, parseInt(sv.value, 10) || 0);
     render(false);
   }
@@ -904,6 +910,14 @@ footer .legal a:hover { color: var(--bone); }
       var next = (parseInt(input.value, 10) || 0) + (+b.dataset.dir);
       input.value = Math.min(+input.max, Math.max(+input.min, next));
       readDevices();
+    });
+  });
+  $$('.q-zero').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var input = document.getElementById(b.dataset.zero);
+      input.value = 0;
+      readDevices();
+      if (window.matchMedia('(pointer: fine)').matches) { input.focus(); input.select(); }
     });
   });
   [ws, sv].forEach(function (i) {
