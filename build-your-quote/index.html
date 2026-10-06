@@ -152,7 +152,23 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .presets { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
 .presets button { border: 1px solid var(--ink-line); background: transparent; color: var(--bone); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .presets button:hover { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+.q-filter { display: flex; gap: 4px; padding: 4px; margin-bottom: 10px; background: rgba(240, 237, 228, 0.06); border-radius: 999px; }
+.q-filter[hidden] { display: none; }
+.q-filter button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: none; background: transparent; color: var(--ink-mute); font-size: 13px; font-weight: 700; padding: 7px 8px; border-radius: 999px; cursor: pointer; white-space: nowrap; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background 0.2s, color 0.2s, opacity 0.2s; }
+.q-filter button .c { font-size: 11px; font-weight: 700; opacity: 0.7; }
+.q-filter button:hover:not(:disabled) { color: var(--bone); }
+.q-filter button[aria-selected="true"] { background: var(--bone); color: var(--ink); }
+.q-filter button:disabled { opacity: 0.35; cursor: default; }
+.q-dot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; }
+.q-dot.mo { background: var(--lime); }
+.q-dot.once { box-shadow: inset 0 0 0 2px #C9CED2; }
+.q-filter button[aria-selected="true"] .q-dot.mo { box-shadow: 0 0 0 1.5px var(--ink); }
+.q-filter button[aria-selected="true"] .q-dot.once { box-shadow: inset 0 0 0 2px var(--ink); }
 .q-list { display: flex; flex-direction: column; gap: 6px; }
+.q-list[data-filter="monthly"] .q-item[data-kind="once"], .q-list[data-filter="once"] .q-item[data-kind="monthly"] { display: none; }
+.q-item { position: relative; }
+.q-item::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--lime); }
+.q-item[data-kind="once"]::before { background: #C9CED2; opacity: 0.55; }
 .q-item { display: flex; align-items: center; gap: 10px; background: rgba(240, 237, 228, 0.06); border-radius: 12px; padding: 10px 8px 10px 14px; animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.2); }
 .q-item .n { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; line-height: 1.25; }
 .q-item .n small { display: block; font-size: 12px; font-weight: 500; color: var(--ink-mute); margin-top: 2px; }
@@ -167,7 +183,7 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .bundle[hidden] { display: none; }
 
 .q-totals { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: baseline; border-top: 1px solid var(--ink-line); padding-top: 18px; }
-.q-totals .k { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); }
+.q-totals .k { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); display: inline-flex; align-items: center; gap: 8px; }
 .q-monthly { font-size: clamp(44px, 4.4vw, 56px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--lime); text-align: right; }
 .q-monthly.bump, .q-bar-total.bump { animation: bump 0.4s ease; }
 @keyframes bump { 40% { transform: scale(1.08); } }
@@ -708,14 +724,19 @@ footer .legal a:hover { color: var(--bone); }
               <button type="button" data-preset="shield">Shield</button>
             </div>
           </div>
-          <ul class="q-list" id="q-list" aria-live="polite"></ul>
+          <div class="q-filter" id="q-filter" role="tablist" aria-label="Show services" hidden>
+            <button type="button" role="tab" data-filter="all" aria-selected="true">All <span class="c" id="q-c-all">0</span></button>
+            <button type="button" role="tab" data-filter="monthly" aria-selected="false"><span class="q-dot mo"></span>Monthly <span class="c" id="q-c-mo">0</span></button>
+            <button type="button" role="tab" data-filter="once" aria-selected="false"><span class="q-dot once"></span>One time <span class="c" id="q-c-once">0</span></button>
+          </div>
+          <ul class="q-list" id="q-list" data-filter="all" aria-live="polite"></ul>
           <p class="bundle" id="q-bundle" hidden></p>
         </div>
 
         <div class="q-totals" aria-live="polite">
-          <span class="k">Monthly</span><span class="q-monthly" id="q-monthly">$0</span>
+          <span class="k"><span class="q-dot mo"></span>Monthly</span><span class="q-monthly" id="q-monthly">$0</span>
           <span class="min-tag" id="q-min" hidden>$300 monthly minimum</span>
-          <span class="k">One time</span><span class="q-once" id="q-once">$0</span>
+          <span class="k"><span class="q-dot once"></span>One time</span><span class="q-once" id="q-once">$0</span>
         </div>
         <p class="q-note">Starting prices for planning. Volume pricing from 25 devices. Your final price is confirmed in a written quote.</p>
         <div class="q-actions">
@@ -818,9 +839,14 @@ footer .legal a:hover { color: var(--bone); }
   }
   function bump(el) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
 
+  var filter = 'all';
+  $$('#q-filter button').forEach(function (b) {
+    b.addEventListener('click', function () { filter = b.dataset.filter; render(false); });
+  });
+
   function row(s) {
     var li = document.createElement('li');
-    li.className = 'q-item'; li.dataset.id = s.id;
+    li.className = 'q-item'; li.dataset.id = s.id; li.dataset.kind = isMonthly(s) ? 'monthly' : 'once';
     li.innerHTML = '<span class="n"></span><span class="p"></span><button type="button" class="x" aria-label="Remove">×</button>';
     li.querySelector('.x').setAttribute('aria-label', 'Remove ' + s.name);
     li.querySelector('.x').addEventListener('click', function () { remove(s.id); });
@@ -845,6 +871,16 @@ footer .legal a:hover { color: var(--bone); }
     Object.keys(existing).forEach(function (id) { existing[id].remove(); });
 
     var n = state.items.length;
+    var nMo = state.items.filter(function (id) { return isMonthly(svcs[id]); }).length, nOnce = n - nMo;
+    var counts = { all: n, monthly: nMo, once: nOnce };
+    if (counts[filter] === 0) filter = 'all';
+    $('#q-filter').hidden = n === 0;
+    $('#q-c-all').textContent = n; $('#q-c-mo').textContent = nMo; $('#q-c-once').textContent = nOnce;
+    $$('#q-filter button').forEach(function (b) {
+      b.setAttribute('aria-selected', b.dataset.filter === filter ? 'true' : 'false');
+      b.disabled = counts[b.dataset.filter] === 0;
+    });
+    list.dataset.filter = filter;
     $('#q-empty').hidden = n > 0;
     $('#q-count').textContent = n + (n === 1 ? ' service' : ' services');
     $('#q-bar-count').textContent = n;
@@ -897,7 +933,12 @@ footer .legal a:hover { color: var(--bone); }
     return 'mailto:contact@cyberx.la?subject=' + encodeURIComponent('Quote request from the website') + '&body=' + encodeURIComponent(lines.join('\n'));
   }
 
-  function add(id) { if (state.items.indexOf(id) === -1) { state.items.push(id); render(true); } }
+  function add(id) {
+    if (state.items.indexOf(id) > -1) return;
+    state.items.push(id);
+    if (filter !== (isMonthly(svcs[id]) ? 'monthly' : 'once')) filter = 'all';
+    render(true);
+  }
   function remove(id) {
     var li = list.querySelector('.q-item[data-id="' + id + '"]');
     state.items = state.items.filter(function (x) { return x !== id; });
@@ -914,7 +955,7 @@ footer .legal a:hover { color: var(--bone); }
     btn.addEventListener('click', function () {
       var all = ids.every(function (id) { return state.items.indexOf(id) > -1; });
       if (all) state.items = state.items.filter(function (id) { return ids.indexOf(id) === -1; });
-      else ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); });
+      else { ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; }
       render(true);
     });
   });
@@ -925,7 +966,7 @@ footer .legal a:hover { color: var(--bone); }
     });
   });
   $$('.presets button').forEach(function (b) {
-    b.addEventListener('click', function () { PRESETS[b.dataset.preset].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); render(true); });
+    b.addEventListener('click', function () { PRESETS[b.dataset.preset].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; render(true); });
   });
   $('#q-clear').addEventListener('click', function () { state.items = []; render(true); });
 
