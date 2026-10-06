@@ -842,7 +842,9 @@ footer .legal a:hover { color: var(--bone); }
 
 <script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
 <script>
-(function () {
+// The quote builder. Started by the live-services loader below once the
+// service cards are in place.
+function startBuilder() {
   var MIN_MONTHLY = 300, SERVER_MULT = 2.5, STORE = 'cyberxla-quote';
   var PRESETS = { essential: ['patching'], secure: ['patching', 'edr'], shield: ['patching', 'edr', 'mdr'] };
   var UNIT = { dev: '/device/mo', mo: '/mo', once: 'one time', devonce: '/device, one time' };
@@ -1243,6 +1245,96 @@ footer .legal a:hover { color: var(--bone); }
   window.addEventListener('blur', function () { if (drag) endDrag(false); });
 
   render(false);
+}
+</script>
+<script>
+// Live services: load the current catalog (managed in the cyberxLA dashboard)
+// and rebuild the service cards before the builder starts. The cards already in
+// this page are the fallback if the catalog is slow or unreachable.
+(function () {
+  var API = 'https://onpdkqzcgnoepwiqcgtv.supabase.co/rest/v1/rpc/service_catalog';
+  var KEY = 'sb_publishable_lKWjP561VJoxmAebZAIidA_lPYiNck3';
+  var UNIT = { dev: '/device/mo', mo: '/mo', once: 'one time', devonce: '/device, one time' };
+  var started = false;
+  function go() { if (started) return; started = true; startBuilder(); }
+  var timer = setTimeout(go, 1500);
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function priceText(n) {
+    return '$' + (Math.round(n) === n ? n.toLocaleString('en-US') : n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+  }
+  function valid(cats) {
+    return Array.isArray(cats) && cats.length && cats.every(function (c) {
+      return c && typeof c.id === 'string' && typeof c.name === 'string' && Array.isArray(c.services) && c.services.every(function (x) {
+        return x && typeof x.id === 'string' && typeof x.name === 'string' && isFinite(Number(x.price)) && UNIT[x.unit];
+      });
+    });
+  }
+  function render(cats) {
+    var catalog = document.querySelector('.catalog');
+    if (!catalog) return;
+    var old = catalog.querySelectorAll('section.cat');
+    var anchor = old.length ? old[0] : null;
+    cats.forEach(function (c, i) {
+      var sec = el('section', 'cat'); sec.id = c.id;
+      var head = el('div', 'cat-head');
+      head.appendChild(el('p', 'mono', String(i + 1).padStart(2, '0')));
+      head.appendChild(el('h2', null, c.name));
+      var all = el('button', 'add-all'); all.type = 'button';
+      all.setAttribute('aria-pressed', 'false');
+      all.setAttribute('aria-label', 'Add all ' + c.name.toLowerCase() + ' services');
+      all.appendChild(el('span', 'off', '+ Add all')); all.appendChild(el('span', 'on', '✓ All added')); all.appendChild(el('span', 'rm', 'Remove all'));
+      head.appendChild(all);
+      if (c.blurb) head.appendChild(el('p', null, c.blurb));
+      sec.appendChild(head);
+      var items = el('div', 'items');
+      c.services.forEach(function (x) {
+        var a = el('article', 'svc');
+        a.dataset.id = x.id; a.dataset.price = String(Number(x.price)); a.dataset.unit = x.unit;
+        if (x.from) a.dataset.from = '1';
+        var grip = el('span', 'grip'); grip.setAttribute('aria-hidden', 'true'); grip.title = 'Drag into your quote';
+        for (var k = 0; k < 6; k++) grip.appendChild(el('i'));
+        a.appendChild(grip);
+        var body = el('div', 'svc-body');
+        var h3 = el('h3'); h3.appendChild(el('span', 'svc-name', x.name));
+        if (x.in_packages) { h3.appendChild(document.createTextNode(' ')); h3.appendChild(el('span', 'inc', 'In packages')); }
+        body.appendChild(h3);
+        body.appendChild(el('p', null, x.description || ''));
+        var foot = el('div', 'svc-foot');
+        var pr = el('span', 'svc-price');
+        pr.appendChild(el('b', null, (x.from ? 'from ' : '') + priceText(Number(x.price))));
+        pr.appendChild(document.createTextNode(' '));
+        pr.appendChild(el('span', null, UNIT[x.unit]));
+        foot.appendChild(pr);
+        var add = el('button', 'add'); add.type = 'button';
+        add.setAttribute('aria-pressed', 'false'); add.setAttribute('aria-label', 'Add ' + x.name + ' to quote');
+        add.appendChild(el('span', 'add-on', 'Add')); add.appendChild(el('span', 'add-off', 'Added'));
+        foot.appendChild(add);
+        body.appendChild(foot);
+        a.appendChild(body);
+        items.appendChild(a);
+      });
+      sec.appendChild(items);
+      catalog.insertBefore(sec, anchor);
+    });
+    for (var i = 0; i < old.length; i++) old[i].remove();
+    var jump = document.querySelector('.jump');
+    if (jump) {
+      jump.textContent = '';
+      cats.forEach(function (c) { var l = el('a', null, c.name); l.href = '#' + c.id; jump.appendChild(l); });
+    }
+  }
+
+  fetch(API, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: '{}' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (cats) { if (!started && valid(cats)) render(cats); })
+    .catch(function () {})
+    .then(function () { clearTimeout(timer); go(); });
 })();
 </script>
 </body>
