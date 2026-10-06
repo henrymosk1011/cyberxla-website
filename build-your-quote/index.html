@@ -92,6 +92,11 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .cat-head .mono { color: var(--paper-mute); }
 .cat-head h2 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
 .cat-head p { color: var(--paper-mute); font-size: 16px; flex-basis: 100%; }
+.add-all { align-self: center; border: 1.5px solid var(--paper-fg); background: transparent; color: var(--paper-fg); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+.add-all .on, .add-all .rm, .add-all[aria-pressed="true"] .off { display: none; }
+.add-all[aria-pressed="true"] .on { display: inline; }
+.add-all[aria-pressed="true"] { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+@media (hover: hover) { .add-all:hover { background: var(--paper-fg); color: var(--paper); } .add-all[aria-pressed="true"]:hover { background: transparent; border-color: var(--paper-fg); color: var(--paper-fg); } .add-all[aria-pressed="true"]:hover .on { display: none; } .add-all[aria-pressed="true"]:hover .rm { display: inline; } }
 .items { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 .svc { position: relative; display: flex; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 18px 14px; transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s, transform 0.2s; }
@@ -268,6 +273,7 @@ footer .legal a:hover { color: var(--bone); }
       <div class="cat-head">
         <p class="mono">01</p>
         <h2>Protect devices</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all protect devices services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
         <p>Keep every laptop, desktop, and server hardened and up to date.</p>
       </div>
       <div class="items">
@@ -344,6 +350,7 @@ footer .legal a:hover { color: var(--bone); }
       <div class="cat-head">
         <p class="mono">02</p>
         <h2>Monitor and respond</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all monitor and respond services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
         <p>Eyes on your business around the clock, and a plan for when something happens.</p>
       </div>
       <div class="items">
@@ -420,6 +427,7 @@ footer .legal a:hover { color: var(--bone); }
       <div class="cat-head">
         <p class="mono">03</p>
         <h2>Email and identity</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all email and identity services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
         <p>Most attacks start with an inbox or a stolen password.</p>
       </div>
       <div class="items">
@@ -496,6 +504,7 @@ footer .legal a:hover { color: var(--bone); }
       <div class="cat-head">
         <p class="mono">04</p>
         <h2>Test and assess</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all test and assess services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
         <p>Find the gaps before someone else does.</p>
       </div>
       <div class="items">
@@ -550,6 +559,7 @@ footer .legal a:hover { color: var(--bone); }
       <div class="cat-head">
         <p class="mono">05</p>
         <h2>Backup and recovery</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all backup and recovery services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
         <p>When something goes wrong, get back to work fast.</p>
       </div>
       <div class="items">
@@ -604,6 +614,7 @@ footer .legal a:hover { color: var(--bone); }
       <div class="cat-head">
         <p class="mono">06</p>
         <h2>Insurance and compliance</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all insurance and compliance services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
         <p>Prove you&rsquo;re secure to insurers, clients, and regulators.</p>
       </div>
       <div class="items">
@@ -859,6 +870,13 @@ footer .legal a:hover { color: var(--bone); }
       svcs[id].el.classList.toggle('is-added', on);
       svcs[id].el.querySelector('.add').setAttribute('aria-pressed', on ? 'true' : 'false');
     });
+    $$('.cat').forEach(function (cat) {
+      var btn = cat.querySelector('.add-all');
+      if (!btn) return;
+      var all = Array.prototype.every.call(cat.querySelectorAll('.svc'), function (el) { return state.items.indexOf(el.dataset.id) > -1; });
+      btn.setAttribute('aria-pressed', all ? 'true' : 'false');
+      btn.setAttribute('aria-label', (all ? 'Remove all ' : 'Add all ') + cat.querySelector('h2').textContent.toLowerCase() + ' services');
+    });
 
     var send = $('#q-send');
     send.setAttribute('aria-disabled', n ? 'false' : 'true');
@@ -889,6 +907,17 @@ footer .legal a:hover { color: var(--bone); }
     } else render(true);
   }
 
+  $$('.cat').forEach(function (cat) {
+    var btn = cat.querySelector('.add-all');
+    if (!btn) return;
+    var ids = Array.prototype.map.call(cat.querySelectorAll('.svc'), function (el) { return el.dataset.id; });
+    btn.addEventListener('click', function () {
+      var all = ids.every(function (id) { return state.items.indexOf(id) > -1; });
+      if (all) state.items = state.items.filter(function (id) { return ids.indexOf(id) === -1; });
+      else ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); });
+      render(true);
+    });
+  });
   $$('.svc .add').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var id = btn.closest('.svc').dataset.id;
