@@ -1,6 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZPJL0S8EY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZZPJL0S8EY');
+
+  // contact and quote-builder link clicks
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.id === 'q-send') return;
+    var h = a.getAttribute('href'), text = a.textContent.trim().slice(0, 100);
+    if (h.indexOf('mailto:') === 0) gtag('event', 'contact_click', { method: 'email', link_text: text });
+    else if (h.indexOf('instagram.com') > -1) gtag('event', 'contact_click', { method: 'instagram', link_text: text });
+    else if (h.indexOf('/build-your-quote/') === 0 && location.pathname.indexOf('/build-your-quote/') !== 0) {
+      var m = h.match(/package=(\w+)/);
+      gtag('event', 'quote_builder_click', { link_text: text, package: m ? m[1] : '(none)' });
+    }
+  });
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>cyberXLA | Small Business Cybersecurity in Los Angeles</title>
@@ -8,15 +30,6 @@
 <link rel="canonical" href="https://cyberx.la/">
 <!-- Google Search Console verification: paste the meta tag from Search Console on the next line -->
 
-<!-- Google Analytics: replace G-XXXXXXXXXX with your Measurement ID, then uncomment
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
-</script>
--->
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="cyberXLA">
