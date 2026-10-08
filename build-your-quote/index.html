@@ -1,6 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZPJL0S8EY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZZPJL0S8EY');
+
+  // contact and quote-builder link clicks
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.id === 'q-send') return;
+    var h = a.getAttribute('href'), text = a.textContent.trim().slice(0, 100);
+    if (h.indexOf('mailto:') === 0) gtag('event', 'contact_click', { method: 'email', link_text: text });
+    else if (h.indexOf('instagram.com') > -1) gtag('event', 'contact_click', { method: 'instagram', link_text: text });
+    else if (h.indexOf('/build-your-quote/') === 0 && location.pathname.indexOf('/build-your-quote/') !== 0) {
+      var m = h.match(/package=(\w+)/);
+      gtag('event', 'quote_builder_click', { link_text: text, package: m ? m[1] : '(none)' });
+    }
+  });
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Services and Pricing: Build Your Quote | cyberXLA</title>
@@ -882,6 +904,7 @@ function startBuilder() {
     var pkg = new URLSearchParams(location.search).get('package');
     if (pkg && PRESETS[pkg]) {
       PRESETS[pkg].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); });
+      try { if (window.gtag) window.gtag('event', 'add_package', { package: pkg, source: 'homepage' }); } catch (e) {}
       history.replaceState(null, '', location.pathname + location.hash);
     }
   } catch (e) {}
@@ -1050,6 +1073,8 @@ function startBuilder() {
   $('#q-send').addEventListener('click', function (e) {
     if (!state.items.length) return;
     e.preventDefault();
+    var t0 = totals();
+    track('begin_quote_request', { services: state.items.length, value: Math.round(t0.monthly), currency: 'USD' });
     openSend();
   });
   $$('#qd [data-close]').forEach(function (b) { b.addEventListener('click', function () { dlg.close(); }); });
@@ -1077,6 +1102,8 @@ function startBuilder() {
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; }); })
       .then(function (res) {
         if (res.status === 201) {
+          var t1 = totals();
+          track('generate_lead', { value: Math.round(t1.monthly), currency: 'USD', one_time: Math.round(t1.once), services: body.items.length, workstations: body.workstations, servers: body.servers });
           $('#qd-form-view').hidden = true; $('#qd-done-view').hidden = false;
           form.reset();
           return;
@@ -1097,13 +1124,17 @@ function startBuilder() {
       });
   });
 
-  function add(id) {
+  function track(name, params) { try { if (window.gtag) window.gtag('event', name, params || {}); } catch (e) {} }
+
+  function add(id, method) {
     if (state.items.indexOf(id) > -1) return;
     state.items.push(id);
+    track('add_to_quote', { service_id: id, service_name: svcs[id].name, method: method || 'button' });
     if (filter !== (isMonthly(svcs[id]) ? 'monthly' : 'once')) filter = 'all';
     render(true);
   }
   function remove(id) {
+    if (svcs[id]) track('remove_from_quote', { service_id: id, service_name: svcs[id].name });
     var li = list.querySelector('.q-item[data-id="' + id + '"]');
     state.items = state.items.filter(function (x) { return x !== id; });
     if (li && !reduced.matches) {
@@ -1119,7 +1150,7 @@ function startBuilder() {
     btn.addEventListener('click', function () {
       var all = ids.every(function (id) { return state.items.indexOf(id) > -1; });
       if (all) state.items = state.items.filter(function (id) { return ids.indexOf(id) === -1; });
-      else { ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; }
+      else { ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; track('add_category', { category: cat.querySelector('h2').textContent }); }
       render(true);
     });
   });
@@ -1130,7 +1161,7 @@ function startBuilder() {
     });
   });
   $$('.presets button').forEach(function (b) {
-    b.addEventListener('click', function () { PRESETS[b.dataset.preset].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; render(true); });
+    b.addEventListener('click', function () { PRESETS[b.dataset.preset].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; track('add_package', { package: b.dataset.preset, source: 'quote_shortcut' }); render(true); });
   });
   $('#q-clear').addEventListener('click', function () { state.items = []; render(true); });
 
@@ -1209,7 +1240,7 @@ function startBuilder() {
       g.classList.add('land');
       g.style.left = (q.left + q.width / 2 - d.offX) + 'px';
       g.style.top = (q.top + Math.min(q.height / 2, 160) - d.offY) + 'px';
-      add(d.el.dataset.id);
+      add(d.el.dataset.id, 'drag');
     } else {
       g.classList.remove('lifted'); g.classList.add('back');
       var r = d.el.getBoundingClientRect();
