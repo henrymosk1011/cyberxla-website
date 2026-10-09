@@ -330,6 +330,7 @@ footer .legal a:hover { color: var(--bone); }
       <a href="#test">Test and assess</a>
       <a href="#recover">Backup and recovery</a>
       <a href="#compliance">Insurance and compliance</a>
+      <a href="#accessibility">Web accessibility</a>
     </div>
   </div>
 </section>
@@ -734,6 +735,61 @@ footer .legal a:hover { color: var(--bone); }
         </article>
       </div>
     </section>
+
+    <section class="cat" id="accessibility">
+      <div class="cat-head">
+        <p class="mono">07</p>
+        <h2>Web accessibility</h2>
+        <button type="button" class="add-all" aria-pressed="false" aria-label="Add all web accessibility services"><span class="off">+ Add all</span><span class="on">&#10003; All added</span><span class="rm">Remove all</span></button>
+        <p>Make your existing website usable for everyone, and harder to sue.</p>
+      </div>
+      <div class="items">
+        <article class="svc" data-id="ada-audit" data-price="499" data-unit="once">
+          <span class="grip" aria-hidden="true" title="Drag into your quote"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <div class="svc-body">
+            <h3><span class="svc-name">Accessibility Audit</span></h3>
+            <p>Automated scan plus hands on screen reader and keyboard testing, with a plain English fix list. Credited toward a fix.</p>
+            <div class="svc-foot">
+              <span class="svc-price"><b>$499</b> <span>one time</span></span>
+              <button type="button" class="add" aria-pressed="false" aria-label="Add Accessibility Audit to quote"><span class="add-on">Add</span><span class="add-off">Added</span></button>
+            </div>
+          </div>
+        </article>
+        <article class="svc" data-id="ada-starter" data-price="1500" data-unit="once">
+          <span class="grip" aria-hidden="true" title="Drag into your quote"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <div class="svc-body">
+            <h3><span class="svc-name">Accessibility Fix, Starter</span></h3>
+            <p>Real code fixes for sites up to 10 pages, audit included, with a WCAG 2.1 AA conformance report.</p>
+            <div class="svc-foot">
+              <span class="svc-price"><b>$1,500</b> <span>one time</span></span>
+              <button type="button" class="add" aria-pressed="false" aria-label="Add Accessibility Fix, Starter to quote"><span class="add-on">Add</span><span class="add-off">Added</span></button>
+            </div>
+          </div>
+        </article>
+        <article class="svc" data-id="ada-business" data-price="3500" data-unit="once">
+          <span class="grip" aria-hidden="true" title="Drag into your quote"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <div class="svc-body">
+            <h3><span class="svc-name">Accessibility Fix, Business</span></h3>
+            <p>Code fixes for sites with 11 to 30 pages, including templates, blogs, and popups.</p>
+            <div class="svc-foot">
+              <span class="svc-price"><b>$3,500</b> <span>one time</span></span>
+              <button type="button" class="add" aria-pressed="false" aria-label="Add Accessibility Fix, Business to quote"><span class="add-on">Add</span><span class="add-off">Added</span></button>
+            </div>
+          </div>
+        </article>
+        <article class="svc" data-id="ada-monitor" data-price="99" data-unit="mo">
+          <span class="grip" aria-hidden="true" title="Drag into your quote"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <div class="svc-body">
+            <h3><span class="svc-name">Accessibility Monitoring</span></h3>
+            <p>Monthly scans so new pages and posts stay accessible.</p>
+            <div class="svc-foot">
+              <span class="svc-price"><b>$99</b> <span>/mo</span></span>
+              <button type="button" class="add" aria-pressed="false" aria-label="Add Accessibility Monitoring to quote"><span class="add-on">Add</span><span class="add-off">Added</span></button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
     </div>
 
     <aside class="quote" id="quote" aria-label="Your quote">
@@ -905,6 +961,16 @@ function startBuilder() {
     if (pkg && PRESETS[pkg]) {
       PRESETS[pkg].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); });
       try { if (window.gtag) window.gtag('event', 'add_package', { package: pkg, source: 'homepage' }); } catch (e) {}
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+  } catch (e) {}
+
+  // ?service=ada-audit from the homepage accessibility cards
+  try {
+    var svcParam = new URLSearchParams(location.search).get('service');
+    if (svcParam && /^ada-(audit|starter|business)$/.test(svcParam) && state.items.indexOf(svcParam) === -1) {
+      state.items.push(svcParam);
+      try { if (window.gtag) window.gtag('event', 'add_service', { service: svcParam, source: 'homepage' }); } catch (e) {}
       history.replaceState(null, '', location.pathname + location.hash);
     }
   } catch (e) {}
