@@ -150,9 +150,24 @@ header a.back:hover, header a.back:focus-visible { opacity: 1; }
 .intro .mono { color: var(--lime); }
 .intro h1 { font-size: clamp(44px, 8vw, 112px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; margin: 20px 0 24px; }
 .intro p.lede { font-size: clamp(18px, 2vw, 24px); color: var(--ink-mute); max-width: 680px; }
-.steps { display: flex; flex-wrap: wrap; gap: 12px 32px; margin-top: 36px; }
-.steps li { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 16px; }
-.steps b { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--lime); color: var(--ink); font-size: 14px; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px; }
+.steps li { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px 24px; border: 1px solid var(--ink-line); border-radius: 20px; background: rgba(240, 237, 228, 0.05); font-weight: 700; font-size: clamp(18px, 1.8vw, 22px); letter-spacing: -0.01em; line-height: 1.2; }
+.step-t { display: block; min-width: 0; }
+.steps small { display: block; margin-top: 6px; color: var(--ink-mute); font-size: 15px; font-weight: 500; letter-spacing: 0; line-height: 1.35; }
+.steps b { flex: none; display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--lime); color: var(--ink); font-size: 20px; font-weight: 800; }
+/* the drag step: lime outline plus the same grip dots the service cards use, nudged a few times on load */
+.steps li.drag { border: 2px solid var(--lime); padding: 21px 23px; background: rgba(214, 255, 63, 0.08); }
+.step-grip { position: absolute; top: 33px; right: 24px; display: grid; grid-template-columns: repeat(2, 5px); gap: 5px; color: var(--lime); animation: nudge 1.1s ease-in-out 0.8s 3; }
+.step-grip i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+@keyframes nudge { 30% { transform: translate(6px, -3px); } 60% { transform: none; } }
+@media (max-width: 960px) {
+  .steps { grid-template-columns: 1fr; gap: 10px; margin-top: 32px; }
+  .steps li { flex-direction: row; align-items: center; padding: 16px 18px; }
+  .steps li.drag { padding: 15px 17px; }
+  .step-t { flex: 1; }
+  .steps b { width: 40px; height: 40px; font-size: 18px; }
+  .step-grip { position: static; flex: none; }
+}
 .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
 .jump a { font-size: 15px; font-weight: 600; text-decoration: none; padding: 8px 16px; border: 1px solid rgba(240, 237, 228, 0.25); border-radius: 999px; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .jump a:hover { background: var(--lime); color: var(--ink); border-color: var(--lime); }
@@ -355,6 +370,7 @@ footer .legal a:hover { color: var(--bone); }
   .btn:hover { transform: none; }
   .q-item, .q-monthly.bump, .q-bar-total.bump { animation: none; }
   .ghost, .ghost.land, .ghost.back, .ghost.lifted { transition: none; transform: none; }
+  .step-grip { animation: none; }
   body::after, body.is-dragging::after { transition: none; }
 }
 </style>
@@ -379,9 +395,9 @@ footer .legal a:hover { color: var(--bone); }
     <h1>Build your <span class="chip">quote.</span></h1>
     <p class="lede">Every service we offer, with starting prices. Drag what you need into your quote, or tap Add, and watch the total add up.</p>
     <ol class="steps">
-      <li><b>1</b>Set your device count</li>
-      <li><b>2</b>Drag in the services you want</li>
-      <li><b>3</b>Send it to us for a final quote</li>
+      <li><b>1</b><span class="step-t">Set your device count<small>Workstations and servers, in your quote</small></span></li>
+      <li class="drag"><b>2</b><span class="step-t">Drag in the services you want<small>Grab a card by its dots, or tap Add</small></span><span class="step-grip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></li>
+      <li><b>3</b><span class="step-t">Send it to us for a final quote<small>We reply within one business day</small></span></li>
     </ol>
     <nav class="jump" aria-label="Jump to a category">
       <a href="#protect">Protect devices</a>
