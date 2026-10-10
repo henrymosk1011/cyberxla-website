@@ -381,6 +381,34 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 .calc-note { font-size: 14px; color: var(--ink-mute); line-height: 1.5; }
 @media (max-width: 900px) { .calc { grid-template-columns: 1fr; } .calc-out { position: static; } }
 
+/* package breakdown under the calculator: stacked rows when narrow, three columns when there's room */
+.calc-l { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.calc-pk { container-type: inline-size; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: clamp(20px, 2.4vw, 28px); display: flex; flex-direction: column; gap: 16px; }
+.calc-pk-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
+.calc-pk-head .mono { font-size: 12px; }
+.mpk { display: grid; gap: 10px; }
+.mpk-c { border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
+.mpk-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.mpk-c .mono { font-size: 11px; color: var(--paper-mute); }
+.mpk-c h3 { font-size: 26px; letter-spacing: -0.03em; margin-top: 6px; }
+.mpk-rate { font-size: 13px; font-weight: 600; color: var(--paper-mute); white-space: nowrap; }
+.mpk-rate b { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; color: var(--paper-fg); }
+.mpk-c ul { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.mpk-c li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; line-height: 1.35; }
+.mpk-c li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+.mpk-c.on { background: var(--ink); color: var(--bone); border-color: var(--lime); box-shadow: inset 0 0 0 1px var(--lime); }
+.mpk-c.on .mono, .mpk-c.on .mpk-rate { color: var(--ink-mute); }
+.mpk-c.on .mpk-rate b { color: var(--lime); }
+.mpk-c.on li::before { background: var(--lime); }
+@container (min-width: 500px) {
+  .mpk { grid-template-columns: repeat(3, 1fr); }
+  .mpk-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .mpk-c ul { flex-direction: column; flex-wrap: nowrap; gap: 0; }
+  .mpk-c li { align-items: baseline; padding: 8px 0; border-top: 1px solid var(--line); }
+  .mpk-c li::before { transform: translateY(-2px); }
+  .mpk-c.on li { border-color: rgba(240, 237, 228, 0.2); }
+}
+
 /* process */
 .proc { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
 .sticky { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 120px); }
@@ -620,30 +648,61 @@ footer .legal a:hover { color: var(--bone); }
       <p class="reveal mute-paper" style="--d:200ms">Enter your device count and package to see the monthly and onboarding cost.</p>
     </div>
     <div class="calc">
-      <div class="calc-in reveal" style="--d:0ms">
-        <div class="field">
-          <label for="calc-endpoints">Workstations</label>
-          <div class="stepper">
-            <button type="button" data-step="endpoints" data-dir="-1" aria-label="Decrease workstations">&minus;</button>
-            <input type="number" id="calc-endpoints" min="0" max="5000" value="25" inputmode="numeric">
-            <button type="button" data-step="endpoints" data-dir="1" aria-label="Increase workstations">+</button>
+      <div class="calc-l">
+        <div class="calc-in reveal" style="--d:0ms">
+          <div class="field">
+            <label for="calc-endpoints">Workstations</label>
+            <div class="stepper">
+              <button type="button" data-step="endpoints" data-dir="-1" aria-label="Decrease workstations">&minus;</button>
+              <input type="number" id="calc-endpoints" min="0" max="5000" value="25" inputmode="numeric">
+              <button type="button" data-step="endpoints" data-dir="1" aria-label="Increase workstations">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="calc-servers">Servers</label>
+            <div class="stepper">
+              <button type="button" data-step="servers" data-dir="-1" aria-label="Decrease servers">&minus;</button>
+              <input type="number" id="calc-servers" min="0" max="500" value="1" inputmode="numeric">
+              <button type="button" data-step="servers" data-dir="1" aria-label="Increase servers">+</button>
+            </div>
+            <p class="hint">Billed at 2.5 times the workstation rate.</p>
+          </div>
+          <div class="field">
+            <span id="calc-pkg-label" style="font-weight:700; font-size:18px;">Package</span>
+            <div class="seg" role="group" aria-labelledby="calc-pkg-label">
+              <button type="button" data-pkg="essential" aria-pressed="false">Essential</button>
+              <button type="button" data-pkg="secure" aria-pressed="true">Secure</button>
+              <button type="button" data-pkg="shield" aria-pressed="false">Shield</button>
+            </div>
           </div>
         </div>
-        <div class="field">
-          <label for="calc-servers">Servers</label>
-          <div class="stepper">
-            <button type="button" data-step="servers" data-dir="-1" aria-label="Decrease servers">&minus;</button>
-            <input type="number" id="calc-servers" min="0" max="500" value="1" inputmode="numeric">
-            <button type="button" data-step="servers" data-dir="1" aria-label="Increase servers">+</button>
+        <div class="calc-pk reveal" style="--d:100ms">
+          <div class="calc-pk-head">
+            <p class="mono mute-paper">What each package includes</p>
+            <p class="mono mute-paper" id="calc-pk-tier">Rates for 25 to 49 devices</p>
           </div>
-          <p class="hint">Billed at 2.5 times the workstation rate.</p>
-        </div>
-        <div class="field">
-          <span id="calc-pkg-label" style="font-weight:700; font-size:18px;">Package</span>
-          <div class="seg" role="group" aria-labelledby="calc-pkg-label">
-            <button type="button" data-pkg="essential" aria-pressed="false">Essential</button>
-            <button type="button" data-pkg="secure" aria-pressed="true">Secure</button>
-            <button type="button" data-pkg="shield" aria-pressed="false">Shield</button>
+          <div class="mpk">
+            <article class="mpk-c" data-mpk="essential">
+              <div class="mpk-top">
+                <div><p class="mono">Patching only</p><h3>Essential</h3></div>
+                <p class="mpk-rate"><b data-mpk-rate="essential">$9.50</b>/device</p>
+              </div>
+              <ul><li>OS and app patching</li><li>Monthly patch report</li><li>Business hours support</li></ul>
+            </article>
+            <article class="mpk-c on" data-mpk="secure">
+              <div class="mpk-top">
+                <div><p class="mono">Patching and EDR</p><h3>Secure</h3></div>
+                <p class="mpk-rate"><b data-mpk-rate="secure">$17</b>/device</p>
+              </div>
+              <ul><li>Everything in Essential</li><li>EDR protection</li><li>Alerts triaged in business hours</li><li>Quarterly review</li></ul>
+            </article>
+            <article class="mpk-c" data-mpk="shield">
+              <div class="mpk-top">
+                <div><p class="mono">Patching and MDR</p><h3>Shield</h3></div>
+                <p class="mpk-rate"><b data-mpk-rate="shield">$30</b>/device</p>
+              </div>
+              <ul><li>Everything in Secure</li><li>24/7 SOC monitoring</li><li>Active threat containment</li></ul>
+            </article>
           </div>
         </div>
       </div>
@@ -940,7 +999,7 @@ footer .legal a:hover { color: var(--bone); }
   var moneyRate = function (n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
 
   var calcEP = $('#calc-endpoints'), calcSV = $('#calc-servers');
-  var pkgBtns = $$('.seg button[data-pkg]');
+  var pkgBtns = $$('.seg button[data-pkg]'), pkgCards = $$('.mpk-c[data-mpk]');
   var currentPkg = 'secure';
 
   function tierFor(total) {
@@ -967,6 +1026,14 @@ footer .legal a:hover { color: var(--bone); }
     $('#calc-setup').textContent = total >= SETUP_WAIVED_AT ? 'Waived' : money(setup);
     $('#calc-monthly').textContent = money(monthly);
     $('#calc-min').hidden = !(total > 0 && monthlyRaw < MIN_MONTHLY);
+
+    // Package breakdown: every package's rate at this device count, with the chosen one lit.
+    $('#calc-pk-tier').textContent = 'Rates for ' + tier.label + ' devices';
+    pkgCards.forEach(function (card) {
+      var id = card.getAttribute('data-mpk');
+      card.classList.toggle('on', id === currentPkg);
+      $('[data-mpk-rate]', card).textContent = '$' + countText(RATES[id][tier.i]);
+    });
   }
 
   $$('.stepper button[data-step]').forEach(function (btn) {
