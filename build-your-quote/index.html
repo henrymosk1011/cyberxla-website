@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZPJL0S8EY"></script>
 <script>
@@ -23,18 +25,55 @@
     }
   });
 </script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Services and Pricing: Build Your Quote | cyberXLA</title>
-<meta name="description" content="Every cyberXLA cybersecurity service with starting prices: monitoring, EDR and MDR, ransomware protection, penetration testing, email security, backup, and cyber insurance readiness for Los Angeles small businesses. Build your own quote.">
+<title>Cybersecurity Services and Pricing in Los Angeles | cyberXLA</title>
+<meta name="description" content="Every cyberXLA cybersecurity service with starting prices, from EDR and MDR to penetration testing and backup. Pick what you need and build your own quote.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="https://cyberx.la/build-your-quote/">
+<meta name="theme-color" content="#111315">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="cyberXLA">
-<meta property="og:title" content="Services and Pricing: Build Your Quote | cyberXLA">
+<meta property="og:title" content="Cybersecurity Services and Pricing in Los Angeles | cyberXLA">
 <meta property="og:description" content="Pick the services you need and see your price add up as you go.">
 <meta property="og:url" content="https://cyberx.la/build-your-quote/">
 <meta property="og:image" content="https://cyberx.la/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="cyberXLA: cybersecurity for small businesses in Los Angeles">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cybersecurity Services and Pricing in Los Angeles | cyberXLA">
+<meta name="twitter:description" content="Pick the services you need and see your price add up as you go.">
+<meta name="twitter:image" content="https://cyberx.la/og-image.png">
+<meta name="twitter:image:alt" content="cyberXLA: cybersecurity for small businesses in Los Angeles">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://cyberx.la/build-your-quote/#webpage",
+      "url": "https://cyberx.la/build-your-quote/",
+      "name": "Cybersecurity Services and Pricing in Los Angeles | cyberXLA",
+      "description": "Every cyberXLA cybersecurity service with starting prices. Pick what you need and build your own quote.",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://cyberx.la/#website" },
+      "about": { "@id": "https://cyberx.la/#business" },
+      "breadcrumb": { "@id": "https://cyberx.la/build-your-quote/#breadcrumb" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://cyberx.la/build-your-quote/#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cyberx.la/" },
+        { "@type": "ListItem", "position": 2, "name": "Build Your Quote", "item": "https://cyberx.la/build-your-quote/" }
+      ]
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -53,6 +92,8 @@
   --card: #FBFAF6;
   --line: rgba(17, 19, 21, 0.16);
   --ink-line: rgba(240, 237, 228, 0.16);
+  --field-line: rgba(240, 237, 228, 0.4);
+  --focus: var(--lime);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -72,6 +113,7 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { background: var(--ink); scroll-padding-top: 88px; }
+@media (max-width: 960px) { html { scroll-padding-bottom: 110px; } }
 body { background: var(--paper); color: var(--paper-fg); font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
 a { color: inherit; }
 ul { list-style: none; }
@@ -86,13 +128,23 @@ button { font: inherit; color: inherit; }
 .btn-ink { background: var(--ink); color: var(--lime); }
 .btn-line { border-color: currentColor; background: transparent; }
 
+/* accessibility helpers */
+.sr-only, .skip:not(:focus) { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 16px; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 100; background: var(--lime); color: var(--ink); padding: 12px 20px; border-radius: 999px; font-weight: 700; text-decoration: none; --focus: var(--bone); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+[tabindex="-1"]:focus-visible { outline: none; }
+.catalog { --focus: var(--paper-fg); }
+.cta { --focus: var(--ink); }
+.stepper :focus-visible, .q-bar:focus-visible { outline-offset: -3px; }
+.stepper :focus-visible { outline-color: currentColor; }
+
 header { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--ink); z-index: 20; }
 header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 72px; }
 .brandmark { display: inline-flex; align-items: baseline; font-weight: 800; font-size: 21px; letter-spacing: -0.02em; color: var(--bone); text-decoration: none; }
 .brandmark .x { color: var(--lime); }
 header nav { display: flex; align-items: center; gap: 24px; }
 header a.back { color: var(--bone); text-decoration: none; font-weight: 600; font-size: 15px; opacity: 0.85; }
-header a.back:hover { opacity: 1; }
+header a.back:hover, header a.back:focus-visible { opacity: 1; }
 
 .intro { background: var(--ink); color: var(--bone); padding: clamp(56px, 9vw, 120px) 0 clamp(48px, 7vw, 96px); }
 .intro .mono { color: var(--lime); }
@@ -105,7 +157,7 @@ header a.back:hover { opacity: 1; }
 .jump a { font-size: 15px; font-weight: 600; text-decoration: none; padding: 8px 16px; border: 1px solid rgba(240, 237, 228, 0.25); border-radius: 999px; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .jump a:hover { background: var(--lime); color: var(--ink); border-color: var(--lime); }
 
-main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
+.content { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .builder { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 48px; align-items: start; }
 .legend { color: var(--paper-mute); font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 8px; }
 .cat { padding: clamp(32px, 4vw, 48px) 0; border-top: 1px solid var(--line); scroll-margin-top: 88px; }
@@ -156,11 +208,11 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .q-zero { display: block; margin-top: 6px; border: none; background: none; padding: 2px 0; color: var(--ink-mute); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: color 0.15s, opacity 0.15s; }
 .q-zero:hover { color: var(--lime); }
 .q-zero:disabled { opacity: 0.35; cursor: default; color: var(--ink-mute); }
-.stepper { display: flex; align-items: center; border: 1px solid var(--ink-line); border-radius: 12px; overflow: hidden; touch-action: manipulation; }
+.stepper { display: flex; align-items: center; border: 1px solid var(--field-line); border-radius: 12px; overflow: hidden; touch-action: manipulation; }
 .stepper button { width: 38px; height: 40px; border: none; background: transparent; color: var(--bone); font-size: 20px; font-weight: 700; cursor: pointer; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; transition: background 0.2s, color 0.2s; }
 @media (hover: hover) { .stepper button:hover { background: var(--lime); color: var(--ink); } }
 .stepper button:active { background: var(--lime); color: var(--ink); }
-.stepper input { flex: 1; min-width: 0; width: 100%; height: 40px; border: none; border-left: 1px solid var(--ink-line); border-right: 1px solid var(--ink-line); text-align: center; font-size: 17px; font-weight: 700; font-family: inherit; color: var(--bone); background: transparent; -moz-appearance: textfield; }
+.stepper input { flex: 1; min-width: 0; width: 100%; height: 40px; border: none; border-left: 1px solid var(--field-line); border-right: 1px solid var(--field-line); text-align: center; font-size: 17px; font-weight: 700; font-family: inherit; color: var(--bone); background: transparent; -moz-appearance: textfield; }
 .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .q-hint { font-size: 12px; color: var(--ink-mute); margin-top: -8px; }
 
@@ -177,15 +229,15 @@ main { padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 9vw, 120px); }
 .q-filter { display: flex; gap: 4px; padding: 4px; margin-bottom: 10px; background: rgba(240, 237, 228, 0.06); border-radius: 999px; }
 .q-filter[hidden] { display: none; }
 .q-filter button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: none; background: transparent; color: var(--ink-mute); font-size: 13px; font-weight: 700; padding: 7px 8px; border-radius: 999px; cursor: pointer; white-space: nowrap; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background 0.2s, color 0.2s, opacity 0.2s; }
-.q-filter button .c { font-size: 11px; font-weight: 700; opacity: 0.7; }
+.q-filter button .c { font-size: 11px; font-weight: 700; opacity: 0.85; }
 .q-filter button:hover:not(:disabled) { color: var(--bone); }
-.q-filter button[aria-selected="true"] { background: var(--bone); color: var(--ink); }
+.q-filter button[aria-pressed="true"] { background: var(--bone); color: var(--ink); }
 .q-filter button:disabled { opacity: 0.35; cursor: default; }
 .q-dot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; }
 .q-dot.mo { background: var(--lime); }
 .q-dot.once { box-shadow: inset 0 0 0 2px #C9CED2; }
-.q-filter button[aria-selected="true"] .q-dot.mo { box-shadow: 0 0 0 1.5px var(--ink); }
-.q-filter button[aria-selected="true"] .q-dot.once { box-shadow: inset 0 0 0 2px var(--ink); }
+.q-filter button[aria-pressed="true"] .q-dot.mo { box-shadow: 0 0 0 1.5px var(--ink); }
+.q-filter button[aria-pressed="true"] .q-dot.once { box-shadow: inset 0 0 0 2px var(--ink); }
 .q-list { display: flex; flex-direction: column; gap: 6px; }
 .q-list[data-filter="monthly"] .q-item[data-kind="once"], .q-list[data-filter="once"] .q-item[data-kind="monthly"] { display: none; }
 .q-item { position: relative; }
@@ -241,9 +293,9 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; -webkit-user
 .qd-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .qd label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; }
 .qd label .opt { color: var(--ink-mute); font-weight: 500; margin-left: 4px; }
-.qd input, .qd textarea { font: inherit; font-size: 16px; color: var(--bone); background: #1A1D20; border: 1.5px solid rgba(240, 237, 228, 0.18); border-radius: 12px; padding: 12px 14px; outline: none; width: 100%; }
+.qd input, .qd textarea { font: inherit; font-size: 16px; color: var(--bone); background: #1A1D20; border: 1.5px solid var(--field-line); border-radius: 12px; padding: 12px 14px; outline: none; width: 100%; }
 .qd textarea { resize: vertical; min-height: 84px; }
-.qd input:focus, .qd textarea:focus { border-color: var(--lime); }
+.qd input:focus, .qd textarea:focus { border-color: var(--lime); box-shadow: 0 0 0 1.5px var(--lime); }
 .qd input[aria-invalid="true"] { border-color: #ff8a80; }
 .qd .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .qd-ts { min-height: 65px; }
@@ -260,7 +312,7 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; -webkit-user
 @media (max-width: 560px) { .qd-row { grid-template-columns: 1fr; } .qd-in { padding: 22px; } .qd-done { padding: 44px 24px 36px; } .qd h2 { font-size: 28px; } }
 @media (max-width: 960px) {
   .builder { grid-template-columns: 1fr; }
-  main { padding-bottom: 140px; }
+  .content { padding-bottom: 140px; }
   .quote { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); top: auto; z-index: 30; max-height: 76vh; padding: 0; gap: 0; border-radius: 22px; box-shadow: 0 -6px 40px rgba(0, 0, 0, 0.35); overflow: hidden; }
   .quote.is-over { transform: scale(1.02); }
   .q-bar { display: flex; align-items: center; gap: 14px; width: 100%; border: none; background: transparent; color: var(--bone); padding: 14px 18px; text-align: left; cursor: pointer; }
@@ -302,17 +354,19 @@ footer .legal a:hover { color: var(--bone); }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to main content</a>
 
 <header>
   <div class="wrap">
-    <a href="/" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
-    <nav>
+    <a href="/" class="brandmark" aria-label="cyberXLA home"><span>cyber</span><span class="x">x</span><span>LA</span></a>
+    <nav aria-label="Main">
       <a href="/" class="back">Back to home</a>
       <a href="/#contact" class="btn btn-lime sm">Talk to us</a>
     </nav>
   </div>
 </header>
 
+<main id="main">
 <section class="intro">
   <div class="wrap">
     <p class="mono">Build your own</p>
@@ -323,7 +377,7 @@ footer .legal a:hover { color: var(--bone); }
       <li><b>2</b>Drag in the services you want</li>
       <li><b>3</b>Send it to us for a final quote</li>
     </ol>
-    <div class="jump" aria-label="Jump to a category">
+    <nav class="jump" aria-label="Jump to a category">
       <a href="#protect">Protect devices</a>
       <a href="#monitor">Monitor and respond</a>
       <a href="#email">Email and identity</a>
@@ -331,11 +385,11 @@ footer .legal a:hover { color: var(--bone); }
       <a href="#recover">Backup and recovery</a>
       <a href="#compliance">Insurance and compliance</a>
       <a href="#accessibility">Web accessibility</a>
-    </div>
+    </nav>
   </div>
 </section>
 
-<main>
+<div class="content">
   <div class="wrap builder">
     <div class="catalog">
       <p class="legend"><span class="inc">In packages</span> Part of our Essential, Secure, and Shield packages. Prices are per month unless marked one time.</p>
@@ -792,7 +846,7 @@ footer .legal a:hover { color: var(--bone); }
     </section>
     </div>
 
-    <aside class="quote" id="quote" aria-label="Your quote">
+    <section class="quote" id="quote" aria-label="Your quote">
       <button type="button" class="q-bar" aria-expanded="false" aria-controls="q-panel">
         <span class="q-bar-count" id="q-bar-count">0</span>
         <span class="q-bar-label">Your quote<small id="q-bar-sub">Drag services here</small></span>
@@ -834,19 +888,19 @@ footer .legal a:hover { color: var(--bone); }
               <button type="button" data-preset="shield">Shield</button>
             </div>
           </div>
-          <div class="q-filter" id="q-filter" role="tablist" aria-label="Show services" hidden>
-            <button type="button" role="tab" data-filter="all" aria-selected="true">All <span class="c" id="q-c-all">0</span></button>
-            <button type="button" role="tab" data-filter="monthly" aria-selected="false"><span class="q-dot mo"></span>Monthly <span class="c" id="q-c-mo">0</span></button>
-            <button type="button" role="tab" data-filter="once" aria-selected="false"><span class="q-dot once"></span>One time <span class="c" id="q-c-once">0</span></button>
+          <div class="q-filter" id="q-filter" role="group" aria-label="Show services" hidden>
+            <button type="button" data-filter="all" aria-pressed="true">All <span class="c" id="q-c-all">0</span></button>
+            <button type="button" data-filter="monthly" aria-pressed="false"><span class="q-dot mo" aria-hidden="true"></span>Monthly <span class="c" id="q-c-mo">0</span></button>
+            <button type="button" data-filter="once" aria-pressed="false"><span class="q-dot once" aria-hidden="true"></span>One time <span class="c" id="q-c-once">0</span></button>
           </div>
-          <ul class="q-list" id="q-list" data-filter="all" aria-live="polite"></ul>
+          <ul class="q-list" id="q-list" data-filter="all"></ul>
           <p class="bundle" id="q-bundle" hidden></p>
         </div>
 
-        <div class="q-totals" aria-live="polite">
-          <span class="k"><span class="q-dot mo"></span>Monthly</span><span class="q-monthly" id="q-monthly">$0</span>
+        <div class="q-totals">
+          <span class="k"><span class="q-dot mo" aria-hidden="true"></span>Monthly</span><span class="q-monthly" id="q-monthly">$0</span>
           <span class="min-tag" id="q-min" hidden>$300 monthly minimum</span>
-          <span class="k"><span class="q-dot once"></span>One time</span><span class="q-once" id="q-once">$0</span>
+          <span class="k"><span class="q-dot once" aria-hidden="true"></span>One time</span><span class="q-once" id="q-once">$0</span>
         </div>
         <p class="q-note">Starting prices for planning. Volume pricing from 25 devices. Your final price is confirmed in a written quote.</p>
         <div class="q-actions">
@@ -854,9 +908,23 @@ footer .legal a:hover { color: var(--bone); }
           <button type="button" class="btn btn-line q-clear" id="q-clear">Clear</button>
         </div>
       </div>
-    </aside>
+    </section>
   </div>
+</div>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Not sure what you need?</h2>
+    <p>Tell us about your business and we&rsquo;ll recommend only what makes sense for your size and risk.</p>
+    <div class="row">
+      <a href="mailto:contact@cyberx.la" class="btn btn-ink">Email us</a>
+      <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
+    </div>
+  </div>
+</section>
+<p class="sr-only" id="q-status" role="status"></p>
 </main>
+
 <div class="scrim" id="scrim"></div>
 <dialog class="qd" id="qd" aria-labelledby="qd-title">
   <div class="qd-in" id="qd-form-view">
@@ -871,15 +939,15 @@ footer .legal a:hover { color: var(--bone); }
     </div>
     <form id="qd-form" novalidate>
       <div class="qd-row">
-        <label><span>Your name</span><input name="name" autocomplete="name" maxlength="120" required></label>
-        <label><span>Business name <span class="opt">optional</span></span><input name="company" autocomplete="organization" maxlength="160"></label>
+        <label><span>Your name</span><input type="text" name="name" autocomplete="name" maxlength="120" required></label>
+        <label><span>Business name <span class="opt">optional</span></span><input type="text" name="company" autocomplete="organization" maxlength="160"></label>
       </div>
       <div class="qd-row">
         <label><span>Email</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
         <label><span>Phone <span class="opt">optional</span></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
       </div>
       <label><span>Anything we should know? <span class="opt">optional</span></span><textarea name="message" maxlength="2000" rows="3"></textarea></label>
-      <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       <div class="qd-ts" id="qd-ts"></div>
       <p class="qd-err" id="qd-err" role="alert" hidden></p>
       <button class="btn btn-lime" id="qd-submit" type="submit">Send quote</button>
@@ -888,34 +956,23 @@ footer .legal a:hover { color: var(--bone); }
   </div>
   <div class="qd-in qd-done" id="qd-done-view" hidden>
     <span class="check" aria-hidden="true">&check;</span>
-    <h2>Quote sent</h2>
+    <h2 id="qd-done-title" tabindex="-1">Quote sent</h2>
     <p>Thanks. We&rsquo;ll review it and get back to you within one business day.</p>
     <button type="button" class="btn btn-lime" data-close>Done</button>
   </div>
 </dialog>
 
-<section class="cta">
-  <div class="wrap">
-    <h2>Not sure what you need?</h2>
-    <p>Tell us about your business and we&rsquo;ll recommend only what makes sense for your size and risk.</p>
-    <div class="row">
-      <a href="mailto:contact@cyberx.la" class="btn btn-ink">Email us</a>
-      <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
-    </div>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
-    <a href="/" class="brandmark"><span>cyber</span><span class="x">x</span><span>LA</span></a>
+    <a href="/" class="brandmark" aria-label="cyberXLA home"><span>cyber</span><span class="x">x</span><span>LA</span></a>
     <span class="mute">Serving Los Angeles and SoCal businesses.</span>
     <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA</span>
   </div>
-  <div class="wrap legal">
+  <nav class="wrap legal" aria-label="Footer">
     <a href="/">Home</a>
     <a href="/terms/">Terms and Conditions</a>
     <a href="/privacy/">Privacy Policy</a>
-  </div>
+  </nav>
 </footer>
 
 <script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
@@ -997,6 +1054,17 @@ function startBuilder() {
   }
   function bump(el) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
 
+  // One short screen reader message per change, instead of re-reading the list.
+  var status = $('#q-status'), statusTimer = null;
+  function announce(msg) {
+    clearTimeout(statusTimer);
+    status.textContent = '';
+    statusTimer = setTimeout(function () {
+      var t = totals();
+      status.textContent = (msg ? msg + ' ' : '') + 'Estimate: ' + money(t.monthly) + ' per month' + (t.once ? ' and ' + money(t.once) + ' one time.' : '.');
+    }, msg ? 100 : 600);
+  }
+
   var filter = 'all';
   $$('#q-filter button').forEach(function (b) {
     b.addEventListener('click', function () { filter = b.dataset.filter; render(false); });
@@ -1035,7 +1103,7 @@ function startBuilder() {
     $('#q-filter').hidden = n === 0;
     $('#q-c-all').textContent = n; $('#q-c-mo').textContent = nMo; $('#q-c-once').textContent = nOnce;
     $$('#q-filter button').forEach(function (b) {
-      b.setAttribute('aria-selected', b.dataset.filter === filter ? 'true' : 'false');
+      b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false');
       b.disabled = counts[b.dataset.filter] === 0;
     });
     list.dataset.filter = filter;
@@ -1062,14 +1130,16 @@ function startBuilder() {
     Object.keys(svcs).forEach(function (id) {
       var on = state.items.indexOf(id) > -1;
       svcs[id].el.classList.toggle('is-added', on);
-      svcs[id].el.querySelector('.add').setAttribute('aria-pressed', on ? 'true' : 'false');
+      var addBtn = svcs[id].el.querySelector('.add');
+      addBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      addBtn.setAttribute('aria-label', (on ? 'Added ' : 'Add ') + svcs[id].name + ' to quote');
     });
     $$('.cat').forEach(function (cat) {
       var btn = cat.querySelector('.add-all');
       if (!btn) return;
       var all = Array.prototype.every.call(cat.querySelectorAll('.svc'), function (el) { return state.items.indexOf(el.dataset.id) > -1; });
       btn.setAttribute('aria-pressed', all ? 'true' : 'false');
-      btn.setAttribute('aria-label', (all ? 'Remove all ' : 'Add all ') + cat.querySelector('h2').textContent.toLowerCase() + ' services');
+      btn.setAttribute('aria-label', (all ? 'All added: ' : 'Add all ') + cat.querySelector('h2').textContent.toLowerCase() + ' services');
     });
 
     var send = $('#q-send');
@@ -1126,6 +1196,7 @@ function startBuilder() {
   }
   function openSend() {
     var t = totals();
+    dlg.setAttribute('aria-labelledby', 'qd-title');
     $('#qd-mo').textContent = money(t.monthly);
     $('#qd-once').textContent = money(t.once);
     $('#qd-n').textContent = state.items.length;
@@ -1137,8 +1208,8 @@ function startBuilder() {
     setTimeout(function () { form.elements.name.focus(); }, 30);
   }
   $('#q-send').addEventListener('click', function (e) {
-    if (!state.items.length) return;
     e.preventDefault();
+    if (!state.items.length) return;
     var t0 = totals();
     track('begin_quote_request', { services: state.items.length, value: Math.round(t0.monthly), currency: 'USD' });
     openSend();
@@ -1146,15 +1217,17 @@ function startBuilder() {
   $$('#qd [data-close]').forEach(function (b) { b.addEventListener('click', function () { dlg.close(); }); });
   dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
 
-  form.addEventListener('input', function (e) { if (e.target.getAttribute('aria-invalid') === 'true') e.target.setAttribute('aria-invalid', 'false'); });
+  function markBad(field) { field.setAttribute('aria-invalid', 'true'); field.setAttribute('aria-describedby', 'qd-err'); }
+  function clearBad(field) { field.setAttribute('aria-invalid', 'false'); field.removeAttribute('aria-describedby'); }
+  form.addEventListener('input', function (e) { if (e.target.getAttribute('aria-invalid') === 'true') clearBad(e.target); });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     err.hidden = true;
     var f = form.elements, bad = null;
-    ['name', 'email'].forEach(function (k) { f[k].setAttribute('aria-invalid', 'false'); });
+    ['name', 'email', 'phone'].forEach(function (k) { clearBad(f[k]); });
     if (!f.name.value.trim()) bad = f.name;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) bad = f.email;
-    if (bad) { bad.setAttribute('aria-invalid', 'true'); bad.focus(); return showErr(bad === f.name ? 'Please add your name.' : 'Please check your email address.'); }
+    if (bad) { markBad(bad); bad.focus(); return showErr(bad === f.name ? 'Please add your name.' : 'Please check your email address.'); }
     if (!tsToken) return showErr('One moment, we’re still checking you’re not a bot. Try again in a second.');
 
     submitBtn.disabled = true; submitBtn.textContent = 'Sending…';
@@ -1171,11 +1244,14 @@ function startBuilder() {
           var t1 = totals();
           track('generate_lead', { value: Math.round(t1.monthly), currency: 'USD', one_time: Math.round(t1.once), services: body.items.length, workstations: body.workstations, servers: body.servers });
           $('#qd-form-view').hidden = true; $('#qd-done-view').hidden = false;
+          dlg.setAttribute('aria-labelledby', 'qd-done-title');
+          $('#qd-done-title').focus();
           form.reset();
           return;
         }
         if (res.status === 400 && (res.body.field === 'email' || res.body.field === 'name' || res.body.field === 'phone')) {
-          f[res.body.field].setAttribute('aria-invalid', 'true');
+          markBad(f[res.body.field]);
+          f[res.body.field].focus();
           return showErr(res.body.field === 'phone' ? 'Please check your phone number.' : res.body.field === 'name' ? 'Please check your name.' : 'Please check your email address.');
         }
         if (res.status === 429) return showErr('We’ve received several quotes from your network recently.', true);
@@ -1198,11 +1274,13 @@ function startBuilder() {
     track('add_to_quote', { service_id: id, service_name: svcs[id].name, method: method || 'button' });
     if (filter !== (isMonthly(svcs[id]) ? 'monthly' : 'once')) filter = 'all';
     render(true);
+    announce(svcs[id].name + ' added to your quote.');
   }
   function remove(id) {
     if (svcs[id]) track('remove_from_quote', { service_id: id, service_name: svcs[id].name });
     var li = list.querySelector('.q-item[data-id="' + id + '"]');
     state.items = state.items.filter(function (x) { return x !== id; });
+    if (svcs[id]) announce(svcs[id].name + ' removed from your quote.');
     if (li && !reduced.matches) {
       li.classList.add('out');
       setTimeout(function () { render(true); }, 180);
@@ -1215,9 +1293,11 @@ function startBuilder() {
     var ids = Array.prototype.map.call(cat.querySelectorAll('.svc'), function (el) { return el.dataset.id; });
     btn.addEventListener('click', function () {
       var all = ids.every(function (id) { return state.items.indexOf(id) > -1; });
+      var catName = cat.querySelector('h2').textContent;
       if (all) state.items = state.items.filter(function (id) { return ids.indexOf(id) === -1; });
-      else { ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; track('add_category', { category: cat.querySelector('h2').textContent }); }
+      else { ids.forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; track('add_category', { category: catName }); }
       render(true);
+      announce('All ' + catName.toLowerCase() + ' services ' + (all ? 'removed.' : 'added.'));
     });
   });
   $$('.svc .add').forEach(function (btn) {
@@ -1227,14 +1307,15 @@ function startBuilder() {
     });
   });
   $$('.presets button').forEach(function (b) {
-    b.addEventListener('click', function () { PRESETS[b.dataset.preset].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; track('add_package', { package: b.dataset.preset, source: 'quote_shortcut' }); render(true); });
+    b.addEventListener('click', function () { PRESETS[b.dataset.preset].forEach(function (id) { if (state.items.indexOf(id) === -1) state.items.push(id); }); filter = 'all'; track('add_package', { package: b.dataset.preset, source: 'quote_shortcut' }); render(true); announce(b.textContent + ' package added.'); });
   });
-  $('#q-clear').addEventListener('click', function () { state.items = []; render(true); });
+  $('#q-clear').addEventListener('click', function () { state.items = []; render(true); announce('Quote cleared.'); });
 
   function readDevices() {
     state.ws = Math.max(0, parseInt(ws.value, 10) || 0);
     state.sv = Math.max(0, parseInt(sv.value, 10) || 0);
     render(false);
+    if (state.items.length) announce('');
   }
   $$('.stepper button').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -1275,7 +1356,7 @@ function startBuilder() {
   function startDrag(d) {
     var r = d.el.getBoundingClientRect();
     var g = d.el.cloneNode(true);
-    g.classList.add('ghost'); g.removeAttribute('data-id'); g.setAttribute('aria-hidden', 'true');
+    g.classList.add('ghost'); g.removeAttribute('data-id'); g.setAttribute('aria-hidden', 'true'); g.inert = true;
     g.style.width = r.width + 'px';
     document.body.appendChild(g);
     d.ghost = g; d.rect = r; d.offX = d.x0 - r.left; d.offY = d.y0 - r.top; d.started = true;
