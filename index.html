@@ -718,7 +718,7 @@ footer .legal a:hover { color: var(--bone); }
           <span class="calc-total-v"><span class="v" id="calc-monthly">$468</span><span class="min-tag" id="calc-min" hidden>minimum</span></span>
         </div>
         <p class="calc-note">Estimate only. Final pricing is confirmed in your quote. $300 monthly minimum applies. Onboarding fee is waived at 100 or more devices.</p>
-        <a href="#contact" class="btn btn-lime" style="justify-content:center">Get an exact quote</a>
+        <a href="/build-your-quote/?package=secure&amp;ws=25&amp;sv=1" id="calc-cta" class="btn btn-lime" style="justify-content:center">Build your quote</a>
       </div>
     </div>
   </div>
@@ -821,7 +821,7 @@ footer .legal a:hover { color: var(--bone); }
           <span class="v" id="dt-total">$5,600 to $11,200</span>
         </div>
         <p class="calc-note">Estimate only. Idle labor is calculated directly from what you entered. Total impact adds lost revenue, recovery costs, and rework, which industry research puts at roughly 2 to 4 times idle labor. Real impact varies by business.</p>
-        <a href="#contact" class="btn btn-lime" style="justify-content:center">Get protected</a>
+        <a href="/build-your-quote/?package=secure" class="btn btn-lime" style="justify-content:center">Get protected</a>
       </div>
     </div>
   </div>
@@ -867,9 +867,10 @@ footer .legal a:hover { color: var(--bone); }
   <div class="wrap">
     <p class="mono reveal">08 Contact</p>
     <h2 class="big reveal" style="--d:100ms">Let&rsquo;s talk.</h2>
-    <p class="sub reveal" style="--d:200ms">Tell us how many devices you have and we&rsquo;ll send you a quote.</p>
+    <p class="sub reveal" style="--d:200ms">Build your quote in a couple of minutes, or tell us how many devices you have and we&rsquo;ll send you one.</p>
     <div class="cta reveal" style="--d:300ms">
-      <a href="mailto:contact@cyberx.la" class="btn btn-ink">Email us</a>
+      <a href="/build-your-quote/" class="btn btn-ink">Build your quote</a>
+      <a href="mailto:contact@cyberx.la" class="btn btn-line">Email us</a>
       <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
     </div>
   </div>
@@ -1026,6 +1027,8 @@ footer .legal a:hover { color: var(--bone); }
     $('#calc-setup').textContent = total >= SETUP_WAIVED_AT ? 'Waived' : money(setup);
     $('#calc-monthly').textContent = money(monthly);
     $('#calc-min').hidden = !(total > 0 && monthlyRaw < MIN_MONTHLY);
+    // Hand what they entered to the quote builder.
+    $('#calc-cta').setAttribute('href', '/build-your-quote/?package=' + currentPkg + '&ws=' + ep + '&sv=' + sv);
 
     // Package breakdown: every package's rate at this device count, with the chosen one lit.
     $('#calc-pk-tier').textContent = 'Rates for ' + tier.label + ' devices';

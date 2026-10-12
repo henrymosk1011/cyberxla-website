@@ -1032,6 +1032,17 @@ function startBuilder() {
       state.sv = Math.max(0, parseInt(saved.sv, 10) || 0);
     }
   } catch (e) {}
+
+  // ?ws=25&sv=1 from the homepage calculator carries the visitor's device counts over
+  try {
+    var qs = new URLSearchParams(location.search), qWs = qs.get('ws'), qSv = qs.get('sv');
+    if (qWs !== null || qSv !== null) {
+      if (/^\d+$/.test(qWs)) state.ws = Math.min(+ws.max, +qWs);
+      if (/^\d+$/.test(qSv)) state.sv = Math.min(+sv.max, +qSv);
+      qs.delete('ws'); qs.delete('sv');
+      history.replaceState(null, '', location.pathname + (qs.toString() ? '?' + qs : '') + location.hash);
+    }
+  } catch (e) {}
   ws.value = state.ws; sv.value = state.sv;
 
   // ?package=secure from the homepage package cards
