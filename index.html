@@ -68,7 +68,7 @@
       "logo": "https://cyberx.la/logo.png",
       "image": "https://cyberx.la/og-image.png",
       "email": "contact@cyberx.la",
-      "sameAs": ["https://www.instagram.com/cyberxla"],
+      "sameAs": ["https://www.instagram.com/cyberxla/", "https://x.com/cyberxLA", "https://www.facebook.com/profile.php?id=61594926402241", "https://share.google/vKOAXb9T2Jw81w5sY"],
       "areaServed": [
         { "@type": "City", "name": "Los Angeles" },
         { "@type": "City", "name": "Glendale" },
@@ -470,9 +470,16 @@ details[open] p { animation: fadein 0.5s ease both; }
 footer { background: var(--ink); color: var(--bone); padding: 56px 0; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; }
 footer .mute { color: var(--ink-mute); }
-footer .legal { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.14); }
-footer .legal a { color: var(--ink-mute); font-size: 13px; text-decoration: none; }
-footer .legal a:hover { color: var(--bone); }
+footer .legal { gap: 16px 20px; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.14); }
+footer .legal nav { display: flex; gap: 20px; flex-wrap: wrap; }
+footer .legal nav a { color: var(--ink-mute); font-size: 13px; text-decoration: none; }
+footer .legal nav a:hover { color: var(--bone); }
+.social { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.social a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(240, 237, 228, 0.22); color: var(--bone); opacity: 1; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.social a:hover { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+.social svg { width: 18px; height: 18px; }
+footer .credit { color: var(--bone); font-size: inherit; opacity: 1; text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+footer .credit:hover { color: var(--lime); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -871,7 +878,6 @@ footer .legal a:hover { color: var(--bone); }
     <div class="cta reveal" style="--d:300ms">
       <a href="/build-your-quote/" class="btn btn-ink">Build your quote</a>
       <a href="mailto:contact@cyberx.la" class="btn btn-line">Email us</a>
-      <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
     </div>
   </div>
 </section>
@@ -881,13 +887,21 @@ footer .legal a:hover { color: var(--bone); }
   <div class="wrap">
     <a href="#top" class="brandmark" aria-label="cyberXLA home"><span>cyber</span><span class="x">x</span><span>LA</span></a>
     <span class="mute">Serving Los Angeles and SoCal businesses.</span>
-    <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA</span>
+    <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA <span aria-hidden="true">&middot;</span> Designed by <a href="https://tenelevenmedia.com" class="credit">TENELEVENMEDIA</a></span>
   </div>
-  <nav class="wrap legal" aria-label="Footer">
-    <a href="/build-your-quote/">Build a Quote</a>
-    <a href="/terms/">Terms and Conditions</a>
-    <a href="/privacy/">Privacy Policy</a>
-  </nav>
+  <div class="wrap legal">
+    <nav aria-label="Footer">
+      <a href="/build-your-quote/">Build a Quote</a>
+      <a href="/terms/">Terms and Conditions</a>
+      <a href="/privacy/">Privacy Policy</a>
+    </nav>
+    <ul class="social" aria-label="cyberXLA on social media">
+      <li><a href="https://www.instagram.com/cyberxla/" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor"/></svg></a></li>
+      <li><a href="https://x.com/cyberxLA" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4h4.6L20 20h-4.6Z"/><path d="M20 4l-6.66 6.66M10.66 13.34 4 20"/></svg></a></li>
+      <li><a href="https://www.facebook.com/profile.php?id=61594926402241" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a></li>
+      <li><a href="https://share.google/vKOAXb9T2Jw81w5sY" aria-label="Google"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.66 6.34A8 8 0 1 0 20 12h-8"/></svg></a></li>
+    </ul>
+  </div>
 </footer>
 
 <script>
