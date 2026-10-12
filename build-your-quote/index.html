@@ -361,9 +361,16 @@ body.is-dragging .quote { z-index: 31; transition: box-shadow 0.2s, transform 0.
 footer { background: var(--ink); color: var(--bone); padding: 56px 0; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; }
 footer .mute { color: var(--ink-mute); }
-footer .legal { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.14); justify-content: flex-start; }
-footer .legal a { color: var(--ink-mute); font-size: 13px; text-decoration: none; }
-footer .legal a:hover { color: var(--bone); }
+footer .legal { gap: 16px 20px; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(240, 237, 228, 0.14); }
+footer .legal nav { display: flex; gap: 20px; flex-wrap: wrap; }
+footer .legal nav a { color: var(--ink-mute); font-size: 13px; text-decoration: none; }
+footer .legal nav a:hover { color: var(--bone); }
+.social { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.social a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(240, 237, 228, 0.22); color: var(--bone); opacity: 1; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.social a:hover { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+.social svg { width: 18px; height: 18px; }
+footer .credit { color: var(--bone); font-size: inherit; opacity: 1; text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+footer .credit:hover { color: var(--lime); }
 @media (max-width: 960px) { footer { padding-bottom: 120px; } }
 @media (prefers-reduced-motion: reduce) {
   .btn, .svc, .quote { transition: none; }
@@ -940,7 +947,6 @@ footer .legal a:hover { color: var(--bone); }
     <p>Tell us about your business and we&rsquo;ll recommend only what makes sense for your size and risk.</p>
     <div class="row">
       <a href="mailto:contact@cyberx.la" class="btn btn-ink">Email us</a>
-      <a href="https://www.instagram.com/cyberxla" class="btn btn-line">DM us 'CYBER' on Instagram</a>
     </div>
   </div>
 </section>
@@ -988,13 +994,21 @@ footer .legal a:hover { color: var(--bone); }
   <div class="wrap">
     <a href="/" class="brandmark" aria-label="cyberXLA home"><span>cyber</span><span class="x">x</span><span>LA</span></a>
     <span class="mute">Serving Los Angeles and SoCal businesses.</span>
-    <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA</span>
+    <span class="mute mono">&copy; <span data-year>2026</span> CyberXLA <span aria-hidden="true">&middot;</span> Designed by <a href="https://tenelevenmedia.com" class="credit">TENELEVENMEDIA</a></span>
   </div>
-  <nav class="wrap legal" aria-label="Footer">
-    <a href="/">Home</a>
-    <a href="/terms/">Terms and Conditions</a>
-    <a href="/privacy/">Privacy Policy</a>
-  </nav>
+  <div class="wrap legal">
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/terms/">Terms and Conditions</a>
+      <a href="/privacy/">Privacy Policy</a>
+    </nav>
+    <ul class="social" aria-label="cyberXLA on social media">
+      <li><a href="https://www.instagram.com/cyberxla" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor"/></svg></a></li>
+      <li><a href="#TODO-X-URL" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4h4.6L20 20h-4.6Z"/><path d="M20 4l-6.66 6.66M10.66 13.34 4 20"/></svg></a></li>
+      <li><a href="#TODO-FACEBOOK-URL" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a></li>
+      <li><a href="#TODO-GOOGLE-URL" aria-label="Google"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.66 6.34A8 8 0 1 0 20 12h-8"/></svg></a></li>
+    </ul>
+  </div>
 </footer>
 
 <script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
@@ -1058,7 +1072,7 @@ function startBuilder() {
   // ?service=ada-audit from the homepage accessibility cards
   try {
     var svcParam = new URLSearchParams(location.search).get('service');
-    if (svcParam && /^ada-(audit|starter|business)$/.test(svcParam) && state.items.indexOf(svcParam) === -1) {
+    if (svcParam && Object.prototype.hasOwnProperty.call(svcs, svcParam) && state.items.indexOf(svcParam) === -1) {
       state.items.push(svcParam);
       try { if (window.gtag) window.gtag('event', 'add_service', { service: svcParam, source: 'homepage' }); } catch (e) {}
       history.replaceState(null, '', location.pathname + location.hash);
@@ -1075,6 +1089,7 @@ function startBuilder() {
     return s.price;
   }
   function detail(s) {
+    if (!s.price) return 'No cost, no obligation';
     var base = (s.from ? 'from ' : '') + money(s.price) + ' ' + UNIT[s.unit];
     if (s.unit === 'dev') return base + ' × ' + (state.sv ? state.ws + ' + ' + state.sv + ' servers' : state.ws);
     if (s.unit === 'devonce') return base + ' × ' + devices();
@@ -1123,7 +1138,7 @@ function startBuilder() {
       li.querySelector('.n').innerHTML = '';
       li.querySelector('.n').appendChild(document.createTextNode(s.name));
       var sm = document.createElement('small'); sm.textContent = detail(s); li.querySelector('.n').appendChild(sm);
-      li.querySelector('.p').innerHTML = (s.from ? 'from ' : '') + money(cost(s)) + '<small>' + (isMonthly(s) ? 'per month' : 'one time') + '</small>';
+      li.querySelector('.p').innerHTML = !s.price ? 'Free' : (s.from ? 'from ' : '') + money(cost(s)) + '<small>' + (isMonthly(s) ? 'per month' : 'one time') + '</small>';
       list.appendChild(li);
       delete existing[id];
     });
@@ -1518,9 +1533,12 @@ function startBuilder() {
         body.appendChild(el('p', null, x.description || ''));
         var foot = el('div', 'svc-foot');
         var pr = el('span', 'svc-price');
-        pr.appendChild(el('b', null, (x.from ? 'from ' : '') + priceText(Number(x.price))));
-        pr.appendChild(document.createTextNode(' '));
-        pr.appendChild(el('span', null, UNIT[x.unit]));
+        if (Number(x.price) === 0) pr.appendChild(el('b', null, 'Free'));
+        else {
+          pr.appendChild(el('b', null, (x.from ? 'from ' : '') + priceText(Number(x.price))));
+          pr.appendChild(document.createTextNode(' '));
+          pr.appendChild(el('span', null, UNIT[x.unit]));
+        }
         foot.appendChild(pr);
         var add = el('button', 'add'); add.type = 'button';
         add.setAttribute('aria-pressed', 'false'); add.setAttribute('aria-label', 'Add ' + x.name + ' to quote');
