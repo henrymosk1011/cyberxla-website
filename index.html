@@ -238,16 +238,20 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 .menu-btn i + i { margin-top: 5px; }
 .menu-btn[aria-expanded="true"] i:first-child { transform: translateY(3.5px) rotate(45deg); }
 .menu-btn[aria-expanded="true"] i:last-child { transform: translateY(-3.5px) rotate(-45deg); }
-.menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--ink); border-bottom: 1px solid rgba(240, 237, 228, 0.14); max-height: calc(100svh - 72px - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; }
+/* full screen when open: it sits behind the nav bar's logo and buttons and covers everything else */
+.menu { position: fixed; inset: 0; z-index: -1; display: flex; flex-direction: column; padding-top: calc(72px + env(safe-area-inset-top, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: var(--ink); }
 .menu[hidden] { display: none; }
-.menu-in { width: min(1240px, 100% - 48px); margin-inline: auto; padding: 4px 0 12px; }
+.menu-in { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 8px 24px 24px; }
+html.menu-open { overflow: hidden; }
+html.menu-open .bar { visibility: hidden; }
 /* a plain list, ruled like the FAQ rows */
 .nav .menu ul { display: block; }
 .nav .menu li + li { border-top: 1px solid rgba(240, 237, 228, 0.14); }
 .nav .menu ul a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; color: var(--bone); font-size: 18px; letter-spacing: -0.01em; opacity: 1; -webkit-tap-highlight-color: transparent; }
 .nav .menu ul a::after { content: "\2192"; content: "\2192" / ""; color: var(--lime); font-size: 20px; line-height: 1; }
 .nav .menu ul a:active { color: var(--lime); }
-.nav.open { background: var(--ink); transform: none; }
+/* no blur while open: backdrop-filter would pin the fixed menu to the nav bar instead of the screen */
+.nav.open { background: var(--ink); transform: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 @media (max-width: 800px) { .menu-btn { display: inline-flex; } .nav-r .btn { white-space: nowrap; } }
 @media (max-width: 380px) { .nav-r { gap: 8px; } .nav-r .btn.sm { padding: 10px 16px; font-size: 15px; } }
 @media (min-width: 801px) { .menu { display: none !important; } }
@@ -1120,19 +1124,24 @@ footer .credit:hover { color: var(--lime); }
   var lastY = 0, ticking = false;
   var phone = window.matchMedia('(max-width: 800px)');
 
-  // Phone menu. The nav stays put while it's open.
-  var menuBtn = $('#menu-btn'), menu = $('#menu');
+  // Phone menu. It covers the whole screen, so while it's open the page
+  // behind can't scroll, and keyboard and screen reader focus stay in the nav.
+  var menuBtn = $('#menu-btn'), menu = $('#menu'), behind = $$('main, footer, .skip');
   function setMenu(open, refocus) {
     menu.hidden = !open;
     menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
     nav.classList.toggle('open', open);
+    root.classList.toggle('menu-open', open);
+    behind.forEach(function (el) { el.inert = open; });
     if (!open && refocus) menuBtn.focus();
   }
   menuBtn.addEventListener('click', function () { setMenu(menu.hidden); });
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) setMenu(false, true); });
   document.addEventListener('click', function (e) { if (!menu.hidden && !nav.contains(e.target)) setMenu(false); });
+  // Browsers without inert: close if focus gets out to the page behind.
+  document.addEventListener('focusin', function (e) { if (!menu.hidden && !nav.contains(e.target)) setMenu(false); });
   phone.addEventListener && phone.addEventListener('change', function () { if (!phone.matches) setMenu(false); });
 
   // On phones, keep the nav showing after a jump to a section so it doesn't
