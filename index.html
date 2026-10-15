@@ -240,12 +240,13 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 .menu-btn[aria-expanded="true"] i:last-child { transform: translateY(-3.5px) rotate(-45deg); }
 .menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--ink); border-bottom: 1px solid rgba(240, 237, 228, 0.14); max-height: calc(100svh - 72px - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; }
 .menu[hidden] { display: none; }
-.menu-in { width: min(1240px, 100% - 48px); margin-inline: auto; padding: 8px 0 24px; }
-.nav .menu ul { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.nav .menu ul a { display: block; padding: 14px 16px; border-radius: 14px; background: rgba(240, 237, 228, 0.07); color: var(--bone); font-size: 17px; opacity: 1; }
-.nav .menu ul a:active { background: var(--lime); color: var(--ink); }
-.menu-cta { display: flex; gap: 8px; margin-top: 16px; }
-.menu-cta .btn { flex: 1; justify-content: center; padding: 14px 16px; font-size: 16px; }
+.menu-in { width: min(1240px, 100% - 48px); margin-inline: auto; padding: 4px 0 12px; }
+/* a plain list, ruled like the FAQ rows */
+.nav .menu ul { display: block; }
+.nav .menu li + li { border-top: 1px solid rgba(240, 237, 228, 0.14); }
+.nav .menu ul a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; color: var(--bone); font-size: 18px; letter-spacing: -0.01em; opacity: 1; -webkit-tap-highlight-color: transparent; }
+.nav .menu ul a::after { content: "\2192"; content: "\2192" / ""; color: var(--lime); font-size: 20px; line-height: 1; }
+.nav .menu ul a:active { color: var(--lime); }
 .nav.open { background: var(--ink); transform: none; }
 @media (max-width: 800px) { .menu-btn { display: inline-flex; } .nav-r .btn { white-space: nowrap; } }
 @media (max-width: 380px) { .nav-r { gap: 8px; } .nav-r .btn.sm { padding: 10px 16px; font-size: 15px; } }
@@ -606,8 +607,9 @@ footer .credit:hover { color: var(--lime); }
   summary { font-size: 19px; gap: 16px; }
   summary::after { font-size: 32px; }
   details p { font-size: 16px; margin-top: 10px; }
-  .contact .sub { font-size: 18px; margin: 20px 0 24px; }
-  footer { padding: 40px 0; }
+  /* "Let's talk" and the footer keep their original spacing and fade-in */
+  .contact { padding: clamp(72px, 12vw, 160px) 0; }
+  .js .contact .reveal:not(.in) { transform: translateY(44px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -655,10 +657,6 @@ footer .credit:hover { color: var(--lime); }
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <div class="menu-cta">
-        <a href="/build-your-quote/" class="btn btn-lime">Build your quote</a>
-        <a href="mailto:contact@cyberx.la" class="btn btn-line">Email us</a>
-      </div>
     </div>
   </nav>
 </header>
@@ -1216,6 +1214,12 @@ footer .credit:hover { color: var(--lime); }
     track.addEventListener('scroll', function () {
       if (!raf) raf = requestAnimationFrame(function () { raf = 0; mark(); });
     }, { passive: true });
+    // Tabbing onto a card's button centers that card; on its own the browser
+    // can leave a focused button mostly off the edge of the strip.
+    track.addEventListener('focusin', function (e) {
+      var i = cards.indexOf(e.target.closest('.card'));
+      if (i > -1 && narrow.matches) requestAnimationFrame(function () { show(i, false); });
+    });
 
     // Open on the most popular card, with the cheaper and pricier ones peeking in at the sides.
     function start() {
