@@ -231,6 +231,31 @@ h2 { font-size: clamp(40px, 7vw, 104px); }
 .nav ul a:hover, .nav ul a:focus-visible { opacity: 1; }
 @media (max-width: 800px) { .nav ul { display: none; } }
 
+/* phone menu: the section links above are hidden at this width, so they live behind a button */
+.nav-r { display: flex; align-items: center; gap: 10px; }
+.menu-btn { display: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(240, 237, 228, 0.3); background: transparent; color: var(--bone); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.menu-btn i { display: block; width: 18px; height: 2px; border-radius: 2px; background: currentColor; transition: transform 0.25s ease; }
+.menu-btn i + i { margin-top: 5px; }
+.menu-btn[aria-expanded="true"] i:first-child { transform: translateY(3.5px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] i:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+/* full screen when open: it sits behind the nav bar's logo and buttons and covers everything else */
+.menu { position: fixed; inset: 0; z-index: -1; display: flex; flex-direction: column; padding-top: calc(72px + env(safe-area-inset-top, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: var(--ink); }
+.menu[hidden] { display: none; }
+.menu-in { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 8px 24px 24px; }
+html.menu-open { overflow: hidden; }
+html.menu-open .bar { visibility: hidden; }
+/* a plain list, ruled like the FAQ rows */
+.nav .menu ul { display: block; }
+.nav .menu li + li { border-top: 1px solid rgba(240, 237, 228, 0.14); }
+.nav .menu ul a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; color: var(--bone); font-size: 18px; letter-spacing: -0.01em; opacity: 1; -webkit-tap-highlight-color: transparent; }
+.nav .menu ul a::after { content: "\2192"; content: "\2192" / ""; color: var(--lime); font-size: 20px; line-height: 1; }
+.nav .menu ul a:active { color: var(--lime); }
+/* no blur while open: backdrop-filter would pin the fixed menu to the nav bar instead of the screen */
+.nav.open { background: var(--ink); transform: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (max-width: 800px) { .menu-btn { display: inline-flex; } .nav-r .btn { white-space: nowrap; } }
+@media (max-width: 380px) { .nav-r { gap: 8px; } .nav-r .btn.sm { padding: 10px 16px; font-size: 15px; } }
+@media (min-width: 801px) { .menu { display: none !important; } }
+
 .btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 999px; font-weight: 700; font-size: 18px; text-decoration: none; border: 2px solid transparent; transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease; cursor: pointer; }
 .btn:hover { transform: translateY(-3px); }
 .btn-lime { background: var(--lime); color: var(--ink); }
@@ -481,6 +506,116 @@ footer .legal nav a:hover { color: var(--bone); }
 footer .credit { color: var(--bone); font-size: inherit; opacity: 1; text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 footer .credit:hover { color: var(--lime); }
 
+/* swipe pager under the package cards; only shown on phones */
+.pk-pager { display: none; }
+
+/* Phones: tighter spacing, swipeable package cards, short service rows,
+   and calculator results right under their inputs. Desktop is untouched. */
+@media (max-width: 700px) {
+  main section[id] { scroll-margin-top: -16px; }
+  section { padding: 56px 0; }
+  .sec-head { gap: 14px; margin-bottom: 28px; }
+  .sec-head p { font-size: 17px; }
+  h2 { font-size: 40px; }
+  .note { font-size: 12px; line-height: 1.55; margin-top: 20px; }
+  .js .reveal { transform: translateY(16px); }
+  .card:hover { transform: none; }
+
+  .hero { padding-top: 104px; padding-bottom: 48px; }
+  .hero h1 .kicker { margin-bottom: 16px; }
+  .hero .sub { font-size: 17px; margin-bottom: 24px; }
+  .term { padding: 18px; gap: 10px; font-size: 13px; border-radius: 20px; }
+  .marq { padding: 14px 0; }
+  .strip { display: none; }
+
+  /* services: one short row each instead of a tall card */
+  .grid { gap: 8px; }
+  .grid .card { min-height: 0; flex-direction: row; justify-content: flex-start; align-items: baseline; gap: 14px; padding: 18px 20px; border-radius: 20px; }
+  .grid .card .num { flex: none; width: 22px; font-size: 12px; }
+  .grid .card h3 { font-size: 22px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px; }
+  .grid .card p { font-size: 15px; line-height: 1.4; }
+  .more { margin-top: 24px; }
+  .more a { font-size: 16px; }
+
+  /* package cards: side by side, swipe to compare */
+  .pk { position: relative; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; margin-inline: -24px; padding: 18px 24px 4px; scroll-padding-inline: 24px; }
+  .pk::-webkit-scrollbar { display: none; }
+  .pk > .card { flex: 0 0 82%; scroll-snap-align: center; gap: 18px; padding: 24px; border-radius: 24px; }
+  .js .pk > .reveal { opacity: 1; transform: none; transition: none; }
+  .pk .card h3 { font-size: 30px; }
+  .pk .price { font-size: 64px; }
+  .pk li { font-size: 16px; padding: 9px 0; }
+  .badge { right: 20px; }
+  .pk-pager { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .pk-pager button { min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--paper-fg); font: 600 14px/1 'Inter', sans-serif; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+  .pk-pager button[aria-current="true"] { background: var(--ink); color: var(--lime); border-color: var(--ink); }
+
+  /* calculators: label and stepper on one line, estimate straight after the inputs */
+  .calc { gap: 12px; }
+  .calc-l { display: contents; }
+  .calc-in { order: 1; padding: 20px; gap: 16px; border-radius: 22px; }
+  .calc-out { order: 2; padding: 22px; gap: 14px; border-radius: 22px; }
+  .calc-pk { order: 3; border-radius: 22px; }
+  .field { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 12px; }
+  .field label, #calc-pkg-label { font-size: 16px !important; }
+  .field .hint, .field .seg { grid-column: 1 / -1; }
+  .field .hint { font-size: 13px; }
+  .stepper button { width: 44px; height: 44px; }
+  .stepper input { width: 60px; height: 44px; font-size: 18px; }
+  .seg { gap: 6px; flex-wrap: nowrap; }
+  .seg button { min-width: 0; padding: 12px 6px; font-size: 15px; border-radius: 12px; }
+  .calc-row { padding: 10px 0; }
+  .calc-row .k { font-size: 15px; }
+  .calc-row .v { font-size: 24px; }
+  .calc-row.sub .k { font-size: 14px; padding-left: 14px; }
+  .calc-row.sub .v { font-size: 15px; }
+  .calc-total { padding-top: 16px; }
+  .calc-total .v { font-size: 48px; }
+  #dt-total { font-size: 36px; }
+  .calc-note { font-size: 13px; }
+  /* the swipe cards above already list features, so here it's just each package's rate */
+  .calc-pk { padding: 18px; gap: 12px; }
+  .mpk { gap: 6px; }
+  .mpk-c { padding: 12px 14px; border-radius: 14px; }
+  .mpk-top { align-items: center; }
+  .mpk-c h3 { font-size: 20px; margin-top: 2px; }
+  .mpk-c ul { display: none; }
+
+  /* process */
+  .proc { gap: 24px; }
+  .sticky h2 { margin: 14px 0; }
+  .sticky > p:last-child { font-size: 17px !important; }
+  .step { min-height: 0; gap: 6px; padding-bottom: 28px; }
+  .step:last-child { padding-bottom: 0; }
+  .step h3 { font-size: 30px; }
+  .step p { font-size: 16px; }
+
+  /* response times: number on the left, details on the right */
+  .sla { gap: 0; }
+  .sla > div { display: grid; grid-template-columns: 64px 1fr; grid-template-areas: "n u" "n h" "n p"; column-gap: 16px; align-items: start; padding: 18px 0; border-top: 1px solid var(--line); }
+  .sla > div:last-child { border-bottom: 1px solid var(--line); }
+  .sla .n { grid-area: n; font-size: 84px; }
+  .sla .u { grid-area: u; justify-self: start; margin-top: 2px; padding: 4px 10px; font-size: 11px; }
+  .sla h3 { grid-area: h; font-size: 26px; margin: 8px 0 4px; }
+  .sla p { grid-area: p; font-size: 16px; }
+
+  /* insurance */
+  .oc { padding: 24px; gap: 16px; border-radius: 24px; }
+  .oc h3 { font-size: 30px; }
+  .oc li { font-size: 16px; padding: 10px 0; gap: 12px; }
+
+  /* clients, faq, contact */
+  .clients { padding-bottom: 56px; }
+  .clients .wrap { padding-top: 56px; gap: 24px; }
+  details { padding: 18px 0; }
+  summary { font-size: 19px; gap: 16px; }
+  summary::after { font-size: 32px; }
+  details p { font-size: 16px; margin-top: 10px; }
+  /* "Let's talk" and the footer keep their original spacing and fade-in */
+  .contact { padding: clamp(72px, 12vw, 160px) 0; }
+  .js .contact .reveal:not(.in) { transform: translateY(44px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .js .w > span, .js .hero .fade, .js .ln { animation: none; opacity: 1; transform: none; }
@@ -507,8 +642,27 @@ footer .credit:hover { color: var(--lime); }
         <li><a href="#faq">FAQ</a></li>
       </ul>
     </nav>
-    <a href="/build-your-quote/" class="btn btn-lime sm">Get a quote</a>
+    <div class="nav-r">
+      <a href="/build-your-quote/" class="btn btn-lime sm">Get a quote</a>
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu"><i></i><i></i></button>
+    </div>
   </div>
+  <nav class="menu" id="menu" aria-label="Sections" hidden>
+    <div class="menu-in">
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#packages">Packages</a></li>
+        <li><a href="#accessibility">Accessibility</a></li>
+        <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#response">Response times</a></li>
+        <li><a href="#insurance">Insurance</a></li>
+        <li><a href="#downtime">Downtime cost</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 </header>
 
 <main id="main">
@@ -586,7 +740,7 @@ footer .credit:hover { color: var(--lime); }
       <h2 class="reveal" style="--d:100ms">Pick your level of <span class="chip">paranoia.</span></h2>
       <p class="reveal mute-paper" style="--d:200ms">Three packages, priced per device. No surprise invoices.</p>
     </div>
-    <div class="pk">
+    <div class="pk" data-pager="Security packages">
       <article class="card reveal" style="--d:0ms">
         <div><p class="mono mute-paper">Patching only</p><h3 style="margin-top:12px">Essential</h3></div>
         <div class="price"><sup>$</sup><span data-count="10" data-pkg-price="essential">10</span></div>
@@ -620,7 +774,7 @@ footer .credit:hover { color: var(--lime); }
       <h2 class="reveal" style="--d:100ms">Web accessibility and <span class="chip">compliance.</span></h2>
       <p class="reveal mute-paper" style="--d:200ms">ADA website lawsuits keep climbing, and small businesses are the easiest target. We find the problems on your existing site and fix them in the code, so people using screen readers and keyboards can actually use it.</p>
     </div>
-    <div class="pk">
+    <div class="pk" data-pager="Accessibility packages">
       <article class="card reveal" style="--d:0ms">
         <div><p class="mono mute-paper">Find the problems</p><h3 style="margin-top:12px">Audit</h3></div>
         <div class="price"><span>Free</span></div>
@@ -968,6 +1122,35 @@ footer .credit:hover { color: var(--lime); }
   var bar = $('#bar'), nav = $('#nav'), fill = $('.pfill'), steps = $$('.step'), stepsBox = $('.steps');
   var pars = $$('[data-speed]'), rows = $$('.row');
   var lastY = 0, ticking = false;
+  var phone = window.matchMedia('(max-width: 800px)');
+
+  // Phone menu. It covers the whole screen, so while it's open the page
+  // behind can't scroll, and keyboard and screen reader focus stay in the nav.
+  var menuBtn = $('#menu-btn'), menu = $('#menu'), behind = $$('main, footer, .skip');
+  function setMenu(open, refocus) {
+    menu.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
+    nav.classList.toggle('open', open);
+    root.classList.toggle('menu-open', open);
+    behind.forEach(function (el) { el.inert = open; });
+    if (!open && refocus) menuBtn.focus();
+  }
+  menuBtn.addEventListener('click', function () { setMenu(menu.hidden); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) setMenu(false, true); });
+  document.addEventListener('click', function (e) { if (!menu.hidden && !nav.contains(e.target)) setMenu(false); });
+  // Browsers without inert: close if focus gets out to the page behind.
+  document.addEventListener('focusin', function (e) { if (!menu.hidden && !nav.contains(e.target)) setMenu(false); });
+  phone.addEventListener && phone.addEventListener('change', function () { if (!phone.matches) setMenu(false); });
+
+  // On phones, keep the nav showing after a jump to a section so it doesn't
+  // slide away mid-scroll and leave a sliver of the previous section on top.
+  var holdNav = 0;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a && phone.matches) holdNav = Date.now() + 1500;
+  });
 
   function update() {
     ticking = false;
@@ -975,7 +1158,7 @@ footer .credit:hover { color: var(--lime); }
     var max = document.documentElement.scrollHeight - vh;
     bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
     nav.classList.toggle('solid', y > 40);
-    nav.classList.toggle('hide', y > lastY && y > 320);
+    nav.classList.toggle('hide', menu.hidden && Date.now() > holdNav && y > lastY && y > 320);
     lastY = y;
 
     if (!reduce && !paused()) {
@@ -1003,6 +1186,60 @@ footer .credit:hover { color: var(--lime); }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
+
+  // Package cards swipe sideways on phones (see .pk in the CSS). The pills
+  // underneath name each card, light up the one in view, and jump to one on tap.
+  var narrow = window.matchMedia('(max-width: 700px)');
+  $$('.pk').forEach(function (track) {
+    var cards = $$('.card', track);
+    var pager = document.createElement('div');
+    pager.className = 'pk-pager';
+    pager.setAttribute('role', 'group');
+    pager.setAttribute('aria-label', track.getAttribute('data-pager') || 'Packages');
+    var pills = cards.map(function (card, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = $('h3', card).textContent;
+      b.addEventListener('click', function () { show(i, !reduce); });
+      pager.appendChild(b);
+      return b;
+    });
+    track.parentNode.insertBefore(pager, track.nextSibling);
+
+    function offsetFor(i) {
+      var c = cards[i].getBoundingClientRect(), t = track.getBoundingClientRect();
+      return track.scrollLeft + (c.left + c.width / 2) - (t.left + t.width / 2);
+    }
+    function show(i, smooth) { track.scrollTo({ left: offsetFor(i), behavior: smooth ? 'smooth' : 'auto' }); }
+    function mark() {
+      var t = track.getBoundingClientRect(), mid = t.left + t.width / 2, best = 0, bestD = Infinity;
+      cards.forEach(function (c, i) {
+        var r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      pills.forEach(function (p, i) { p.setAttribute('aria-current', i === best ? 'true' : 'false'); });
+    }
+    var raf = 0;
+    track.addEventListener('scroll', function () {
+      if (!raf) raf = requestAnimationFrame(function () { raf = 0; mark(); });
+    }, { passive: true });
+    // Tabbing onto a card's button centers that card; on its own the browser
+    // can leave a focused button mostly off the edge of the strip.
+    track.addEventListener('focusin', function (e) {
+      var i = cards.indexOf(e.target.closest('.card'));
+      if (i > -1 && narrow.matches) requestAnimationFrame(function () { show(i, false); });
+    });
+
+    // Open on the most popular card, with the cheaper and pricier ones peeking in at the sides.
+    function start() {
+      if (!narrow.matches) return;
+      var feat = cards.indexOf($('.feat', track));
+      show(feat > -1 ? feat : 0, false);
+      mark();
+    }
+    start();
+    narrow.addEventListener && narrow.addEventListener('change', start);
+  });
 
   var RATES = {
     essential: [10, 9.5, 9, 8.5],
