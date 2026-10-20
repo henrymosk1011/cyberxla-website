@@ -536,7 +536,9 @@ footer .credit:hover { color: var(--lime); }
   .grid .card p { font-size: 15px; line-height: 1.4; }
   /* once the script adds its buttons (.fold), each service shows just its title; tapping the card opens it */
   .grid.fold .card { position: relative; }
-  .grid.fold .card > div { flex: 1; min-width: 0; display: grid; grid-template-rows: auto 0fr; transition: grid-template-rows 0.3s ease, row-gap 0.3s ease; }
+  /* align-content: start keeps the title row its own height mid-slide; otherwise the browser
+     stretches it with the space the half-open description hasn't taken yet, and the title dips */
+  .grid.fold .card > div { flex: 1; min-width: 0; display: grid; grid-template-rows: auto 0fr; row-gap: 0; align-content: start; transition: grid-template-rows 0.3s ease, row-gap 0.3s ease; }
   .grid.fold .card.open > div { grid-template-rows: auto 1fr; row-gap: 6px; }
   .grid.fold .card h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 0; }
   .grid.fold .card h3::after { content: "+"; content: "+" / ""; margin-left: auto; font-size: 28px; font-weight: 400; line-height: 0.8; color: var(--paper-fg); transition: transform 0.3s ease; }
