@@ -534,6 +534,19 @@ footer .credit:hover { color: var(--lime); }
   .grid .card .num { flex: none; width: 22px; font-size: 12px; }
   .grid .card h3 { font-size: 22px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px; }
   .grid .card p { font-size: 15px; line-height: 1.4; }
+  /* once the script adds its buttons (.fold), each service shows just its title; tapping the card opens it */
+  .grid.fold .card { position: relative; }
+  .grid.fold .card > div { flex: 1; min-width: 0; display: grid; grid-template-rows: auto 0fr; transition: grid-template-rows 0.3s ease, row-gap 0.3s ease; }
+  .grid.fold .card.open > div { grid-template-rows: auto 1fr; row-gap: 6px; }
+  .grid.fold .card h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 0; }
+  .grid.fold .card h3::after { content: "+"; content: "+" / ""; margin-left: auto; font-size: 28px; font-weight: 400; line-height: 0.8; color: var(--paper-fg); transition: transform 0.3s ease; }
+  .grid.fold .card.open h3::after { transform: rotate(45deg); }
+  .grid.fold .card p { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 0s linear 0.3s; }
+  .grid.fold .card.open p { visibility: visible; transition-delay: 0s; }
+  .fold-btn { flex: 1; min-width: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .fold-btn::after { content: ""; position: absolute; inset: 0; border-radius: 20px; }
+  .fold-btn:focus-visible { outline: none; }
+  .fold-btn:focus-visible::after { outline: 3px solid var(--focus); outline-offset: 3px; }
   .more { margin-top: 24px; }
   .more a { font-size: 16px; }
 
@@ -622,6 +635,7 @@ footer .credit:hover { color: var(--lime); }
   .js .reveal, .js .from-l, .js .from-r { opacity: 1; transform: none; transition: none; }
   .js .ck { transform: none; transition: none; }
   .marq .track, .ring, .scrollcue i, .cursor { animation: none; }
+  .grid.fold .card > div, .grid.fold .card h3::after, .grid.fold .card p { transition: none; }
 }
 </style>
 </head>
@@ -1240,6 +1254,34 @@ footer .credit:hover { color: var(--lime); }
     start();
     narrow.addEventListener && narrow.addEventListener('change', start);
   });
+
+  // Phones: service cards fold down to their titles and open on tap. Each title
+  // becomes a button (the accordion pattern), so screen readers hear "collapsed"
+  // or "expanded". Without this script every card simply stays open.
+  var svcGrid = $('.grid');
+  var svc = $$('.card', svcGrid).map(function (card, i) {
+    var h = $('h3', card), p = $('p', card), b = document.createElement('button');
+    p.id = p.id || 'svc-' + (i + 1);
+    b.type = 'button';
+    b.className = 'fold-btn';
+    b.setAttribute('aria-controls', p.id);
+    b.addEventListener('click', function () { setFold(card, b, !card.classList.contains('open')); });
+    return { card: card, h: h, b: b, label: h.textContent };
+  });
+  function setFold(card, b, open) {
+    card.classList.toggle('open', open);
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function fold() {
+    var on = narrow.matches;
+    svcGrid.classList.toggle('fold', on);
+    svc.forEach(function (s) {
+      if (on && !s.b.parentNode) { s.b.textContent = s.label; s.h.textContent = ''; s.h.appendChild(s.b); setFold(s.card, s.b, false); }
+      else if (!on && s.b.parentNode) { s.h.textContent = s.label; s.card.classList.remove('open'); }
+    });
+  }
+  fold();
+  narrow.addEventListener && narrow.addEventListener('change', fold);
 
   var RATES = {
     essential: [10, 9.5, 9, 8.5],
