@@ -800,20 +800,20 @@ footer .credit:hover { color: var(--lime); }
       </article>
       <article class="card feat reveal" style="--d:120ms"><span class="badge mono">Most popular</span>
         <div><p class="mono" style="color:var(--lime)">Up to 10 pages</p><h3 style="margin-top:12px">Starter fix</h3></div>
-        <div class="price"><sup>$</sup><span>999</span></div>
-        <p class="mono mute-paper">one time</p>
+        <div class="price"><sup>$</sup><span data-ada-price="ada-starter">999</span></div>
+        <p class="mono mute-paper" data-ada-unit="ada-starter">one time</p>
         <ul><li>Real code fixes, no overlay widgets</li><li>Photo descriptions, colors, buttons, menus</li><li>WCAG 2.1 AA conformance report</li></ul>
         <a href="/build-your-quote/?service=ada-starter#accessibility" class="btn btn-lime" aria-label="Get a quote for the Starter accessibility fix">Get a quote</a>
       </article>
       <article class="card reveal" style="--d:240ms">
         <div><p class="mono mute-paper">11 to 30 pages</p><h3 style="margin-top:12px">Business fix</h3></div>
-        <div class="price"><sup>$</sup><span>3,500</span></div>
-        <p class="mono mute-paper">one time</p>
+        <div class="price"><sup>$</sup><span data-ada-price="ada-business">3,499</span></div>
+        <p class="mono mute-paper" data-ada-unit="ada-business">one time</p>
         <ul><li>Everything in Starter</li><li>Templates, blogs, and popups</li><li>Accessibility statement page</li></ul>
         <a href="/build-your-quote/?service=ada-business#accessibility" class="btn btn-line" aria-label="Get a quote for the Business accessibility fix">Get a quote</a>
       </article>
     </div>
-    <p class="note mono mute-paper reveal">Free audits, no obligation. Keep it compliant with monitoring at $99 per month. Larger sites, ecommerce, and PDFs quoted separately. We work toward WCAG 2.1 AA conformance; we are not a law firm and do not give legal advice.</p>
+    <p class="note mono mute-paper reveal">Free audits, no obligation. Keep it compliant with monitoring at <span data-ada-price="ada-monitor" data-ada-text>$99 per month</span>. Larger sites, ecommerce, and PDFs quoted separately. We work toward WCAG 2.1 AA conformance; we are not a law firm and do not give legal advice.</p>
   </div>
 </section>
 
@@ -1382,6 +1382,41 @@ footer .credit:hover { color: var(--lime); }
         el.textContent = countText(r[0]);
       });
       calc();
+    })
+    .catch(function () {});
+
+  // Live accessibility prices (Starter fix, Business fix, monitoring) from the
+  // same catalog the quote builder uses. The prices written in the page are
+  // the fallback if this is slow or unreachable.
+  var ADA_UNIT = { once: 'one time', mo: 'per month', dev: 'per device per month', devonce: 'per device, one time' };
+  function priceNum(n) {
+    return Math.round(n) === n ? n.toLocaleString('en-US') : n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  fetch('https://onpdkqzcgnoepwiqcgtv.supabase.co/rest/v1/rpc/service_catalog', {
+    method: 'POST',
+    headers: { apikey: 'sb_publishable_lKWjP561VJoxmAebZAIidA_lPYiNck3', 'Content-Type': 'application/json' },
+    body: '{}'
+  })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (cats) {
+      if (!Array.isArray(cats)) return;
+      var live = {};
+      cats.forEach(function (c) {
+        if (c && Array.isArray(c.services)) c.services.forEach(function (s) {
+          var p = s && Number(s.price);
+          if (s && typeof s.id === 'string' && isFinite(p) && p >= 0 && p <= 1000000 && ADA_UNIT[s.unit]) live[s.id] = s;
+        });
+      });
+      $$('[data-ada-price]').forEach(function (el) {
+        var s = live[el.getAttribute('data-ada-price')];
+        if (!s) return;
+        var p = Number(s.price);
+        el.textContent = el.hasAttribute('data-ada-text') ? '$' + priceNum(p) + ' ' + ADA_UNIT[s.unit] : priceNum(p);
+      });
+      $$('[data-ada-unit]').forEach(function (el) {
+        var s = live[el.getAttribute('data-ada-unit')];
+        if (s) el.textContent = (s.from ? 'starting price, ' : '') + ADA_UNIT[s.unit];
+      });
     })
     .catch(function () {});
 
