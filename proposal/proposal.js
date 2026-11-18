@@ -209,7 +209,7 @@
     var out = '';
     if (m.preview) out += '<p class="banner info no-print" role="note"><strong>Preview.</strong> This is how ' + esc(m.number) + ' looks to the client. Buttons work only on the client’s page.</p>';
     if (m.state === 'accepted' && m.accepted) {
-      out += '<p class="banner ok" role="status"><strong>Accepted, thank you.</strong> ' + esc(m.accepted.by) + ' accepted this quote on ' + esc(dateOf(m.accepted.at)) + '. A confirmation went to your email. We’ll be in touch to schedule the work.</p>';
+      out += '<p class="banner ok" role="status"><strong>Accepted, thank you.</strong> ' + esc(m.accepted.by) + ' accepted this quote on ' + esc(dateOf(m.accepted.at)) + '. We’ll be in touch to schedule the work.</p>';
       if (params.get('paid') === '1') out += '<p class="banner ok" role="status"><strong>Payment received.</strong> Thank you. Stripe is emailing you a receipt.</p>';
     } else if (m.state === 'changes_requested') {
       out += '<p class="banner info" role="note"><strong>Changes requested.</strong> Thanks for your note. We’ll send an updated quote soon. You can still accept this one as it is.</p>';
@@ -503,7 +503,8 @@
         $('#accept-form-view').hidden = true; $('#accept-done-view').hidden = false;
         acc.setAttribute('aria-labelledby', 'accept-done-title');
         var due = res.body.due_now || 0;
-        $('#accept-done-text').textContent = 'We emailed a confirmation to ' + f.email.value.trim() + '.' + (due > 0 && !res.body.pay ? ' We’ll send you an invoice for the ' + (model.doc.payment.mode === 'full' ? 'payment' : 'deposit') + ' of ' + money(due) + '.' : '');
+        // Only say the confirmation went if the server says it did.
+        $('#accept-done-text').textContent = (res.body.emailed ? 'We emailed a confirmation to ' + f.email.value.trim() + '.' : 'We’ll be in touch to schedule the work.') + (due > 0 && !res.body.pay ? ' We’ll send you an invoice for the ' + (model.doc.payment.mode === 'full' ? 'payment' : 'deposit') + ' of ' + money(due) + '.' : '');
         var payBtn = $('#accept-pay');
         payBtn.hidden = !(res.body.pay && due > 0);
         payBtn.textContent = (model.doc.payment.mode === 'full' ? 'Pay now' : 'Pay deposit') + ', ' + money(due);
