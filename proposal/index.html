@@ -115,7 +115,8 @@ fieldset:disabled .tier:not(:has(input:checked)) .t-pick { visibility: hidden; }
 /* A discounted price: the regular price struck through in gray, the new price under it. */
 .was { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-size: 16px; font-weight: 600; color: var(--paper-mute); }
 .was del { text-decoration-thickness: 2px; }
-.was .save { font-size: 13px; font-weight: 700; background: var(--lime); color: var(--ink); border-radius: 999px; padding: 1px 8px; }
+/* Savings read as part of the price (green text), so the only bubble on a card is Recommended. */
+.was .save { font-size: 15px; font-weight: 700; color: var(--ok); }
 del { color: var(--paper-mute); text-decoration-thickness: 1.5px; }
 
 .cmp-tools { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
