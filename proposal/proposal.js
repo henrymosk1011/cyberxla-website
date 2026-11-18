@@ -29,6 +29,8 @@
   var model = null;
   var sel = { tier: null, addons: [] };
   var CHEV = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>';
+  var INFO = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v5"/><path d="M10 6.2v.1"/></svg>';
+  var DOC = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.5 2.5h6l3.5 3.5v11.5h-9.5z"/><path d="M11.5 2.5V6H15"/><path d="M8 10h5M8 13h5"/></svg>';
   var TICK = '<svg class="tick" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 10.5 8.5 14.5 15.5 6"/></svg>';
 
   function $(s, root) { return (root || document).querySelector(s); }
@@ -223,6 +225,51 @@
     return out;
   }
 
+  // A row's explanation, easier to scan. A sentence about a tier (or about one
+  // of the row's values, like Standard or Plus) starts its own line, and those
+  // names are bold; the general description stays first. Line breaks typed in
+  // the editor are kept. Text is escaped piece by piece.
+  function explainHtml(text, doc, row) {
+    var names = doc.tiers.map(function (t) { return t.name; });
+    Object.keys(row.values || {}).forEach(function (k) {
+      var v = row.values[k];
+      if (typeof v === 'string' && v.trim().length > 1 && v.length <= 40) names.push(v.trim());
+    });
+    names = names.filter(function (n, i) { return n && names.indexOf(n) === i; }).sort(function (a, b) { return b.length - a.length; });
+    var re = names.length ? new RegExp('(^|[^0-9A-Za-z])(' + names.map(function (n) { return n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')(?![0-9A-Za-z])', 'g') : null;
+    function mentions(s) { if (!re) return false; re.lastIndex = 0; return re.test(s); }
+    function bold(s) {
+      if (!re) return esc(s);
+      var out = '', last = 0, m;
+      re.lastIndex = 0;
+      while ((m = re.exec(s))) {
+        var at = m.index + m[1].length;
+        out += esc(s.slice(last, at)) + '<b>' + esc(m[2]) + '</b>';
+        last = at + m[2].length;
+        re.lastIndex = last;
+      }
+      return out + esc(s.slice(last));
+    }
+    var lines = [];
+    String(text || '').split(/\n+/).forEach(function (para) {
+      para.trim().replace(/([.;!?])\s+(?=[A-Z0-9\u201C"(])/g, '$1\u0001').split('\u0001').forEach(function (s, i) {
+        s = s.trim();
+        if (!s) return;
+        var tier = mentions(s), prev = lines[lines.length - 1];
+        if (prev && i > 0 && !tier) { prev.text += ' ' + s; return; }
+        // A clause split off at a semicolon reads as its own sentence.
+        if (prev && i > 0) prev.text = prev.text.replace(/;$/, '.');
+        lines.push({ text: s, tier: tier });
+      });
+    });
+    var h = '', list = false;
+    lines.forEach(function (l) {
+      if (l.tier !== list) { h += l.tier ? '<ul class="ex-list">' : '</ul>'; list = l.tier; }
+      h += l.tier ? '<li>' + bold(l.text) + '</li>' : '<p>' + bold(l.text) + '</p>';
+    });
+    return h + (list ? '</ul>' : '');
+  }
+
   function cellHtml(v, tierName) {
     var label = '<span class="sr-only">' + esc(tierName) + ': </span>';
     if (v === true) return label + TICK + '<span class="sr-only">Included</span>';
@@ -245,7 +292,7 @@
       var id = 'd' + i;
       h += '<tr class="item"><th scope="row"><button type="button" class="row-btn" aria-expanded="false" aria-controls="' + id + '"' + (r.explain ? '' : ' disabled') + '><span>' + esc(r.label) + '</span>' + (r.explain ? '<span class="chev">' + CHEV + '</span>' : '') + '</button></th>';
       doc.tiers.forEach(function (t) { h += '<td data-tier="' + esc(t.key) + '">' + cellHtml(r.values[t.key], t.name) + '</td>'; });
-      h += '</tr><tr class="detail" id="' + id + '" hidden><td colspan="' + (n + 1) + '">' + esc(r.explain) + '</td></tr>';
+      h += '</tr><tr class="detail" id="' + id + '" hidden><td colspan="' + (n + 1) + '"><div class="explain">' + explainHtml(r.explain, doc, r) + '</div></td></tr>';
     });
     return h + '</tbody></table></section>';
   }
@@ -260,7 +307,7 @@
       rows.forEach(function (r, i) {
         var id = 'd' + i, v = r.values[t.key];
         h += '<li><button type="button" class="row-btn" aria-expanded="false" aria-controls="' + id + '"' + (r.explain ? '' : ' disabled') + '><span class="inc-label">' + TICK + '<span>' + esc(r.label) + (typeof v === 'string' ? ': <span class="inc-val">' + esc(v) + '</span>' : '') + '</span></span>' +
-          (r.explain ? '<span class="chev">' + CHEV + '</span>' : '') + '</button><p class="inc-detail" id="' + id + '" hidden>' + esc(r.explain) + '</p></li>';
+          (r.explain ? '<span class="chev">' + CHEV + '</span>' : '') + '</button><div class="inc-detail explain" id="' + id + '" hidden>' + explainHtml(r.explain, doc, r) + '</div></li>';
       });
       h += '</ul>';
     }
@@ -343,9 +390,9 @@
     $('#sum-totals').innerHTML = tot;
 
     $('#sum-pay').innerHTML = payHtml(m, t, accepted);
-    var notes = visibleNotes(doc, t).map(function (n) { return '<p class="fine">' + esc(n.text) + '</p>'; }).join('');
-    if (doc.terms) notes += '<p class="fine">' + (accepted ? 'Accepted under our' : 'Accepting means you agree to our') + ' <a href="/terms/">Terms and Conditions</a>.</p>';
-    $('#sum-notes').innerHTML = notes;
+    var notes = visibleNotes(doc, t).map(function (n) { return '<li>' + INFO + '<span>' + esc(n.text) + '</span></li>'; }).join('');
+    if (doc.terms) notes += '<li>' + DOC + '<span>' + (accepted ? 'Accepted under our' : 'Accepting means you agree to our') + ' <a href="/terms/">Terms and Conditions</a>.</span></li>';
+    $('#sum-notes').innerHTML = notes ? '<h3 class="notes-h">Good to know</h3><ul class="notes">' + notes + '</ul>' : '';
     $('#sum-acts').innerHTML = actsHtml(m, accepted);
     wireActs();
   }

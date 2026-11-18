@@ -138,7 +138,17 @@ del { color: var(--paper-mute); text-decoration-thickness: 1.5px; }
 .chev { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid currentColor; transition: transform 0.2s, background 0.15s; }
 .chev svg { width: 12px; height: 12px; }
 .row-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
-.cmp tr.detail td { text-align: left; border-top: 0; padding: 0 16px 16px; color: var(--paper-mute); font-size: 15px; }
+.cmp tr.detail td { text-align: left; border-top: 0; padding: 0 16px 16px; }
+/* A row's explanation: a soft panel. The general description first, then one
+   line per tier difference, tier names in bold. */
+.explain { background: var(--paper); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 1.6; color: var(--paper-fg); }
+.explain p { color: var(--paper-mute); }
+.explain p + p { margin-top: 8px; }
+.explain b { font-weight: 700; color: var(--paper-fg); }
+.ex-list { list-style: none; display: grid; gap: 8px; }
+.explain p + .ex-list, .ex-list + p { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.ex-list li { position: relative; padding-left: 18px; }
+.ex-list li::before { content: ""; position: absolute; left: 2px; top: 0.66em; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .tick { width: 20px; height: 20px; vertical-align: middle; flex: none; }
 .cmp .on { background: var(--sel); }
 .cmp tbody tr:last-child td:last-child { border-bottom-right-radius: 18px; }
@@ -155,7 +165,8 @@ del { color: var(--paper-mute); text-decoration-thickness: 1.5px; }
   .cmp th[scope="row"] { grid-column: 1 / -1; border-top: 1px solid var(--line); }
   .cmp tbody tr:first-child th[scope="row"] { border-top: 0; }
   .cmp td { border-top: 0; padding: 4px 4px 14px; font-size: 14px; }
-  .cmp tr.detail td { grid-column: 1 / -1; }
+  .cmp tr.detail td { grid-column: 1 / -1; padding: 0 12px 14px; }
+  .explain { padding: 12px 14px; }
   .row-btn { min-height: 44px; padding: 12px 12px 6px 14px; }
 }
 
@@ -171,7 +182,7 @@ del { color: var(--paper-mute); text-decoration-thickness: 1.5px; }
 .inc-list .row-btn { padding-left: 0; padding-right: 0; }
 .inc-label { display: flex; align-items: flex-start; gap: 10px; }
 .inc-val { font-weight: 600; color: var(--paper-mute); }
-.inc-detail { color: var(--paper-mute); font-size: 15px; padding: 0 0 14px 30px; }
+.inc-detail { margin: 0 0 14px 30px; }
 
 .addons-note { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; font-weight: 600; margin-bottom: 10px; }
 .addons { display: grid; gap: 10px; }
@@ -192,11 +203,14 @@ fieldset:disabled .addon { cursor: default; }
 .addon .a-price small { font-weight: 600; color: var(--paper-mute); }
 
 .summary { background: var(--ink); color: var(--bone); border-radius: 22px; padding: 24px; --focus: var(--lime); --paper-mute: var(--ink-mute); }
-@media (min-width: 1024px) { .summary { position: sticky; top: 20px; } }
+/* Wide screens: the summary starts level with the tier cards, below the first
+   section's label and heading (one 13px line, then the h2 and its margins),
+   and stays in view as you scroll. */
+@media (min-width: 1024px) { .summary { position: sticky; top: 20px; margin-top: calc(13px * 1.5 + 6px + clamp(24px, 3vw, 32px) * 1.1 + 16px); } }
 .summary h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; }
-.summary ul { list-style: none; display: grid; gap: 10px; margin-bottom: 16px; }
-.summary li { display: flex; justify-content: space-between; gap: 12px; font-size: 16px; }
-.summary li span:last-child { font-weight: 700; white-space: nowrap; text-align: right; }
+.summary #sum-lines { list-style: none; display: grid; gap: 10px; margin-bottom: 16px; }
+.summary #sum-lines li { display: flex; justify-content: space-between; gap: 12px; font-size: 16px; }
+.summary #sum-lines li span:last-child { font-weight: 700; white-space: nowrap; text-align: right; }
 .summary li del { color: var(--ink-mute); font-weight: 500; }
 .summary li.disc span:last-child { color: var(--lime); }
 .summary .total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid rgba(240, 237, 228, 0.2); padding-top: 14px; margin-bottom: 6px; }
@@ -209,6 +223,16 @@ fieldset:disabled .addon { cursor: default; }
 .summary .fine { font-size: 14px; color: var(--ink-mute); margin-top: 10px; }
 .summary .fine a { color: var(--bone); }
 .summary .pay { margin-top: 14px; font-size: 16px; }
+/* Good to know: each note on its own line with an icon, in a plain bordered box. */
+.summary #sum-notes:not(:empty) { margin-top: 18px; padding: 14px 16px; border: 1px solid rgba(240, 237, 228, 0.18); border-radius: 14px; }
+.summary .notes-h { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 10px; }
+.summary .notes { list-style: none; }
+.summary .notes li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px 0; font-size: 14px; line-height: 1.5; color: var(--ink-mute); }
+.summary .notes li:first-child { padding-top: 0; }
+.summary .notes li:last-child { padding-bottom: 0; }
+.summary .notes li + li { border-top: 1px solid rgba(240, 237, 228, 0.12); }
+.summary .notes svg { width: 18px; height: 18px; margin-top: 1px; }
+.summary .notes a { color: var(--bone); }
 .summary .pay.paid b { color: var(--lime); }
 .btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 15px 24px; border-radius: 999px; font-weight: 700; font-size: 17px; text-decoration: none; border: 2px solid transparent; cursor: pointer; margin-top: 12px; transition: transform 0.2s ease; text-align: center; }
 .btn.inline { width: auto; margin-top: 0; }
@@ -288,7 +312,11 @@ footer .credit { color: var(--bone); text-decoration: underline; text-decoration
   .summary { background: #fff; color: #111315; border: 2px solid #111315; break-inside: avoid; --paper-mute: #3d4146; }
   .summary .total b, .summary li.disc span:last-child, .summary .pay.paid b { color: #111315; }
   .summary .fine, .summary li del, .summary .tv del, .summary .total b small { color: #3d4146; }
-  .summary .fine a { color: #111315; }
+  .summary .fine a, .summary .notes a { color: #111315; }
+  .summary { margin-top: 0; }
+  .summary #sum-notes:not(:empty) { border-color: #c4c8cb; }
+  .summary .notes li + li { border-top-color: #dcdfdd; }
+  .summary .notes li, .summary .notes-h { color: #3d4146; }
   .banner { break-inside: avoid; }
   footer { display: none; }
 }
