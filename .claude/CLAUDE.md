@@ -8,3 +8,4 @@ Static site for cyberx.la, served by GitHub Pages from `main` (custom domain in 
 - Mobile-only requests (700px and narrower for layout, 800px and narrower for the nav menu) must leave desktop unchanged. Compare desktop screenshots against `main` before merging.
 - The site sells ADA and WCAG work, so keep it at WCAG 2.1 AA or better on phone and desktop: keyboard access, visible focus, contrast, and reduced motion.
 - The `v1` branch keeps the site as it was before the October 2026 phone redesign. To undo one change, use the Revert button on its pull request.
+- Never style a card, callout, notice, toast, banner or quote with a colored stripe down one side (a thick one sided border such as `border-left`). Use a plain full border, a tinted background, or an icon instead. This applies to every site and app built for the owner, front end or admin.
