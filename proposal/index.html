@@ -159,6 +159,9 @@ del { color: var(--paper-mute); text-decoration-thickness: 1.5px; }
   .row-btn { min-height: 44px; padding: 12px 12px 6px 14px; }
 }
 
+/* Phones: a discounted price in the table head goes under the old one, on its own line. */
+@media (max-width: 700px) { .cmp thead th small del { display: block; } }
+
 /* One tier: no picker and no table, just what's included. */
 .single { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
 .single-price { padding-bottom: 14px; margin-bottom: 6px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
