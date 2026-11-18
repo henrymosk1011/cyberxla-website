@@ -63,7 +63,9 @@
     var lines = [];
     function push(l) { l.net = l.price; lines.push(l); }
     var tl = cents(tier.price);
-    push({ key: tier.key, name: doc.tiers.length > 1 ? tier.name + ' tier' : tier.name, billing: 'once', list: tl, price: tl - discountCents(tl, tier.discount), kind: 'tier' });
+    // A monthly tier (monthly price, no one time price) has no $0 one time line. Same as tierBilling in proposal.ts.
+    var monthlyOnly = tier.monthly !== null && tier.monthly > 0 && tl === 0;
+    if (!monthlyOnly) push({ key: tier.key, name: doc.tiers.length > 1 ? tier.name + ' tier' : tier.name, billing: 'once', list: tl, price: tl - discountCents(tl, tier.discount), kind: 'tier' });
     if (tier.monthly !== null && tier.monthly > 0) {
       var ml = cents(tier.monthly);
       push({ key: tier.key + ':monthly', name: tier.name + ', monthly', billing: 'monthly', list: ml, price: ml - discountCents(ml, tier.monthly_discount), kind: 'tier' });
@@ -115,7 +117,12 @@
   function tierPrices(t) {
     var once = cents(t.price), onceNow = once - discountCents(once, t.discount);
     var mo = t.monthly ? cents(t.monthly) : 0, moNow = mo - discountCents(mo, t.monthly_discount);
-    return { once: once, onceNow: onceNow, mo: mo, moNow: moNow };
+    return { once: once, onceNow: onceNow, mo: mo, moNow: moNow, monthlyOnly: mo > 0 && once === 0 };
+  }
+  // A tier's price: per month for a monthly tier, one time (plus monthly) otherwise.
+  function tierPriceHtml(p) {
+    if (p.monthlyOnly) return priceHtml(p.mo, p.moNow, 'per month', 't-price');
+    return priceHtml(p.once, p.onceNow, 'one time', 't-price') + (p.mo ? '<span class="t-mo">plus ' + inlinePrice(p.mo, p.moNow) + ' per month</span>' : '');
   }
   function addonPrice(a) { var l = cents(a.price); return { list: l, now: l - discountCents(l, a.discount) }; }
   function chipTitle(title) {
@@ -189,8 +196,7 @@
         var p = tierPrices(t);
         html += '<label class="tier"><input type="radio" name="tier" value="' + esc(t.key) + '"' + (t.key === sel.tier ? ' checked' : '') + '>' +
           '<span class="t-name">' + esc(t.name) + (doc.recommended === t.key ? ' <span class="badge">Recommended</span>' : '') + '</span>' +
-          priceHtml(p.once, p.onceNow, 'one time', 't-price') +
-          (p.mo ? '<span class="t-mo">plus ' + inlinePrice(p.mo, p.moNow) + ' per month</span>' : '') +
+          tierPriceHtml(p) +
           (t.summary ? '<span class="t-sum">' + esc(t.summary) + '</span>' : '') +
           '<span class="t-pick no-print"><span class="dot" aria-hidden="true"></span><span class="off">Select</span><span class="on">Selected</span></span></label>';
       });
@@ -232,7 +238,7 @@
       '<colgroup><col class="c-label">' + new Array(n + 1).join('<col>') + '</colgroup><thead><tr><th scope="col">Service</th>';
     doc.tiers.forEach(function (t) {
       var p = tierPrices(t);
-      h += '<th scope="col" data-tier="' + esc(t.key) + '">' + esc(t.name) + '<small>' + inlinePrice(p.once, p.onceNow) + '</small></th>';
+      h += '<th scope="col" data-tier="' + esc(t.key) + '">' + esc(t.name) + '<small>' + (p.monthlyOnly ? inlinePrice(p.mo, p.moNow) + '/mo' : inlinePrice(p.once, p.onceNow)) + '</small></th>';
     });
     h += '</tr></thead><tbody>';
     doc.rows.forEach(function (r, i) {
@@ -248,8 +254,7 @@
     var rows = doc.rows.filter(function (r) { return r.values[t.key] !== false && r.values[t.key] !== undefined; });
     var p = tierPrices(t);
     var h = '<section class="block" aria-labelledby="inc-h"><p class="mono mute">What’s included</p><h2 id="inc-h">' + esc(t.name) + '</h2>' +
-      '<div class="single"><div class="single-price">' + priceHtml(p.once, p.onceNow, 'one time', 't-price') +
-      (p.mo ? '<span class="t-mo">plus ' + inlinePrice(p.mo, p.moNow) + ' per month</span>' : '') + (t.summary ? '<p class="t-sum">' + esc(t.summary) + '</p>' : '') + '</div>';
+      '<div class="single"><div class="single-price">' + tierPriceHtml(p) + (t.summary ? '<p class="t-sum">' + esc(t.summary) + '</p>' : '') + '</div>';
     if (rows.length) {
       h += '<div class="cmp-tools no-print"><p class="mute">Tap an item to see what it means.</p><button type="button" class="linkbtn" id="toggle-all" aria-pressed="false">Show all details</button></div><ul class="inc-list">';
       rows.forEach(function (r, i) {
@@ -463,7 +468,7 @@
     var rows = t.lines.map(function (l) { return '<li><span>' + esc(l.name) + '</span><span>' + money(l.price) + (l.billing === 'monthly' ? '/mo' : '') + '</span></li>'; }).join('');
     if (t.discount_once) rows += '<li><span>' + esc(model.doc.discount.label || 'Discount') + '</span><span>−' + money(t.discount_once) + '</span></li>';
     if (t.discount_monthly) rows += '<li><span>' + esc(model.doc.discount.label || 'Discount') + '</span><span>−' + money(t.discount_monthly) + '/mo</span></li>';
-    rows += '<li class="t"><span>One time total</span><span>' + money(t.once_total) + '</span></li>';
+    if (t.once_list > 0 || t.monthly_list === 0) rows += '<li class="t"><span>One time total</span><span>' + money(t.once_total) + '</span></li>';
     if (t.monthly_list > 0) rows += '<li class="t"><span>Monthly</span><span>' + money(t.monthly_total) + '/mo</span></li>';
     if (t.due_now > 0) rows += '<li><span>' + (model.doc.payment.mode === 'full' ? 'Due at acceptance' : 'Deposit at acceptance') + '</span><span>' + money(t.due_now) + '</span></li>';
     $('#accept-sel').innerHTML = '<p class="mute">' + esc(model.number) + ', ' + esc(model.title) + ': <strong>' + esc(tier.name) + '</strong></p><ul class="confirm">' + rows + '</ul>';
