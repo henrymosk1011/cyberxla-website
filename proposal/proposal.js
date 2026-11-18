@@ -391,7 +391,7 @@
 
     $('#sum-pay').innerHTML = payHtml(m, t, accepted);
     var notes = visibleNotes(doc, t).map(function (n) { return '<li>' + INFO + '<span>' + esc(n.text) + '</span></li>'; }).join('');
-    if (doc.terms) notes += '<li>' + DOC + '<span>' + (accepted ? 'Accepted under our' : 'Accepting means you agree to our') + ' <a href="/terms/">Terms and Conditions</a>.</span></li>';
+    if (doc.terms) notes += '<li>' + DOC + '<span>' + (accepted ? 'Accepted under our' : 'Accepting means you agree to our') + ' <a href="/terms/#quotes">Terms and Conditions</a>.</span></li>';
     $('#sum-notes').innerHTML = notes ? '<h3 class="notes-h">Good to know</h3><ul class="notes">' + notes + '</ul>' : '';
     $('#sum-acts').innerHTML = actsHtml(m, accepted);
     wireActs();
